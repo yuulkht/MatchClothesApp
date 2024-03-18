@@ -42,7 +42,7 @@ class UserRepository (
     }
 
 
-    fun sendVerificationEmail(callback: (Boolean, String) -> Unit) {
+    private fun sendVerificationEmail(callback: (Boolean, String) -> Unit) {
         val user = auth.currentUser
         user?.sendEmailVerification()
             ?.addOnCompleteListener { task ->
@@ -68,5 +68,10 @@ class UserRepository (
                 callback(false, "Не удалось загрузить пользователя: ${reloadTask.exception?.message}")
             }
         }
+    }
+
+    fun getCurrentUserName(): String {
+        return auth.currentUser?.email?.substringBefore("@")?.replaceFirstChar { char -> char - 32 }
+            ?: ""
     }
 }

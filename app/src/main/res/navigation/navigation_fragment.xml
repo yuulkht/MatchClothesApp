@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation_fragment"
+    app:startDestination="@id/mainScreenActivity">
+
+    <activity
+        android:id="@+id/mainScreenActivity"
+        android:name="ru.hse.termpaper.view.MainScreenActivity"
+        android:label="MainScreenActivity" />
+    <fragment
+        android:id="@+id/allClothesActivity"
+        android:name="ru.hse.termpaper.view.AllClothesActivity"
+        android:label="fragment_all_clothes_activity"
+        tools:layout="@layout/fragment_all_clothes_activity" />
+    <fragment
+        android:id="@+id/allOutfitsActivity"
+        android:name="ru.hse.termpaper.view.AllOutfitsActivity"
+        android:label="fragment_all_outfits_activity"
+        tools:layout="@layout/fragment_all_outfits_activity" />
+</navigation>
