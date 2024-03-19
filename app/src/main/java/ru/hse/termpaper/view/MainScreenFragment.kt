@@ -6,10 +6,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import ru.hse.termpaper.R
+import ru.hse.termpaper.viewmodel.AuthViewModel
 
-class MainScreenFragment : Fragment() {
+class MainScreenFragment(
+    private var authViewModel: AuthViewModel = AuthViewModel()
+) : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -22,6 +26,9 @@ class MainScreenFragment : Fragment() {
         val calendarLink = view.findViewById<LinearLayout>(R.id.calendarLink)
         val journeyLink = view.findViewById<LinearLayout>(R.id.journeyLink)
         val settingsLink = view.findViewById<ImageView>(R.id.settings)
+        val usernameText = view.findViewById<TextView>(R.id.username)
+
+        usernameText.text = authViewModel.getUsername()
 
         val mainScreenActivity = requireActivity() as MainScreenActivity
 

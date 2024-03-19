@@ -1,7 +1,6 @@
 package ru.hse.termpaper.viewmodel
 
 import androidx.lifecycle.ViewModel
-import com.google.firebase.auth.FirebaseAuth
 import ru.hse.termpaper.model.entity.User
 import ru.hse.termpaper.model.repository.UserRepository
 
@@ -40,7 +39,7 @@ class AuthViewModel(
     }
 
     fun changeEmail(email: String, callback: (String) -> Unit) {
-        isValidEmail(email) { isValid, validationMessage ->
+        isValidNewEmail(email) { isValid, validationMessage ->
             if (isValid) {
                 userRepository.changeEmail(email) {message ->
                     callback(message)
@@ -58,10 +57,14 @@ class AuthViewModel(
         }
     }
 
-    private fun isValidEmail(email: String, callback: (Boolean, String) -> Unit) {
+    fun getUsername() : String {
+        return userRepository.getCurrentUserName()
+    }
+
+    private fun isValidNewEmail(email: String, callback: (Boolean, String) -> Unit) {
         if (email == "") {
             callback(false, "email пуст")
-        } else if(!isValidEmail(email)) {
+        } else if(!isValidNewEmail(email)) {
             callback(false, "Неправильный email")
         } else {
             callback(true, "Данные корректны")
@@ -71,7 +74,7 @@ class AuthViewModel(
     private fun isValidUserData(user: User, callback: (Boolean, String) -> Unit) {
         if (user.email == "" || user.password == "") {
             callback(false, "Не все поля заполнены")
-        } else if(!isValidEmail(user.email)) {
+        } else if(!isValidNewEmail(user.email)) {
             callback(false, "Неправильный email")
         } else if (user.password.length < 6) {
             callback(false, "Пароль должен быть не менее 6 символов")
@@ -80,7 +83,7 @@ class AuthViewModel(
         }
     }
 
-    private fun isValidEmail(email: String): Boolean {
+    private fun isValidNewEmail(email: String): Boolean {
         val emailRegex = Regex("^\\w+([.-]?\\w+)*@\\w+([.-]?\\w+)*(\\.\\w{2,3})+$")
         return emailRegex.matches(email)
     }
