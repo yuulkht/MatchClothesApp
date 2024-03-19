@@ -35,9 +35,36 @@ class AuthViewModel(
         }
     }
 
+    fun logout() {
+        userRepository.logout()
+    }
+
+    fun changeEmail(email: String, callback: (String) -> Unit) {
+        isValidEmail(email) { isValid, validationMessage ->
+            if (isValid) {
+                userRepository.changeEmail(email) {message ->
+                    callback(message)
+                }
+            } else {
+                callback(validationMessage)
+            }
+
+        }
+    }
+
     fun checkEmail(callback: (Boolean, String) -> Unit) {
         userRepository.checkEmailVerification() { isSuccess, message ->
             callback(isSuccess, message)
+        }
+    }
+
+    private fun isValidEmail(email: String, callback: (Boolean, String) -> Unit) {
+        if (email == "") {
+            callback(false, "email пуст")
+        } else if(!isValidEmail(email)) {
+            callback(false, "Неправильный email")
+        } else {
+            callback(true, "Данные корректны")
         }
     }
 

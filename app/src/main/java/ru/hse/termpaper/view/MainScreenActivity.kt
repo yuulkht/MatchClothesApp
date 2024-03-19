@@ -7,41 +7,45 @@ import androidx.fragment.app.Fragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import ru.hse.termpaper.R
 
-class MainScreenActivity : AppCompatActivity() {
-
-    private val mainScreenFragment = MainScreenFragment()
-    private val clothesFragment = ClothesFragment()
-    private val outfitsFragment = OutfitsFragment()
+class MainScreenActivity(
+    val mainScreenFragment: MainScreenFragment = MainScreenFragment(),
+    val clothesFragment: ClothesFragment = ClothesFragment(),
+    val outfitsFragment: OutfitsFragment = OutfitsFragment(),
+    val calendarFragment: CalendarFragment = CalendarFragment(),
+    val journeyFragment: JourneyFragment = JourneyFragment(),
+    val settingsFragment: SettingsFragment = SettingsFragment(),
+    var bottomNavigation: BottomNavigationView? = null
+) : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main_screen)
         enableEdgeToEdge()
 
-        val bottomNavigation = findViewById<BottomNavigationView>(R.id.bottom_navigation_view)
+        bottomNavigation = findViewById<BottomNavigationView>(R.id.bottom_navigation_view)
 
-        // Установка обработчика нажатий на пункты BottomNavigationView
-        bottomNavigation.setOnItemSelectedListener { menuItem ->
+        bottomNavigation?.setOnItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.homePage -> {
-                    replaceFragment(mainScreenFragment)
+                    replaceFragment(mainScreenFragment, menuItem.itemId)
                     true
                 }
                 R.id.clothesPage -> {
-                    replaceFragment(clothesFragment)
+                    replaceFragment(clothesFragment, menuItem.itemId)
                     true
                 }
                 R.id.outfitsPage -> {
-                    replaceFragment(outfitsFragment)
+                    replaceFragment(outfitsFragment, menuItem.itemId)
                     true
                 }
                 else -> false
             }
         }
-        replaceFragment(mainScreenFragment)
+        replaceFragment(mainScreenFragment, R.id.homePage)
     }
 
-    private fun replaceFragment(fragment: Fragment) {
+    fun replaceFragment(fragment: Fragment, menuItemId: Int) {
+        bottomNavigation?.menu?.findItem(menuItemId)?.isChecked = true
         supportFragmentManager.beginTransaction()
             .replace(R.id.main_screen_container, fragment)
             .commit()

@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".view.MainScreenActivity">
 
-    <!-- Контейнер для размещения фрагмента MainScreenFragment -->
+    <!-- Контейнер для размещения фрагмента ru.hse.termpaper.view.MainScreenFragment -->
     <FrameLayout
         android:id="@+id/main_screen_container"
         android:layout_width="match_parent"

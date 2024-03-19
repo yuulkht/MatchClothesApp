@@ -1,5 +1,6 @@
 package ru.hse.termpaper.model.repository
 
+import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import ru.hse.termpaper.model.entity.User
 
@@ -18,7 +19,7 @@ class UserRepository (
                 }
             }
             .addOnFailureListener{
-                callback(false, "Неуспешная попытка регистрации")
+                callback(false, "Неуспешная попытка АОАОАООАОАОА")
             }
     }
 
@@ -38,6 +39,26 @@ class UserRepository (
             }
             .addOnFailureListener {
                 callback(false, "Не удалось выполнить вход")
+            }
+    }
+
+    fun logout() {
+        auth.signOut()
+    }
+
+    fun changeEmail(newEmail: String, callback: (String) -> Unit) {
+        val user = auth.currentUser
+
+        user?.verifyBeforeUpdateEmail(newEmail)
+            ?.addOnCompleteListener { updateEmailTask ->
+                if (updateEmailTask.isSuccessful) {
+                    callback("Email успешно изменен")
+                } else {
+                    callback("Ошибка при изменении email: ${updateEmailTask.exception?.message}")
+                }
+            }
+            ?.addOnFailureListener {
+                callback("Не удалось изменить email")
             }
     }
 
