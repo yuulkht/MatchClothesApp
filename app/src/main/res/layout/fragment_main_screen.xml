@@ -45,24 +45,24 @@
 
         <!-- Bottom Navigation -->
         <LinearLayout
+            android:id="@+id/line_1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="100dp"
-            android:background="@drawable/button_background"
-            android:gravity="center"
+            android:layout_marginTop="40dp"
             android:orientation="horizontal"
             android:padding="20dp"
             android:weightSum="2">
 
 
             <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:background="@drawable/button_background"
-                android:gravity="center"
+                android:id="@+id/clothesLink"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="20dp"
-                android:weightSum="1">
+                android:padding="30dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:background="@drawable/button_background">
 
                 <ImageView
                     android:id="@+id/clothes"
@@ -78,35 +78,18 @@
                     android:text="Одежда"
                     android:textSize="20sp"
                     android:textStyle="bold" />
-
-                <ImageView
-                    android:id="@+id/calendar"
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
-                    android:layout_marginTop="20dp"
-                    android:src="@drawable/calendar" />
-
-                <TextView
-                    android:id="@+id/calendarText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentStart="true"
-                    android:text="Календарь"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
-
-
             </LinearLayout>
 
-
             <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginStart="40dp"
-                android:background="@drawable/button_background"
-                android:gravity="center"
+                android:id="@+id/outfitsLink"
+                android:layout_marginStart="20dp"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:weightSum="1">
+                android:padding="30dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:background="@drawable/button_background">
 
                 <ImageView
                     android:id="@+id/outfits"
@@ -120,30 +103,76 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentStart="true"
                     android:text="Образы"
-
                     android:textSize="20sp"
                     android:textStyle="bold" />
+
+
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/line_2"
+            android:layout_below="@+id/line_1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="20dp"
+            android:weightSum="2">
+
+
+            <LinearLayout
+                android:id="@+id/calendarLink"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="30dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:background="@drawable/button_background">
+
+                <ImageView
+                    android:id="@+id/calendar"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:src="@drawable/calendar" />
+
+                <TextView
+                    android:id="@+id/calendarText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:text="Календарь"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/journeyLink"
+                android:layout_marginStart="20dp"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="30dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:background="@drawable/button_background">
 
                 <ImageView
                     android:id="@+id/journey"
                     android:layout_width="100dp"
-                    android:layout_height="100dp"
-                    android:layout_marginTop="20dp"
+                    android:layout_height="105dp"
                     android:src="@drawable/luggage" />
 
                 <TextView
-                    android:id="@+id/luggageText"
+                    android:id="@+id/journeyText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentStart="true"
                     android:text="Путешествия"
-                    android:textSize="20sp"
+                    android:textSize="18sp"
                     android:textStyle="bold" />
-
             </LinearLayout>
-
         </LinearLayout>
-
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
 
