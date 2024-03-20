@@ -1,5 +1,6 @@
 package ru.hse.termpaper.view
 
+import ClothesFragment
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
