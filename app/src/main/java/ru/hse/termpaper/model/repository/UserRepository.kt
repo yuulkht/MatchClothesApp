@@ -19,7 +19,7 @@ class UserRepository (
                 }
             }
             .addOnFailureListener{
-                callback(false, "Неуспешная попытка АОАОАООАОАОА")
+                callback(false, "Неуспешная попытка регистрации")
             }
     }
 

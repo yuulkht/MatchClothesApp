@@ -1,9 +1,10 @@
+package ru.hse.termpaper.view
+
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 import ru.hse.termpaper.R
@@ -12,13 +13,22 @@ import ru.hse.termpaper.viewmodel.ClothesViewModel
 
 class ClothesAdapter(
     private var clothesList: List<Cloth>,
-    private var clothesViewModel: ClothesViewModel = ClothesViewModel()
-) :
-    RecyclerView.Adapter<ClothesAdapter.ClothesViewHolder>() {
+    private val itemClickListener: OnItemClickListener? = null,
+    private val clothesViewModel: ClothesViewModel = ClothesViewModel()
+) : RecyclerView.Adapter<ClothesAdapter.ClothesViewHolder>() {
 
-    inner class ClothesViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class ClothesViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView),
+        View.OnClickListener {
         val clothImageView: ImageView = itemView.findViewById(R.id.clothImage)
         val clothTitleTextView: TextView = itemView.findViewById(R.id.clothTitle)
+
+        init {
+            itemView.setOnClickListener(this)
+        }
+
+        override fun onClick(v: View?) {
+            itemClickListener?.onItemClick(adapterPosition)
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ClothesViewHolder {
@@ -43,4 +53,8 @@ class ClothesAdapter(
     }
 
     override fun getItemCount() = clothesList.size
+
+    interface OnItemClickListener {
+        fun onItemClick(position: Int)
+    }
 }

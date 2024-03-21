@@ -1,6 +1,5 @@
 package ru.hse.termpaper.view
 
-import ClothesFragment
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -15,7 +14,7 @@ class MainScreenActivity(
     val calendarFragment: CalendarFragment = CalendarFragment(),
     val journeyFragment: JourneyFragment = JourneyFragment(),
     val settingsFragment: SettingsFragment = SettingsFragment(),
-    var bottomNavigation: BottomNavigationView? = null
+    private var bottomNavigation: BottomNavigationView? = null
 ) : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {

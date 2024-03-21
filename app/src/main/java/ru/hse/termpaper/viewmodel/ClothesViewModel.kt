@@ -24,4 +24,12 @@ class ClothesViewModel(
         }
     }
 
+    fun filterClothesByTitle(clothes: List<Cloth>, searchText: String): List<Cloth> {
+        return if (searchText.isEmpty()) {
+            clothes
+        } else {
+            clothes.filter { it.title.contains(searchText, ignoreCase = true) }
+        }
+    }
+
 }
