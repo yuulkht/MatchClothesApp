@@ -2,18 +2,12 @@ package ru.hse.termpaper.model.entity
 
 import java.io.Serializable
 
-enum class Season: Serializable {
-    WINTER,
-    AUTUMN,
-    SPRING,
-    SUMMER
-}
-
 class Cloth (
-    val id: String = "",
-    val user_id: String = "",
+    var id: String = "",
+    var user_id: String = "",
     val title: String = "",
-    val photo: String = "",
+    var photo: String = "",
     val information: String = "",
+    // убрать сезон
     val season: Season = Season.SUMMER
 ) : Serializable {}

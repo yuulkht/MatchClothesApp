@@ -1,5 +1,6 @@
 package ru.hse.termpaper.model.repository
 
+import android.net.Uri
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
@@ -11,6 +12,8 @@ import com.google.firebase.database.ValueEventListener
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import ru.hse.termpaper.model.entity.Cloth
+import ru.hse.termpaper.model.entity.ClothCategory
+import ru.hse.termpaper.model.entity.Season
 
 
 class ClothesRepository(
@@ -19,27 +22,55 @@ class ClothesRepository(
     private val currentUser: FirebaseUser? = FirebaseAuth.getInstance().currentUser
 ) {
 
-    fun saveCloth(cloth: Cloth, callback: (Boolean, String) -> Unit) {
+    fun saveCloth(cloth: Cloth, clothImage: Uri?, callback: (Boolean, String, Cloth) -> Unit) {
         currentUser?.uid?.let { userId ->
             val clothRef: DatabaseReference = database.child("clothes").push()
             val clothId = clothRef.key
+
+            if (clothId != null) {
+                cloth.id = clothId
+            }
+            cloth.user_id = userId
+
             val clothData = hashMapOf(
-                "id" to clothId,
-                "user_id" to userId,
+                "id" to cloth.id,
+                "user_id" to cloth.user_id,
                 "title" to cloth.title,
-                "photo" to cloth.photo,
+                "photo" to cloth.id,
                 "information" to cloth.information,
-                "season" to cloth.season.toString()
             )
             clothRef.setValue(clothData)
                 .addOnSuccessListener {
-                    callback(true, "Новая вещь успешно добавлена")
+                    saveClothImage(clothImage, clothId) { success, message ->
+                        if (success) {
+                            callback(true, "Новая вещь и фотография успешно добавлены", cloth)
+                        } else {
+                            callback(false, "Ошибка при добавлении фотографии", cloth)
+                        }
+                    }
                 }
                 .addOnFailureListener { e ->
-                    callback(false, "Не удалось добавить новую вещь")
+                    callback(false, "Не удалось добавить новую вещь", Cloth())
                 }
         }
     }
+
+
+    fun saveClothImage(clothImage: Uri?, clothId: String?, callback: (Boolean, String) -> Unit) {
+        clothImage?.let{uri ->
+            clothId?.let {
+                dataStorage.child(clothId).putFile(uri)
+                    .addOnSuccessListener {
+                        callback(true, "Фотография успешно загружена")
+                    }
+                    .addOnFailureListener {
+                        callback(false, "Не удалось загрузить фотографию")}
+            }
+        } ?: run {
+            callback(false, "Не удалось загрузить фотографию")
+        }
+    }
+
 
     fun getClothes(callback: (MutableList<Cloth>) -> Unit) {
         val userId = currentUser?.uid
@@ -62,18 +93,7 @@ class ClothesRepository(
     }
 
     fun getImageForCloth(cloth: Cloth, callback: (String?) -> Unit) {
-        if (cloth.photo.isNotEmpty()) {
-            val storageRef = dataStorage.child("${cloth.photo}.jpg")
-            storageRef.downloadUrl
-                .addOnSuccessListener { uri ->
-                    callback(uri.toString())
-                }
-                .addOnFailureListener {
-                    callback(null)
-                }
-        } else {
-            callback(null)
-        }
+        // Написать, хз как, но написать))))
     }
 
 

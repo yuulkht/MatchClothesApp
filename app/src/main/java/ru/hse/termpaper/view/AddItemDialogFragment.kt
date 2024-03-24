@@ -17,13 +17,15 @@ class AddItemDialogFragment : DialogFragment() {
         val dialog = Dialog(requireContext(), R.style.DialogStyle)
         dialog.setContentView(view)
 
+        val mainScreenActivity = requireActivity() as MainScreenActivity
+
         view.findViewById<LinearLayout>(R.id.addItem).setOnClickListener {
-            // Действия для добавления вещи
+            mainScreenActivity.replaceFragment(mainScreenActivity.addItemFragment, R.id.clothesPage)
             dismiss()
         }
 
         view.findViewById<LinearLayout>(R.id.addItemCategory).setOnClickListener {
-            // Действия для добавления категории
+            mainScreenActivity.replaceFragment(mainScreenActivity.addClothCategoryFragment, R.id.clothesPage)
             dismiss()
         }
 

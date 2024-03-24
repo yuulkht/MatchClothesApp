@@ -1,5 +1,6 @@
 package ru.hse.termpaper.view
 
+import AddItemFragment
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -14,6 +15,8 @@ class MainScreenActivity(
     val calendarFragment: CalendarFragment = CalendarFragment(),
     val journeyFragment: JourneyFragment = JourneyFragment(),
     val settingsFragment: SettingsFragment = SettingsFragment(),
+    val addItemFragment: AddItemFragment = AddItemFragment(),
+    val addClothCategoryFragment: AddClothCategoryFragment = AddClothCategoryFragment(),
     private var bottomNavigation: BottomNavigationView? = null
 ) : AppCompatActivity() {
 
