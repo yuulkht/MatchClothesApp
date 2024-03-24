@@ -19,7 +19,7 @@ class ClothSeasonRepository(
         val relationId = relationRef.key
         val relationData = hashMapOf(
             "cloth_id" to clothId,
-            "season" to season.toString(),
+            "season" to season,
         )
         relationRef.setValue(relationData)
             .addOnSuccessListener {
@@ -61,6 +61,30 @@ class ClothSeasonRepository(
             }
         })
     }
+
+    fun getSeasonsForCloth(cloth: Cloth, callback: (Boolean, MutableList<Season>) -> Unit) {
+        val clothId = cloth.id
+        val seasonsRef = database.child("cloth_season_mapping")
+        val query = seasonsRef.orderByChild("cloth_id").equalTo(clothId)
+        query.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                val seasonsList = mutableListOf<Season>()
+                for (snapshot in dataSnapshot.children) {
+                    val seasonName = snapshot.child("season").getValue(String::class.java)
+                    seasonName?.let {
+                        val season = Season.valueOf(it)
+                        seasonsList.add(season)
+                    }
+                }
+                callback(true, seasonsList)
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                callback(false, mutableListOf())
+            }
+        })
+    }
+
 
     fun getSeasons(): MutableList<Season> {
         return mutableListOf(Season.WINTER, Season.AUTUMN, Season.SPRING, Season.SUMMER)

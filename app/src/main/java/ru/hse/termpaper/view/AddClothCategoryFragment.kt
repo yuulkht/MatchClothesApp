@@ -7,15 +7,21 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import ru.hse.termpaper.R
 import ru.hse.termpaper.model.entity.Cloth
+import ru.hse.termpaper.model.entity.ClothCategory
+import ru.hse.termpaper.model.repository.ClothCategoryRepository
 import ru.hse.termpaper.viewmodel.ClothesViewModel
 
 class AddClothCategoryFragment(
-    private val clothesViewModel: ClothesViewModel = ClothesViewModel()
+    private val clothesViewModel: ClothesViewModel = ClothesViewModel(),
+    private val clothCategoryRepository: ClothCategoryRepository = ClothCategoryRepository()
 ) : Fragment() {
 
     private lateinit var adapter: ClothesCheckboxAdapter
@@ -29,6 +35,15 @@ class AddClothCategoryFragment(
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_add_cloth_category, container, false)
+        val saveCategoryButton = view.findViewById<Button>(R.id.saveClothCategory)
+        val backLink = view.findViewById<ImageView>(R.id.backButton)
+        val categoryTitle = view.findViewById<EditText>(R.id.clothCategoryTitle)
+
+        val mainScreenActivity = requireActivity() as MainScreenActivity
+
+        backLink.setOnClickListener {
+            mainScreenActivity.replaceFragment(mainScreenActivity.clothesFragment, R.id.clothesPage)
+        }
 
         val clothesInCategory: MutableList<Cloth> = mutableListOf()
 
@@ -52,6 +67,27 @@ class AddClothCategoryFragment(
 
             clothesCheckboxContainer.adapter = adapter
 
+        }
+
+        saveCategoryButton.setOnClickListener {
+            val title = categoryTitle.text.toString().trim()
+            clothCategoryRepository.saveClothCategory(ClothCategory("", "", title)) {success, message, category ->
+                if (success) {
+                    for (cloth: Cloth in clothesInCategory){
+                        clothCategoryRepository.addClothToCategory(cloth, category) {success, message ->
+                            if(!success) {
+                                Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show()
+                            }
+                        }
+                    }
+                    Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show()
+                    mainScreenActivity.replaceFragment(mainScreenActivity.clothesFragment, R.id.clothesPage)
+                } else {
+                    Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show()
+                    mainScreenActivity.replaceFragment(mainScreenActivity.clothesFragment, R.id.clothesPage)
+                }
+
+            }
         }
         return view
     }

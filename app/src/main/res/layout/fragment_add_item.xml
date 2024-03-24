@@ -103,7 +103,7 @@
                 android:padding="10dp"/>
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/categoryRecyclerView"
+                android:id="@+id/categoryCheckboxRecyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"/>
@@ -118,7 +118,7 @@
                 android:padding="10dp"/>
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/seasonRecyclerView"
+                android:id="@+id/seasonCheckboxRecyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="220dp"
                 android:layout_marginTop="8dp"/>

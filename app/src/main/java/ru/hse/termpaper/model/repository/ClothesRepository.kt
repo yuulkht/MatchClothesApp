@@ -93,7 +93,14 @@ class ClothesRepository(
     }
 
     fun getImageForCloth(cloth: Cloth, callback: (String?) -> Unit) {
-        // Написать, хз как, но написать))))
+        val imageRef = dataStorage.child(cloth.id)
+        imageRef.downloadUrl
+            .addOnSuccessListener { uri ->
+                callback(uri.toString())
+            }
+            .addOnFailureListener {
+                callback(null)
+            }
     }
 
 

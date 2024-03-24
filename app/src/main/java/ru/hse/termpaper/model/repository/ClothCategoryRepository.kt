@@ -16,10 +16,14 @@ class ClothCategoryRepository(
     private val currentUser: FirebaseUser? = FirebaseAuth.getInstance().currentUser
 ) {
 
-    fun saveClothCategory(clothCategory: ClothCategory, callback: (Boolean, String) -> Unit) {
+    fun saveClothCategory(clothCategory: ClothCategory, callback: (Boolean, String, ClothCategory) -> Unit) {
         currentUser?.uid?.let { userId ->
             val clothCategoryRef: DatabaseReference = database.child("cloth_categories").push()
             val clothCategoryId = clothCategoryRef.key
+            if (clothCategoryId != null) {
+                clothCategory.id = clothCategoryId
+            }
+            clothCategory.user_id = userId
             val clothCategoryData = hashMapOf(
                 "id" to clothCategoryId,
                 "user_id" to userId,
@@ -27,10 +31,10 @@ class ClothCategoryRepository(
             )
             clothCategoryRef.setValue(clothCategoryData)
                 .addOnSuccessListener {
-                    callback(true, "Новая категория успешно добавлена")
+                    callback(true, "Новая категория успешно добавлена", clothCategory)
                 }
                 .addOnFailureListener { e ->
-                    callback(false, "Не удалось добавить новую категорию")
+                    callback(false, "Не удалось добавить новую категорию", ClothCategory())
                 }
         }
     }
@@ -103,4 +107,41 @@ class ClothCategoryRepository(
         })
     }
 
+    fun getCategoriesForCloth(cloth: Cloth, callback: (Boolean, MutableList<ClothCategory>) -> Unit) {
+        val categoriesRef = database.child("cloth_category_mapping")
+        val query = categoriesRef.orderByChild("cloth_id").equalTo(cloth.id)
+        query.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                val categoryIds = mutableListOf<String>()
+                for (snapshot in dataSnapshot.children) {
+                    val categoryId =
+                        snapshot.child("cloth_category_id").getValue(String::class.java)
+                    categoryId?.let { categoryIds.add(it) }
+                }
+                // Теперь у вас есть список идентификаторов категорий, к которым относится данная вещь
+                // Далее, для каждого идентификатора категории, вы можете получить соответствующую категорию из базы данных
+                val categoriesList = mutableListOf<ClothCategory>()
+                val categoryQueryList = categoryIds.map { categoryId ->
+                    database.child("cloth_categories").child(categoryId)
+                        .addListenerForSingleValueEvent(object : ValueEventListener {
+                            override fun onDataChange(categorySnapshot: DataSnapshot) {
+                                val category = categorySnapshot.getValue(ClothCategory::class.java)
+                                category?.let { categoriesList.add(it) }
+                                if (categoriesList.size == categoryIds.size) {
+                                    callback(true, categoriesList)
+                                }
+                            }
+
+                            override fun onCancelled(databaseError: DatabaseError) {
+                                callback(false, mutableListOf())
+                            }
+                        })
+                }
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                callback(false, mutableListOf())
+            }
+        })
+    }
 }

@@ -21,9 +21,9 @@ import ru.hse.termpaper.model.entity.Season
 import ru.hse.termpaper.model.repository.ClothCategoryRepository
 import ru.hse.termpaper.model.repository.ClothSeasonRepository
 import ru.hse.termpaper.model.repository.ClothesRepository
-import ru.hse.termpaper.view.CategoryAdapter
+import ru.hse.termpaper.view.CategoryCheckboxAdapter
 import ru.hse.termpaper.view.MainScreenActivity
-import ru.hse.termpaper.view.SeasonAdapter
+import ru.hse.termpaper.view.SeasonCheckboxAdapter
 
 class AddItemFragment (
     private var selectedImageUri: Uri? = null,
@@ -61,12 +61,12 @@ class AddItemFragment (
         val clothCategories:MutableList<ClothCategory> = mutableListOf()
 
         // Настройка RecyclerView для категорий
-        val categoryRecyclerView = view.findViewById<RecyclerView>(R.id.categoryRecyclerView)
+        val categoryRecyclerView = view.findViewById<RecyclerView>(R.id.categoryCheckboxRecyclerView)
         categoryRecyclerView.layoutManager = LinearLayoutManager(context)
 
         clothCategoryRepository.getClothCategories { categories ->
             this.categories = categories // сохраняем полученные категории
-            val categoryAdapter = CategoryAdapter(categories, object : CategoryAdapter.OnCheckboxClickListener{
+            val categoryAdapter = CategoryCheckboxAdapter(categories, object : CategoryCheckboxAdapter.OnCheckboxClickListener{
                 override fun onCheckboxClicked(position: Int, isChecked: Boolean) {
                     val chosenCategory = categories[position]
                     if (isChecked) {
@@ -79,10 +79,10 @@ class AddItemFragment (
             categoryRecyclerView.adapter = categoryAdapter // устанавливаем адаптер для RecyclerView
         }
 
-        val seasonRecyclerView = view.findViewById<RecyclerView>(R.id.seasonRecyclerView)
+        val seasonRecyclerView = view.findViewById<RecyclerView>(R.id.seasonCheckboxRecyclerView)
         seasonRecyclerView.layoutManager = LinearLayoutManager(context)
         seasons = clothSeasonRepository.getSeasons()
-        val seasonAdapter = SeasonAdapter(seasons, object: SeasonAdapter.OnCheckboxClickListener{
+        val seasonAdapter = SeasonCheckboxAdapter(seasons, object: SeasonCheckboxAdapter.OnCheckboxClickListener{
             override fun onCheckboxClicked(position: Int, isChecked: Boolean) {
                 val chosenSeason= seasons[position]
                 if (isChecked) {
