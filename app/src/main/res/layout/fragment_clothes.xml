@@ -7,7 +7,7 @@
     android:background="#F2F0FB">
 
     <ImageView
-        android:id="@+id/categoryClothes"
+        android:id="@+id/chooseClothCategory"
         android:layout_width="46dp"
         android:layout_height="47dp"
         android:layout_alignParentEnd="true"
