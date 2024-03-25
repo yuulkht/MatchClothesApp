@@ -1,4 +1,4 @@
-package ru.hse.termpaper.view
+package ru.hse.termpaper.view.main
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,10 +9,10 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import ru.hse.termpaper.R
-import ru.hse.termpaper.viewmodel.AuthViewModel
+import ru.hse.termpaper.viewmodel.AuthService
 
 class MainScreenFragment(
-    private var authViewModel: AuthViewModel = AuthViewModel()
+    private var authViewModel: AuthService = AuthService()
 ) : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater,

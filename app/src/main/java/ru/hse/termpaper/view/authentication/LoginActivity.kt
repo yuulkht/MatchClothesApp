@@ -1,21 +1,22 @@
-package ru.hse.termpaper.view
+package ru.hse.termpaper.view.authentication
 
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
-import android.widget.Toast
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import ru.hse.termpaper.R
-import ru.hse.termpaper.model.entity.User
-import ru.hse.termpaper.viewmodel.AuthViewModel
+import ru.hse.termpaper.view.NotificationHelper
+import ru.hse.termpaper.view.main.MainScreenActivity
+import ru.hse.termpaper.viewmodel.AuthService
 
 class LoginActivity(
-    private var authViewModel: AuthViewModel = AuthViewModel()
+    private var authViewModel: AuthService = AuthService(),
+    private var notificationHelper: NotificationHelper? = null
 ) : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
+        notificationHelper = NotificationHelper(baseContext)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
@@ -27,9 +28,8 @@ class LoginActivity(
             val inputUserEmail = userEmail.text.toString().trim()
             val inputUserPassword = userPassword.text.toString().trim()
 
-            val user = User(inputUserEmail, inputUserPassword)
-            authViewModel.login(user) { isSuccess, message ->
-                Toast.makeText(baseContext, message, Toast.LENGTH_LONG).show()
+            authViewModel.login(authViewModel.getUser(inputUserEmail, inputUserPassword)) { isSuccess, message ->
+                notificationHelper!!.showToast(message)
                 if (isSuccess) {
                     val intent = Intent(this, MainScreenActivity::class.java)
                     startActivity(intent)

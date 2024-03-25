@@ -81,6 +81,11 @@ class ClothCategoryRepository(
         query.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 val clothesList = mutableListOf<Cloth>()
+
+                if (dataSnapshot.childrenCount.toInt() == 0) {
+                    callback(true, mutableListOf())
+                    return
+                }
                 for (snapshot in dataSnapshot.children) {
                     val clothId = snapshot.child("cloth_id").getValue(String::class.java)
                     clothId?.let {

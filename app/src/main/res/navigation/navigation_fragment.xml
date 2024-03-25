@@ -7,7 +7,7 @@
 
     <activity
         android:id="@+id/mainScreenActivity"
-        android:name="ru.hse.termpaper.view.MainScreenActivity"
+        android:name="ru.hse.termpaper.view.main.MainScreenActivity"
         android:label="MainScreenActivity" />
     <fragment
         android:id="@+id/allClothesActivity"

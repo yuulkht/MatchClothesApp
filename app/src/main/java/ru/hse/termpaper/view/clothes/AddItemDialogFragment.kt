@@ -1,13 +1,11 @@
-package ru.hse.termpaper.view
+package ru.hse.termpaper.view.clothes
 
 import android.app.Dialog
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.widget.Button
 import android.widget.LinearLayout
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.DialogFragment
 import ru.hse.termpaper.R
+import ru.hse.termpaper.view.main.MainScreenActivity
 
 class AddItemDialogFragment : DialogFragment() {
 

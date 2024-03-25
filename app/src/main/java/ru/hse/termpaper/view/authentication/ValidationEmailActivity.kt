@@ -1,24 +1,21 @@
-package ru.hse.termpaper.view
+package ru.hse.termpaper.view.authentication
 
-import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
-import android.widget.EditText
-import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import androidx.lifecycle.ViewModelProvider
 import ru.hse.termpaper.R
-import ru.hse.termpaper.model.entity.User
-import ru.hse.termpaper.viewmodel.AuthViewModel
+import ru.hse.termpaper.view.NotificationHelper
+import ru.hse.termpaper.view.main.MainScreenActivity
+import ru.hse.termpaper.viewmodel.AuthService
 
 class ValidationEmailActivity(
-    private var authViewModel: AuthViewModel = AuthViewModel()
+    private var authViewModel: AuthService = AuthService(),
+    private var notificationHelper: NotificationHelper? = null
 ) : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
+        notificationHelper = NotificationHelper(baseContext)
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_validation_email)
@@ -27,7 +24,7 @@ class ValidationEmailActivity(
 
         validateEmailButton.setOnClickListener {
             authViewModel.checkEmail() {isSuccess, message ->
-                Toast.makeText(baseContext, message, Toast.LENGTH_LONG).show()
+                notificationHelper!!.showToast(message)
                 if (isSuccess) {
                     val intent = Intent(this, MainScreenActivity::class.java)
                     startActivity(intent)

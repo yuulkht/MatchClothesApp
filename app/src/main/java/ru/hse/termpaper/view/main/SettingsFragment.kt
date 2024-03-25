@@ -1,4 +1,4 @@
-package ru.hse.termpaper.view
+package ru.hse.termpaper.view.main
 
 import android.content.Intent
 import android.os.Bundle
@@ -11,10 +11,11 @@ import android.widget.ImageView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import ru.hse.termpaper.R
-import ru.hse.termpaper.viewmodel.AuthViewModel
+import ru.hse.termpaper.view.authentication.LoginActivity
+import ru.hse.termpaper.viewmodel.AuthService
 
 class SettingsFragment(
-    private var authViewModel: AuthViewModel = AuthViewModel()
+    private var authViewModel: AuthService = AuthService()
 ) : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater,

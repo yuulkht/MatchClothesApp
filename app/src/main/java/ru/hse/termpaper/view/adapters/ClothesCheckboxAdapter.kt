@@ -1,4 +1,4 @@
-package ru.hse.termpaper.view
+package ru.hse.termpaper.view.adapters
 
 import android.view.LayoutInflater
 import android.view.View
@@ -10,14 +10,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 import ru.hse.termpaper.R
 import ru.hse.termpaper.model.entity.Cloth
-import ru.hse.termpaper.model.entity.ClothCategory
-import ru.hse.termpaper.viewmodel.ClothesViewModel
+import ru.hse.termpaper.viewmodel.ClothesModelService
 
 class ClothesCheckboxAdapter(
 
     private var clothesList: List<Cloth>,
     private val listener: OnCheckboxClickListener? = null,
-    private val clothesViewModel: ClothesViewModel = ClothesViewModel()
+    private val clothesViewModel: ClothesModelService = ClothesModelService()
 ) : RecyclerView.Adapter<ClothesCheckboxAdapter.ClothesCheckboxViewHolder>() {
 
     inner class ClothesCheckboxViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

@@ -4,9 +4,13 @@ import androidx.lifecycle.ViewModel
 import ru.hse.termpaper.model.entity.User
 import ru.hse.termpaper.model.repository.UserRepository
 
-class AuthViewModel(
+class AuthService(
     private val userRepository: UserRepository = UserRepository()
 ) : ViewModel() {
+
+    fun getUser(login: String, password: String) : User {
+        return User(login, password)
+    }
 
     fun register(user: User, callback: (Boolean, String) -> Unit) {
         isValidUserData(user) { isValid, validationMessage ->

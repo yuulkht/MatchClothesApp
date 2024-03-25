@@ -47,6 +47,11 @@ class ClothSeasonRepository(
                     clothId?.let { clothIds.add(it) }
                 }
 
+                if (clothIds.isEmpty()) {
+                    callback(true, mutableListOf())
+                    return
+                }
+
                 // Получаем данные о каждой одежде из таблицы clothes по их cloth_id
                 for (clothId in clothIds) {
                     val clothesQuery = database.child("clothes").child(clothId)

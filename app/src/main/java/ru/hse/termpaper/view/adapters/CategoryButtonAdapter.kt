@@ -1,4 +1,4 @@
-package ru.hse.termpaper.view
+package ru.hse.termpaper.view.adapters
 
 import android.graphics.Color
 import android.view.LayoutInflater

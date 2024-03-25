@@ -4,9 +4,9 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.MainScreenActivity">
+    tools:context=".view.main.MainScreenActivity">
 
-    <!-- Контейнер для размещения фрагмента ru.hse.termpaper.view.MainScreenFragment -->
+    <!-- Контейнер для размещения фрагмента ru.hse.termpaper.view.main.MainScreenFragment -->
     <FrameLayout
         android:id="@+id/main_screen_container"
         android:layout_width="match_parent"
