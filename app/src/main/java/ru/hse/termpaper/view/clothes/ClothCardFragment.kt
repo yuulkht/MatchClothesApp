@@ -15,6 +15,7 @@ import ru.hse.termpaper.R
 import ru.hse.termpaper.model.entity.Cloth
 import ru.hse.termpaper.model.repository.ClothCategoryRepository
 import ru.hse.termpaper.model.repository.ClothSeasonRepository
+import ru.hse.termpaper.view.NotificationHelper
 import ru.hse.termpaper.view.adapters.SeasonAdapter
 import ru.hse.termpaper.view.adapters.CategoryAdapter
 import ru.hse.termpaper.view.main.MainScreenActivity
@@ -23,7 +24,8 @@ import ru.hse.termpaper.viewmodel.ClothesModelService
 
 class ClothCardFragment (
     private val cloth: Cloth,
-    private val clothCardService: ClothCardService = ClothCardService()
+    private val clothCardService: ClothCardService = ClothCardService(),
+    private val clothesModelService: ClothesModelService = ClothesModelService()
 ) : Fragment() {
 
     override fun onCreateView(
@@ -36,12 +38,22 @@ class ClothCardFragment (
         val clothTitle: TextView = view.findViewById(R.id.clothTitle)
         val clothImage: ImageView = view.findViewById(R.id.clothImage)
         val additionalInfo: TextView = view.findViewById(R.id.additionalInfoText)
-        val backLink = view.findViewById<ImageView>(R.id.backButton)
+        val backLink: ImageView = view.findViewById(R.id.backButton)
+        val deleteButton: ImageView = view.findViewById(R.id.deleteButton)
+
+        val notificationHelper = NotificationHelper(requireContext())
 
         val mainScreenActivity = requireActivity() as MainScreenActivity
 
         backLink.setOnClickListener {
             mainScreenActivity.replaceFragment(mainScreenActivity.clothesFragment, R.id.clothesPage)
+        }
+
+        deleteButton.setOnClickListener {
+            clothesModelService.deleteCloth(cloth) {_, message ->
+                notificationHelper.showToast(message)
+                mainScreenActivity.replaceFragment(mainScreenActivity.clothesFragment, R.id.clothesPage)
+            }
         }
 
         clothCardService.setupCategoryRecyclerView(cloth, view, requireContext())

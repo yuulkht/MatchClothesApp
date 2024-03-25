@@ -123,8 +123,6 @@ class ClothCategoryRepository(
                         snapshot.child("cloth_category_id").getValue(String::class.java)
                     categoryId?.let { categoryIds.add(it) }
                 }
-                // Теперь у вас есть список идентификаторов категорий, к которым относится данная вещь
-                // Далее, для каждого идентификатора категории, вы можете получить соответствующую категорию из базы данных
                 val categoriesList = mutableListOf<ClothCategory>()
                 val categoryQueryList = categoryIds.map { categoryId ->
                     database.child("cloth_categories").child(categoryId)

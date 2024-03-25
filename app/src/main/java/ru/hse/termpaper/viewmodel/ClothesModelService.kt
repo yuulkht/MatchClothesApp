@@ -33,6 +33,12 @@ class ClothesModelService(
         }
     }
 
+    fun deleteCloth(cloth: Cloth, callback: (Boolean, String) -> Unit) {
+        clothesRepository.deleteCloth(cloth) {success, message ->
+            callback(success, message)
+        }
+    }
+
     fun setupClothRecyclerView(clothesInCategory: MutableList<Cloth>, view: View?, context: Context) {
         getClothesForCurrentUser { clothes ->
             val adapter = ClothesCheckboxAdapter(
