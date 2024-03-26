@@ -20,10 +20,6 @@ class AddClothFragment (
     private val addClothViewModel: AddClothService = AddClothService(),
 ): Fragment(){
 
-    private val getContent = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-        addClothViewModel.setImage(result, view)
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -35,6 +31,10 @@ class AddClothFragment (
         val clothTitle = view.findViewById<EditText>(R.id.clothTitle)
         val clothInfo = view.findViewById<EditText>(R.id.clothInfo)
         val saveClothButton = view.findViewById<Button>(R.id.saveItem)
+
+        val getContent = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            addClothViewModel.setImage(result, view)
+        }
 
         val mainScreenActivity = requireActivity() as MainScreenActivity
 

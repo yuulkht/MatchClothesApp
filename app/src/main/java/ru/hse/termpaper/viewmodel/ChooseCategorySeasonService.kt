@@ -11,6 +11,7 @@ import ru.hse.termpaper.model.entity.Season
 import ru.hse.termpaper.model.repository.ClothCategoryRepository
 import ru.hse.termpaper.model.repository.ClothSeasonRepository
 import ru.hse.termpaper.model.repository.ClothesRepository
+import ru.hse.termpaper.view.NotificationHelper
 import ru.hse.termpaper.view.adapters.CategoryButtonAdapter
 import ru.hse.termpaper.view.adapters.SeasonButtonAdapter
 import ru.hse.termpaper.view.clothes.ChooseCategorySeasonDialogFragment
@@ -31,6 +32,14 @@ class ChooseCategorySeasonService (
                         val parent = parentFragment as? ClothesFragment
                         parent?.clothesScreenService?.updateClothes(parent.searchEditText, clothes, false)
                         curFragment?.dismiss()
+                    }
+                }
+
+                override fun onDeleteClick(category: ClothCategory) {
+                    clothesCategoryRepository.deleteCategory(category) {message ->
+                        NotificationHelper(context).showToast(message)
+                        curFragment?.dismiss()
+
                     }
                 }
             })

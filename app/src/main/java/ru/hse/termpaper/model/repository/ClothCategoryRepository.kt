@@ -147,4 +147,29 @@ class ClothCategoryRepository(
             }
         })
     }
+
+    fun deleteCategory(category: ClothCategory, callback: (String) -> Unit) {
+        val categoryRef = database.child("cloth_categories").child(category.id)
+        val mappingRef = database.child("cloth_category_mapping")
+        val query = mappingRef.orderByChild("cloth_category_id").equalTo(category.id)
+
+        categoryRef.removeValue()
+            .addOnSuccessListener {
+                query.addListenerForSingleValueEvent(object : ValueEventListener {
+                    override fun onDataChange(dataSnapshot: DataSnapshot) {
+                        dataSnapshot.children.forEach { child ->
+                            child.ref.removeValue()
+                        }
+                        callback("Категория и связанные записи успешно удалены")
+                    }
+
+                    override fun onCancelled(databaseError: DatabaseError) {
+                        callback("Ошибка при удалении связанных записей: ${databaseError.message}")
+                    }
+                })
+            }
+            .addOnFailureListener { e ->
+                callback("Ошибка при удалении категории: ${e.message}")
+            }
+    }
 }

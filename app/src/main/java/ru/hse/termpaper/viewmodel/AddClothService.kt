@@ -78,14 +78,14 @@ class AddClothService(
         selectedImageUri?.let{
             clothesRepository.saveCloth(Cloth("", "", title,"", info), selectedImageUri) { success, message, cloth ->
                 notificationHelper.showToast(message)
-                for (category: ClothCategory in clothCategories) {
+                for (category: ClothCategory in clothCategories.distinct()) {
                     clothCategoryRepository.addClothToCategory(cloth, category) {success,message ->
                         if (!success) {
                             notificationHelper.showToast(message)
                         }
                     }
                 }
-                for (season: Season in clothSeasons) {
+                for (season: Season in clothSeasons.distinct()) {
                     clothSeasonRepository.addClothToSeason(cloth, season) {success,message ->
                         if (!success) {
                             notificationHelper.showToast(message)
