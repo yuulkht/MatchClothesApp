@@ -1,6 +1,10 @@
 package ru.hse.termpaper.view.clothes
 
+import android.app.Activity
+import android.app.Activity.RESULT_OK
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.view.LayoutInflater
@@ -9,12 +13,20 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
-import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import ru.hse.termpaper.R
 import ru.hse.termpaper.view.NotificationHelper
 import ru.hse.termpaper.view.main.MainScreenActivity
 import ru.hse.termpaper.viewmodel.AddClothService
+import android.Manifest
+import android.graphics.Color
+import androidx.activity.result.ActivityResultLauncher
+import com.canhub.cropper.CropImageContract
+import com.canhub.cropper.CropImageView
+import com.canhub.cropper.CropImageContractOptions
+import com.canhub.cropper.CropImageOptions
 
 class AddClothFragment (
     private val addClothViewModel: AddClothService = AddClothService(),
@@ -32,8 +44,12 @@ class AddClothFragment (
         val clothInfo = view.findViewById<EditText>(R.id.clothInfo)
         val saveClothButton = view.findViewById<Button>(R.id.saveItem)
 
-        val getContent = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-            addClothViewModel.setImage(result, view)
+        val cropImage = registerForActivityResult(CropImageContract()) { result ->
+            if (result.isSuccessful) {
+                addClothViewModel.setImage(result.uriContent, view, NotificationHelper(requireContext()))
+            } else {
+                addClothViewModel.setImage(null, view, NotificationHelper(requireContext()))
+            }
         }
 
         val mainScreenActivity = requireActivity() as MainScreenActivity
@@ -47,8 +63,7 @@ class AddClothFragment (
         }
 
         uploadImage.setOnClickListener {
-            val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-            getContent.launch(intent)
+            addClothViewModel.startCrop(cropImage)
         }
 
         saveClothButton.setOnClickListener {

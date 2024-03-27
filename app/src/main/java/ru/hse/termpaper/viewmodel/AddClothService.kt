@@ -7,8 +7,12 @@ import android.net.Uri
 import android.view.View
 import android.widget.ImageView
 import androidx.activity.result.ActivityResult
+import androidx.activity.result.ActivityResultLauncher
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.canhub.cropper.CropImageContractOptions
+import com.canhub.cropper.CropImageOptions
+import com.canhub.cropper.CropImageView
 import ru.hse.termpaper.R
 import ru.hse.termpaper.model.entity.Cloth
 import ru.hse.termpaper.model.entity.ClothCategory
@@ -28,17 +32,31 @@ class AddClothService(
     private val clothSeasons: MutableList<Season> = mutableListOf(),
     private var selectedImageUri: Uri? = null
 ) {
-
-    fun setImage(result: ActivityResult, view: View?) {
-        if (result.resultCode == Activity.RESULT_OK) {
-            val data: Intent? = result.data
-            selectedImageUri = data?.data
-            selectedImageUri?.let { uri ->
-                view?.findViewById<ImageView>(R.id.clothImage)?.setImageURI(uri)
-            }
+    fun startCrop(cropImage: ActivityResultLauncher<CropImageContractOptions>) {
+        cropImage.launch(
+            CropImageContractOptions(
+                uri = null,
+                cropImageOptions = CropImageOptions(
+                    imageSourceIncludeCamera = true,
+                    imageSourceIncludeGallery = true,
+                    guidelines = CropImageView.Guidelines.ON,
+                    cropShape = CropImageView.CropShape.RECTANGLE,
+                    fixAspectRatio = true,
+                    showCropLabel = true,
+                    showCropOverlay = true,
+                    showIntentChooser = true,
+                ),
+            ),
+        )
+    }
+    fun setImage(uri: Uri?, view: View?, notificationHelper: NotificationHelper) {
+        if (uri == null) {
+            notificationHelper.showToast("Не удалось загрузить фотографию")
+        } else {
+            selectedImageUri = uri
+            view?.findViewById<ImageView>(R.id.clothImage)?.setImageURI(uri)
         }
     }
-
     fun setupCategoryRecyclerView(view: View, context: Context) {
         clothCategoryRepository.getClothCategories { categories ->
             val categoryAdapter = CategoryCheckboxAdapter(categories, object : CategoryCheckboxAdapter.OnCheckboxClickListener{
