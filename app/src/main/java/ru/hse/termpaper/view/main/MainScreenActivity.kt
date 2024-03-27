@@ -11,7 +11,9 @@ import ru.hse.termpaper.view.clothes.AddClothCategoryFragment
 import ru.hse.termpaper.view.CalendarFragment
 import ru.hse.termpaper.view.clothes.ClothesFragment
 import ru.hse.termpaper.view.JourneyFragment
-import ru.hse.termpaper.view.OutfitsFragment
+import ru.hse.termpaper.view.outfits.AddOutfitCategoryFragment
+import ru.hse.termpaper.view.outfits.AddOutfitFragment
+import ru.hse.termpaper.view.outfits.OutfitsFragment
 
 class MainScreenActivity(
     val mainScreenFragment: MainScreenFragment = MainScreenFragment(),
@@ -19,6 +21,8 @@ class MainScreenActivity(
     val addItemFragment: AddClothFragment = AddClothFragment(),
     val addClothCategoryFragment: AddClothCategoryFragment = AddClothCategoryFragment(),
     val outfitsFragment: OutfitsFragment = OutfitsFragment(),
+    val addOutfitFragment: AddOutfitFragment = AddOutfitFragment(),
+    val addOutfitCategoryFragment: AddOutfitCategoryFragment = AddOutfitCategoryFragment(),
     val calendarFragment: CalendarFragment = CalendarFragment(),
     val journeyFragment: JourneyFragment = JourneyFragment(),
     val settingsFragment: SettingsFragment = SettingsFragment(),

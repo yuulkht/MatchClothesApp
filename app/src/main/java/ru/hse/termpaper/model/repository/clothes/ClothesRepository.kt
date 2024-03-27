@@ -1,7 +1,6 @@
-package ru.hse.termpaper.model.repository
+package ru.hse.termpaper.model.repository.clothes
 
 import android.net.Uri
-import android.widget.Toast
 import com.google.android.gms.tasks.Tasks
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
@@ -13,8 +12,6 @@ import com.google.firebase.database.ValueEventListener
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import ru.hse.termpaper.model.entity.Cloth
-import ru.hse.termpaper.model.entity.ClothCategory
-import ru.hse.termpaper.model.entity.Season
 import com.google.android.gms.tasks.Task
 
 

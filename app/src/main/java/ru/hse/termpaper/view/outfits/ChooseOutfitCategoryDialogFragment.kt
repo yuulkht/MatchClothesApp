@@ -1,4 +1,4 @@
-package ru.hse.termpaper.view.clothes
+package ru.hse.termpaper.view.outfits
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -6,26 +6,18 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import androidx.fragment.app.DialogFragment
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import ru.hse.termpaper.R
-import ru.hse.termpaper.model.entity.ClothCategory
-import ru.hse.termpaper.model.entity.Season
-import ru.hse.termpaper.model.repository.ClothCategoryRepository
-import ru.hse.termpaper.model.repository.ClothSeasonRepository
-import ru.hse.termpaper.view.adapters.CategoryButtonAdapter
-import ru.hse.termpaper.view.adapters.SeasonButtonAdapter
-import ru.hse.termpaper.viewmodel.ChooseCategorySeasonService
+import ru.hse.termpaper.viewmodel.outfits.ChooseOutfitCategoryService
 
-class ChooseCategorySeasonDialogFragment (
-    private val chooseCategorySeasonService: ChooseCategorySeasonService = ChooseCategorySeasonService(),
+class ChooseOutfitCategoryDialogFragment (
+    private val chooseCategorySeasonService: ChooseOutfitCategoryService = ChooseOutfitCategoryService(),
 ) : DialogFragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.dialog_choose_category, container, false)
+        return inflater.inflate(R.layout.dialog_choose_outfit_category, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -37,8 +29,8 @@ class ChooseCategorySeasonDialogFragment (
         chooseCategorySeasonService.setupSeasonRecyclerView(view, requireContext(), parentFragment, this)
 
         resetButton.setOnClickListener {
-            val parent = parentFragment as? ClothesFragment
-            parent?.clothesScreenService?.updateClothes(parent.searchEditText, mutableListOf(), true)
+            val parent = parentFragment as? OutfitsFragment
+            parent?.outfitsScreenService?.updateOutfits(parent.searchEditText, mutableListOf(), true)
             dismiss()
         }
     }

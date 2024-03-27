@@ -11,10 +11,10 @@ import androidx.recyclerview.widget.RecyclerView
 import ru.hse.termpaper.R
 import ru.hse.termpaper.model.entity.ClothCategory
 
-class CategoryButtonAdapter(
+class ClothCategoryButtonAdapter(
     private val categories: List<ClothCategory>,
     private val listener: OnItemClickListener? = null
-) : RecyclerView.Adapter<CategoryButtonAdapter.CategoryButtonViewHolder>() {
+) : RecyclerView.Adapter<ClothCategoryButtonAdapter.CategoryButtonViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CategoryButtonViewHolder {
         val view = LayoutInflater.from(parent.context)

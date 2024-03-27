@@ -1,12 +1,9 @@
-package ru.hse.termpaper.viewmodel
+package ru.hse.termpaper.viewmodel.outfits
 
-import android.app.Activity
 import android.content.Context
-import android.content.Intent
 import android.net.Uri
 import android.view.View
 import android.widget.ImageView
-import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -14,22 +11,23 @@ import com.canhub.cropper.CropImageContractOptions
 import com.canhub.cropper.CropImageOptions
 import com.canhub.cropper.CropImageView
 import ru.hse.termpaper.R
-import ru.hse.termpaper.model.entity.Cloth
-import ru.hse.termpaper.model.entity.ClothCategory
+import ru.hse.termpaper.model.entity.Outfit
+import ru.hse.termpaper.model.entity.OutfitCategory
 import ru.hse.termpaper.model.entity.Season
-import ru.hse.termpaper.model.repository.ClothCategoryRepository
-import ru.hse.termpaper.model.repository.ClothSeasonRepository
-import ru.hse.termpaper.model.repository.ClothesRepository
-import ru.hse.termpaper.view.NotificationHelper
-import ru.hse.termpaper.view.adapters.CategoryCheckboxAdapter
+import ru.hse.termpaper.model.repository.outfits.OutfitCategoryRepository
+import ru.hse.termpaper.model.repository.outfits.OutfitSeasonRepository
+import ru.hse.termpaper.model.repository.outfits.OutfitsRepository
+import ru.hse.termpaper.view.main.NotificationHelper
+import ru.hse.termpaper.view.adapters.ClothCategoryCheckboxAdapter
+import ru.hse.termpaper.view.adapters.OutfitCategoryCheckboxAdapter
 import ru.hse.termpaper.view.adapters.SeasonCheckboxAdapter
 
-class AddClothService(
-    private val clothCategoryRepository: ClothCategoryRepository = ClothCategoryRepository(),
-    private val clothSeasonRepository: ClothSeasonRepository = ClothSeasonRepository(),
-    private val clothesRepository: ClothesRepository = ClothesRepository(),
-    private val clothCategories: MutableList<ClothCategory> = mutableListOf(),
-    private val clothSeasons: MutableList<Season> = mutableListOf(),
+class AddOutfitService(
+    private val outfitCategoryRepository: OutfitCategoryRepository = OutfitCategoryRepository(),
+    private val outfitSeasonRepository: OutfitSeasonRepository = OutfitSeasonRepository(),
+    private val outfitsRepository: OutfitsRepository = OutfitsRepository(),
+    private val outfitCategories: MutableList<OutfitCategory> = mutableListOf(),
+    private val outfitSeasons: MutableList<Season> = mutableListOf(),
     private var selectedImageUri: Uri? = null
 ) {
     fun startCrop(cropImage: ActivityResultLauncher<CropImageContractOptions>) {
@@ -54,18 +52,18 @@ class AddClothService(
             notificationHelper.showToast("Не удалось загрузить фотографию")
         } else {
             selectedImageUri = uri
-            view?.findViewById<ImageView>(R.id.clothImage)?.setImageURI(uri)
+            view?.findViewById<ImageView>(R.id.outfitImage)?.setImageURI(uri)
         }
     }
     fun setupCategoryRecyclerView(view: View, context: Context) {
-        clothCategoryRepository.getClothCategories { categories ->
-            val categoryAdapter = CategoryCheckboxAdapter(categories, object : CategoryCheckboxAdapter.OnCheckboxClickListener{
+        outfitCategoryRepository.getOutfitCategories { categories ->
+            val categoryAdapter = OutfitCategoryCheckboxAdapter(categories, object : OutfitCategoryCheckboxAdapter.OnCheckboxClickListener{
                 override fun onCheckboxClicked(position: Int, isChecked: Boolean) {
                     val chosenCategory = categories[position]
                     if (isChecked) {
-                        clothCategories.add(chosenCategory)
+                        outfitCategories.add(chosenCategory)
                     } else {
-                        clothCategories.remove(chosenCategory)
+                        outfitCategories.remove(chosenCategory)
                     }
                 }
             })
@@ -76,14 +74,14 @@ class AddClothService(
     }
 
     fun setupSeasonRecyclerView(view: View, context: Context) {
-        val seasons = clothSeasonRepository.getSeasons()
+        val seasons = outfitSeasonRepository.getSeasons()
         val seasonAdapter = SeasonCheckboxAdapter(seasons, object: SeasonCheckboxAdapter.OnCheckboxClickListener{
             override fun onCheckboxClicked(position: Int, isChecked: Boolean) {
                 val chosenSeason = seasons[position]
                 if (isChecked) {
-                    clothSeasons.add(chosenSeason)
+                    outfitSeasons.add(chosenSeason)
                 } else {
-                    clothSeasons.remove(chosenSeason)
+                    outfitSeasons.remove(chosenSeason)
                 }
             }
         })
@@ -92,19 +90,19 @@ class AddClothService(
         seasonRecyclerView.adapter = seasonAdapter
     }
 
-    fun saveCloth(title: String, info: String, notificationHelper: NotificationHelper) {
+    fun saveOutfit(title: String, info: String, notificationHelper: NotificationHelper) {
         selectedImageUri?.let{
-            clothesRepository.saveCloth(Cloth("", "", title,"", info), selectedImageUri) { success, message, cloth ->
+            outfitsRepository.saveOutfit(Outfit("", "", title,"", info), selectedImageUri) { success, message, outfit ->
                 notificationHelper.showToast(message)
-                for (category: ClothCategory in clothCategories.distinct()) {
-                    clothCategoryRepository.addClothToCategory(cloth, category) {success,message ->
+                for (category: OutfitCategory in outfitCategories.distinct()) {
+                    outfitCategoryRepository.addOutfitToCategory(outfit, category) {success,message ->
                         if (!success) {
                             notificationHelper.showToast(message)
                         }
                     }
                 }
-                for (season: Season in clothSeasons.distinct()) {
-                    clothSeasonRepository.addClothToSeason(cloth, season) {success,message ->
+                for (season: Season in outfitSeasons.distinct()) {
+                    outfitSeasonRepository.addOutfitToSeason(outfit, season) {success,message ->
                         if (!success) {
                             notificationHelper.showToast(message)
                         }

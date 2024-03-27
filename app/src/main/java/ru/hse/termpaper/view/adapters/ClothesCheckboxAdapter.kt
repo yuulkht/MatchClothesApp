@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 import ru.hse.termpaper.R
 import ru.hse.termpaper.model.entity.Cloth
-import ru.hse.termpaper.viewmodel.ClothesModelService
+import ru.hse.termpaper.viewmodel.clothes.ClothesModelService
 
 class ClothesCheckboxAdapter(
 
@@ -20,9 +20,9 @@ class ClothesCheckboxAdapter(
 ) : RecyclerView.Adapter<ClothesCheckboxAdapter.ClothesCheckboxViewHolder>() {
 
     inner class ClothesCheckboxViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val clothImageView: ImageView = itemView.findViewById(R.id.clothImage)
-        val clothTitleTextView: TextView = itemView.findViewById(R.id.clothTitle)
-        val checkbox: CheckBox = itemView.findViewById(R.id.clothCheckbox)
+        val clothImageView: ImageView = itemView.findViewById(R.id.itemImage)
+        val clothTitleTextView: TextView = itemView.findViewById(R.id.itemTitle)
+        val checkbox: CheckBox = itemView.findViewById(R.id.itemCheckbox)
 
         fun bind(cloth: Cloth) {
             clothTitleTextView.text = cloth.title
@@ -36,7 +36,7 @@ class ClothesCheckboxAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ClothesCheckboxViewHolder {
         val itemView = LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_cloth_with_checkbox, parent, false)
+            .inflate(R.layout.item_wardrobe_with_checkbox, parent, false)
         return ClothesCheckboxViewHolder(itemView)
     }
 

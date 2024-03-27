@@ -1,4 +1,4 @@
-package ru.hse.termpaper.viewmodel
+package ru.hse.termpaper.viewmodel.authentication
 
 import androidx.lifecycle.ViewModel
 import ru.hse.termpaper.model.entity.User

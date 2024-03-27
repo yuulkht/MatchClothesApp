@@ -7,11 +7,11 @@ import androidx.fragment.app.DialogFragment
 import ru.hse.termpaper.R
 import ru.hse.termpaper.view.main.MainScreenActivity
 
-class AddItemDialogFragment : DialogFragment() {
+class AddClothDialogFragment : DialogFragment() {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val inflater = requireActivity().layoutInflater
-        val view = inflater.inflate(R.layout.dialog_add_item, null)
+        val view = inflater.inflate(R.layout.dialog_add_cloth, null)
         val dialog = Dialog(requireContext(), R.style.DialogStyle)
         dialog.setContentView(view)
 

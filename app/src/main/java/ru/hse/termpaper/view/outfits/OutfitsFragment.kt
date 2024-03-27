@@ -1,4 +1,4 @@
-package ru.hse.termpaper.view.clothes
+package ru.hse.termpaper.view.outfits
 
 import android.os.Bundle
 import android.text.Editable
@@ -11,38 +11,38 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import androidx.fragment.app.Fragment
 import ru.hse.termpaper.R
-import ru.hse.termpaper.view.outfits.ChooseClothCategoryDialogFragment
-import ru.hse.termpaper.viewmodel.clothes.ClothesScreenService
+import ru.hse.termpaper.view.clothes.AddClothDialogFragment
+import ru.hse.termpaper.viewmodel.outfits.OutfitsScreenService
 
-class ClothesFragment(
-    val clothesScreenService: ClothesScreenService = ClothesScreenService(),
+class OutfitsFragment(
+    val outfitsScreenService: OutfitsScreenService = OutfitsScreenService(),
     var searchEditText: EditText? = null
 ) : Fragment() {
 
     private var currentSearchText: String = ""
-    private val dialogFragment: AddClothDialogFragment = AddClothDialogFragment()
+    private val dialogFragment: AddOutfitDialogFragment = AddOutfitDialogFragment()
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_clothes, container, false)
+        val view = inflater.inflate(R.layout.fragment_outfits, container, false)
         val addButton = view.findViewById<LinearLayout>(R.id.addButton)
-        val chooseCategoryImageView = view.findViewById<ImageView>(R.id.chooseClothCategory)
+        val chooseCategoryImageView = view.findViewById<ImageView>(R.id.chooseOutfitCategory)
 
         addButton.setOnClickListener {
-            dialogFragment.show(requireActivity().supportFragmentManager, "AddItemDialog")
+            dialogFragment.show(requireActivity().supportFragmentManager, "AddOutfitDialog")
         }
 
         chooseCategoryImageView.setOnClickListener {
-            val dialogFragment = ChooseClothCategoryDialogFragment()
-            dialogFragment.show(getChildFragmentManager(), "ChooseClothCategoryDialog")
+            val dialogFragment = ChooseOutfitCategoryDialogFragment()
+            dialogFragment.show(getChildFragmentManager(), "ChooseOutfitCategoryDialog")
         }
 
-        clothesScreenService.setupClothesRecyclerView(view, requireActivity())
+        val adapter = outfitsScreenService.setupOutfitsRecyclerView(view, requireActivity())
 
-        clothesScreenService.loadClothes("")
+        outfitsScreenService.loadOutfits("")
 
         searchEditText = view.findViewById(R.id.searchEditText)
 
@@ -54,7 +54,7 @@ class ClothesFragment(
 
             override fun afterTextChanged(s: Editable?) {
                 val searchText = s.toString().trim()
-                clothesScreenService.updateFilteredList(searchText)
+                outfitsScreenService.updateFilteredList(searchText)
             }
         })
 

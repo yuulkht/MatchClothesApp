@@ -1,69 +1,67 @@
-package ru.hse.termpaper.model.repository
+package ru.hse.termpaper.model.repository.outfits
 
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
-import ru.hse.termpaper.model.entity.Cloth
+import ru.hse.termpaper.model.entity.Outfit
 import ru.hse.termpaper.model.entity.Season
 
-class ClothSeasonRepository(
+class OutfitSeasonRepository(
     private val database: DatabaseReference = FirebaseDatabase.getInstance("https://matchclothes-d0c67-default-rtdb.europe-west1.firebasedatabase.app").reference,
 ) {
-    fun addClothToSeason(cloth: Cloth, season: Season, callback: (Boolean, String) -> Unit) {
-        val clothId = cloth.id
-        val relationRef: DatabaseReference = database.child("cloth_season_mapping").push()
+    fun addOutfitToSeason(outfit: Outfit, season: Season, callback: (Boolean, String) -> Unit) {
+        val outfitId = outfit.id
+        val relationRef: DatabaseReference = database.child("outfit_season_mapping").push()
         val relationId = relationRef.key
         val relationData = hashMapOf(
-            "cloth_id" to clothId,
+            "outfit_id" to outfitId,
             "season" to season.name,
         )
         relationRef.setValue(relationData)
             .addOnSuccessListener {
-                callback(true, "Вещь успешно добавлена в сезон")
+                callback(true, "Образ успешно добавлен в сезон")
             }
             .addOnFailureListener { e ->
-                callback(false, "Не удалось добавить вещь в сезон")
+                callback(false, "Не удалось добавить образ в сезон")
             }
     }
 
-    fun getClothesFromSeason(season: Season, callback: (Boolean, MutableList<Cloth>) -> Unit) {
+    fun getOutfitsFromSeason(season: Season, callback: (Boolean, MutableList<Outfit>) -> Unit) {
         val seasonName = season.name
 
-        val seasonsRef = database.child("cloth_season_mapping")
+        val seasonsRef = database.child("outfit_season_mapping")
         val query = seasonsRef.orderByChild("season").equalTo(seasonName)
 
         query.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
-                val clothesList = mutableListOf<Cloth>()
-                val clothIds = mutableListOf<String>()
+                val outfitsList = mutableListOf<Outfit>()
+                val outfitIds = mutableListOf<String>()
 
-                // Получаем список cloth_id, связанных с данным сезоном
+                // Получаем список outfit_id, связанных с данным сезоном
                 for (snapshot in dataSnapshot.children) {
-                    val clothId = snapshot.child("cloth_id").getValue(String::class.java)
-                    clothId?.let { clothIds.add(it) }
+                    val outfitId = snapshot.child("outfit_id").getValue(String::class.java)
+                    outfitId?.let { outfitIds.add(it) }
                 }
 
-                if (clothIds.isEmpty()) {
+                if (outfitIds.isEmpty()) {
                     callback(true, mutableListOf())
                     return
                 }
 
-                // Получаем данные о каждой одежде из таблицы clothes по их cloth_id
-                for (clothId in clothIds) {
-                    val clothesQuery = database.child("clothes").child(clothId)
+                // Получаем данные о каждой одежде из таблицы outfits по их outfit_id
+                for (outfitId in outfitIds) {
+                    val outfitsQuery = database.child("outfits").child(outfitId)
 
-                    clothesQuery.addListenerForSingleValueEvent(object : ValueEventListener {
-                        override fun onDataChange(clothSnapshot: DataSnapshot) {
-                            val cloth = clothSnapshot.getValue(Cloth::class.java)
-                            cloth?.let { clothesList.add(it) }
+                    outfitsQuery.addListenerForSingleValueEvent(object : ValueEventListener {
+                        override fun onDataChange(outfitSnapshot: DataSnapshot) {
+                            val outfit = outfitSnapshot.getValue(Outfit::class.java)
+                            outfit?.let { outfitsList.add(it) }
 
-                            // Проверяем, если получены данные по всем clothId
-                            if (clothesList.size == clothIds.size) {
-                                callback(true, clothesList)
+                            // Проверяем, если получены данные по всем outfitId
+                            if (outfitsList.size == outfitIds.size) {
+                                callback(true, outfitsList)
                             }
                         }
 
@@ -82,10 +80,10 @@ class ClothSeasonRepository(
 
 
 
-    fun getSeasonsForCloth(cloth: Cloth, callback: (Boolean, MutableList<Season>) -> Unit) {
-        val clothId = cloth.id
-        val seasonsRef = database.child("cloth_season_mapping")
-        val query = seasonsRef.orderByChild("cloth_id").equalTo(clothId)
+    fun getSeasonsForOutfit(outfit: Outfit, callback: (Boolean, MutableList<Season>) -> Unit) {
+        val outfitId = outfit.id
+        val seasonsRef = database.child("outfit_season_mapping")
+        val query = seasonsRef.orderByChild("outfit_id").equalTo(outfitId)
         query.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 val seasonsList = mutableListOf<Season>()

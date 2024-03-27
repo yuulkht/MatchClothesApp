@@ -4,23 +4,15 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.squareup.picasso.Picasso
 import ru.hse.termpaper.R
 import ru.hse.termpaper.model.entity.Cloth
-import ru.hse.termpaper.model.repository.ClothCategoryRepository
-import ru.hse.termpaper.model.repository.ClothSeasonRepository
-import ru.hse.termpaper.view.NotificationHelper
-import ru.hse.termpaper.view.adapters.SeasonAdapter
-import ru.hse.termpaper.view.adapters.CategoryAdapter
+import ru.hse.termpaper.view.main.NotificationHelper
 import ru.hse.termpaper.view.main.MainScreenActivity
-import ru.hse.termpaper.viewmodel.ClothCardService
-import ru.hse.termpaper.viewmodel.ClothesModelService
+import ru.hse.termpaper.viewmodel.clothes.ClothCardService
+import ru.hse.termpaper.viewmodel.clothes.ClothesModelService
 
 class ClothCardFragment (
     private val cloth: Cloth,

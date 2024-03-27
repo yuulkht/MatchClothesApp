@@ -1,32 +1,18 @@
 package ru.hse.termpaper.view.clothes
 
-import android.app.Activity
-import android.app.Activity.RESULT_OK
-import android.content.Intent
-import android.content.pm.PackageManager
-import android.net.Uri
 import android.os.Bundle
-import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import ru.hse.termpaper.R
-import ru.hse.termpaper.view.NotificationHelper
+import ru.hse.termpaper.view.main.NotificationHelper
 import ru.hse.termpaper.view.main.MainScreenActivity
-import ru.hse.termpaper.viewmodel.AddClothService
-import android.Manifest
-import android.graphics.Color
-import androidx.activity.result.ActivityResultLauncher
+import ru.hse.termpaper.viewmodel.clothes.AddClothService
 import com.canhub.cropper.CropImageContract
-import com.canhub.cropper.CropImageView
-import com.canhub.cropper.CropImageContractOptions
-import com.canhub.cropper.CropImageOptions
 
 class AddClothFragment (
     private val addClothViewModel: AddClothService = AddClothService(),
@@ -37,7 +23,7 @@ class AddClothFragment (
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_add_item, container, false)
+        val view = inflater.inflate(R.layout.fragment_add_cloth, container, false)
         val uploadImage = view.findViewById<Button>(R.id.uploadImage)
         val backLink = view.findViewById<ImageView>(R.id.backButton)
         val clothTitle = view.findViewById<EditText>(R.id.clothTitle)

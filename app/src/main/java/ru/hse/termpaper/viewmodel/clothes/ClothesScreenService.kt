@@ -1,4 +1,4 @@
-package ru.hse.termpaper.viewmodel
+package ru.hse.termpaper.viewmodel.clothes
 
 import android.app.Activity
 import android.view.View

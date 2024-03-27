@@ -1,4 +1,4 @@
-package ru.hse.termpaper.view
+package ru.hse.termpaper.view.main
 
 import android.content.Context
 import android.widget.Toast

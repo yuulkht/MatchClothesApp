@@ -1,4 +1,4 @@
-package ru.hse.termpaper.viewmodel
+package ru.hse.termpaper.viewmodel.clothes
 
 import android.content.Context
 import android.view.View
@@ -9,9 +9,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 import ru.hse.termpaper.R
 import ru.hse.termpaper.model.entity.Cloth
-import ru.hse.termpaper.model.repository.ClothCategoryRepository
-import ru.hse.termpaper.model.repository.ClothSeasonRepository
-import ru.hse.termpaper.view.adapters.CategoryAdapter
+import ru.hse.termpaper.model.repository.clothes.ClothCategoryRepository
+import ru.hse.termpaper.model.repository.clothes.ClothSeasonRepository
+import ru.hse.termpaper.view.adapters.ClothCategoryAdapter
 import ru.hse.termpaper.view.adapters.SeasonAdapter
 
 class ClothCardService(
@@ -25,7 +25,7 @@ class ClothCardService(
         categoryRecyclerView.layoutManager = LinearLayoutManager(context)
 
         clothCategoryRepository.getCategoriesForCloth(cloth) { _, categories ->
-            val categoryAdapter = CategoryAdapter(categories)
+            val categoryAdapter = ClothCategoryAdapter(categories)
             categoryRecyclerView.adapter = categoryAdapter
         }
     }

@@ -10,7 +10,7 @@
 
     <!-- ImageView для отображения изображения одежды -->
     <ImageView
-        android:id="@+id/clothImage"
+        android:id="@+id/itemImage"
         android:layout_width="121dp"
         android:layout_height="119dp"
         android:layout_gravity="center_horizontal"
@@ -19,7 +19,7 @@
         android:src="@drawable/placeholder_cloth" />
 
     <TextView
-        android:id="@+id/clothTitle"
+        android:id="@+id/itemTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"

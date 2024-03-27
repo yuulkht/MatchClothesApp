@@ -1,6 +1,5 @@
-package ru.hse.termpaper.model.repository
+package ru.hse.termpaper.model.repository.outfits
 
-import android.net.Uri
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.DataSnapshot
@@ -8,49 +7,49 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
-import ru.hse.termpaper.model.entity.Cloth
-import ru.hse.termpaper.model.entity.ClothCategory
+import ru.hse.termpaper.model.entity.Outfit
+import ru.hse.termpaper.model.entity.OutfitCategory
 
-class ClothCategoryRepository(
+class OutfitCategoryRepository(
     private val database: DatabaseReference = FirebaseDatabase.getInstance("https://matchclothes-d0c67-default-rtdb.europe-west1.firebasedatabase.app").reference,
     private val currentUser: FirebaseUser? = FirebaseAuth.getInstance().currentUser
 ) {
 
-    fun saveClothCategory(clothCategory: ClothCategory, callback: (Boolean, String, ClothCategory) -> Unit) {
+    fun saveOutfitCategory(outfitCategory: OutfitCategory, callback: (Boolean, String, OutfitCategory) -> Unit) {
         currentUser?.uid?.let { userId ->
-            val clothCategoryRef: DatabaseReference = database.child("cloth_categories").push()
-            val clothCategoryId = clothCategoryRef.key
-            if (clothCategoryId != null) {
-                clothCategory.id = clothCategoryId
+            val outfitCategoryRef: DatabaseReference = database.child("outfit_categories").push()
+            val outfitCategoryId = outfitCategoryRef.key
+            if (outfitCategoryId != null) {
+                outfitCategory.id = outfitCategoryId
             }
-            clothCategory.user_id = userId
-            val clothCategoryData = hashMapOf(
-                "id" to clothCategoryId,
+            outfitCategory.user_id = userId
+            val outfitCategoryData = hashMapOf(
+                "id" to outfitCategoryId,
                 "user_id" to userId,
-                "title" to clothCategory.title,
+                "title" to outfitCategory.title,
             )
-            clothCategoryRef.setValue(clothCategoryData)
+            outfitCategoryRef.setValue(outfitCategoryData)
                 .addOnSuccessListener {
-                    callback(true, "Новая категория успешно добавлена", clothCategory)
+                    callback(true, "Новая категория успешно добавлена", outfitCategory)
                 }
                 .addOnFailureListener { e ->
-                    callback(false, "Не удалось добавить новую категорию", ClothCategory())
+                    callback(false, "Не удалось добавить новую категорию", OutfitCategory())
                 }
         }
     }
 
-    fun getClothCategories(callback: (MutableList<ClothCategory>) -> Unit) {
+    fun getOutfitCategories(callback: (MutableList<OutfitCategory>) -> Unit) {
         val userId = currentUser?.uid
-        val clothesRef = database.child("cloth_categories")
-        val query = clothesRef.orderByChild("user_id").equalTo(userId)
+        val outfitsRef = database.child("outfit_categories")
+        val query = outfitsRef.orderByChild("user_id").equalTo(userId)
         query.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
-                val clothCategoryList = mutableListOf<ClothCategory>()
+                val outfitCategoryList = mutableListOf<OutfitCategory>()
                 for (snapshot in dataSnapshot.children) {
-                    val clothCategory = snapshot.getValue(ClothCategory::class.java)
-                    clothCategory?.let { clothCategoryList.add(it) }
+                    val outfitCategory = snapshot.getValue(OutfitCategory::class.java)
+                    outfitCategory?.let { outfitCategoryList.add(it) }
                 }
-                callback(clothCategoryList)
+                callback(outfitCategoryList)
             }
 
             override fun onCancelled(databaseError: DatabaseError) {
@@ -59,42 +58,42 @@ class ClothCategoryRepository(
         })
     }
 
-    fun addClothToCategory(cloth: Cloth, clothCategory: ClothCategory, callback: (Boolean, String) -> Unit) {
-        val relationRef: DatabaseReference = database.child("cloth_category_mapping").push()
+    fun addOutfitToCategory(outfit: Outfit, outfitCategory: OutfitCategory, callback: (Boolean, String) -> Unit) {
+        val relationRef: DatabaseReference = database.child("outfit_category_mapping").push()
         val relationId = relationRef.key
         val relationData = hashMapOf(
-            "cloth_id" to cloth.id,
-            "cloth_category_id" to clothCategory.id,
+            "outfit_id" to outfit.id,
+            "outfit_category_id" to outfitCategory.id,
         )
         relationRef.setValue(relationData)
             .addOnSuccessListener {
-                callback(true, "Вещь успешно добавлена в категорию")
+                callback(true, "Образ успешно добавлен в категорию")
             }
             .addOnFailureListener { e ->
-                callback(false, "Не удалось добавить вещь в категорию")
+                callback(false, "Не удалось добавить образ в категорию")
             }
     }
 
-    fun getClothesFromCategory(clothCategory: ClothCategory, callback: (Boolean, MutableList<Cloth>) -> Unit) {
-        val clothesRef = database.child("cloth_category_mapping")
-        val query = clothesRef.orderByChild("cloth_category_id").equalTo(clothCategory.id)
+    fun getOutfitsFromCategory(outfitCategory: OutfitCategory, callback: (Boolean, MutableList<Outfit>) -> Unit) {
+        val outfitsRef = database.child("outfit_category_mapping")
+        val query = outfitsRef.orderByChild("outfit_category_id").equalTo(outfitCategory.id)
         query.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
-                val clothesList = mutableListOf<Cloth>()
+                val outfitsList = mutableListOf<Outfit>()
 
                 if (dataSnapshot.childrenCount.toInt() == 0) {
                     callback(true, mutableListOf())
                     return
                 }
                 for (snapshot in dataSnapshot.children) {
-                    val clothId = snapshot.child("cloth_id").getValue(String::class.java)
-                    clothId?.let {
-                        database.child("clothes").child(it).addListenerForSingleValueEvent(object : ValueEventListener {
-                            override fun onDataChange(clothSnapshot: DataSnapshot) {
-                                val cloth = clothSnapshot.getValue(Cloth::class.java)
-                                cloth?.let { clothesList.add(it) }
-                                if (clothesList.size == dataSnapshot.childrenCount.toInt()) {
-                                    callback(true, clothesList)
+                    val outfitId = snapshot.child("outfit_id").getValue(String::class.java)
+                    outfitId?.let {
+                        database.child("outfits").child(it).addListenerForSingleValueEvent(object : ValueEventListener {
+                            override fun onDataChange(outfitSnapshot: DataSnapshot) {
+                                val outfit = outfitSnapshot.getValue(Outfit::class.java)
+                                outfit?.let { outfitsList.add(it) }
+                                if (outfitsList.size == dataSnapshot.childrenCount.toInt()) {
+                                    callback(true, outfitsList)
                                 }
                             }
 
@@ -112,23 +111,23 @@ class ClothCategoryRepository(
         })
     }
 
-    fun getCategoriesForCloth(cloth: Cloth, callback: (Boolean, MutableList<ClothCategory>) -> Unit) {
-        val categoriesRef = database.child("cloth_category_mapping")
-        val query = categoriesRef.orderByChild("cloth_id").equalTo(cloth.id)
+    fun getCategoriesForOutfit(outfit: Outfit, callback: (Boolean, MutableList<OutfitCategory>) -> Unit) {
+        val categoriesRef = database.child("outfit_category_mapping")
+        val query = categoriesRef.orderByChild("outfit_id").equalTo(outfit.id)
         query.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 val categoryIds = mutableListOf<String>()
                 for (snapshot in dataSnapshot.children) {
                     val categoryId =
-                        snapshot.child("cloth_category_id").getValue(String::class.java)
+                        snapshot.child("outfit_category_id").getValue(String::class.java)
                     categoryId?.let { categoryIds.add(it) }
                 }
-                val categoriesList = mutableListOf<ClothCategory>()
+                val categoriesList = mutableListOf<OutfitCategory>()
                 val categoryQueryList = categoryIds.map { categoryId ->
-                    database.child("cloth_categories").child(categoryId)
+                    database.child("outfit_categories").child(categoryId)
                         .addListenerForSingleValueEvent(object : ValueEventListener {
                             override fun onDataChange(categorySnapshot: DataSnapshot) {
-                                val category = categorySnapshot.getValue(ClothCategory::class.java)
+                                val category = categorySnapshot.getValue(OutfitCategory::class.java)
                                 category?.let { categoriesList.add(it) }
                                 if (categoriesList.size == categoryIds.size) {
                                     callback(true, categoriesList)
@@ -148,10 +147,10 @@ class ClothCategoryRepository(
         })
     }
 
-    fun deleteCategory(category: ClothCategory, callback: (String) -> Unit) {
-        val categoryRef = database.child("cloth_categories").child(category.id)
-        val mappingRef = database.child("cloth_category_mapping")
-        val query = mappingRef.orderByChild("cloth_category_id").equalTo(category.id)
+    fun deleteCategory(category: OutfitCategory, callback: (String) -> Unit) {
+        val categoryRef = database.child("outfit_categories").child(category.id)
+        val mappingRef = database.child("outfit_category_mapping")
+        val query = mappingRef.orderByChild("outfit_category_id").equalTo(category.id)
 
         categoryRef.removeValue()
             .addOnSuccessListener {

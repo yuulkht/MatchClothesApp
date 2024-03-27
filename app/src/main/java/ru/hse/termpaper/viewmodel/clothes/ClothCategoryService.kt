@@ -1,10 +1,10 @@
-package ru.hse.termpaper.viewmodel
+package ru.hse.termpaper.viewmodel.clothes
 
 import android.widget.EditText
 import ru.hse.termpaper.model.entity.Cloth
 import ru.hse.termpaper.model.entity.ClothCategory
-import ru.hse.termpaper.model.repository.ClothCategoryRepository
-import ru.hse.termpaper.view.NotificationHelper
+import ru.hse.termpaper.model.repository.clothes.ClothCategoryRepository
+import ru.hse.termpaper.view.main.NotificationHelper
 
 class ClothCategoryService(
     private val clothCategoryRepository: ClothCategoryRepository = ClothCategoryRepository()

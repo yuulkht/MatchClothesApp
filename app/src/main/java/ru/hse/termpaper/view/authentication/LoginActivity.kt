@@ -7,9 +7,9 @@ import android.widget.Button
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import ru.hse.termpaper.R
-import ru.hse.termpaper.view.NotificationHelper
+import ru.hse.termpaper.view.main.NotificationHelper
 import ru.hse.termpaper.view.main.MainScreenActivity
-import ru.hse.termpaper.viewmodel.AuthService
+import ru.hse.termpaper.viewmodel.authentication.AuthService
 
 class LoginActivity(
     private var authViewModel: AuthService = AuthService(),

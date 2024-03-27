@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 import ru.hse.termpaper.R
 import ru.hse.termpaper.model.entity.Cloth
-import ru.hse.termpaper.viewmodel.ClothesModelService
+import ru.hse.termpaper.viewmodel.clothes.ClothesModelService
 
 class ClothesAdapter(
     private var clothesList: List<Cloth>,
@@ -19,8 +19,8 @@ class ClothesAdapter(
 
     inner class ClothesViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView),
         View.OnClickListener {
-        val clothImageView: ImageView = itemView.findViewById(R.id.clothImage)
-        val clothTitleTextView: TextView = itemView.findViewById(R.id.clothTitle)
+        val clothImageView: ImageView = itemView.findViewById(R.id.itemImage)
+        val clothTitleTextView: TextView = itemView.findViewById(R.id.itemTitle)
 
         init {
             itemView.setOnClickListener(this)
@@ -33,7 +33,7 @@ class ClothesAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ClothesViewHolder {
         val itemView = LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_cloth, parent, false)
+            .inflate(R.layout.item_wardrobe, parent, false)
         return ClothesViewHolder(itemView)
     }
 

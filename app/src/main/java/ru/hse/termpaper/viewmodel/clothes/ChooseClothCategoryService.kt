@@ -1,4 +1,4 @@
-package ru.hse.termpaper.viewmodel
+package ru.hse.termpaper.viewmodel.clothes
 
 import android.content.Context
 import android.view.View
@@ -8,25 +8,24 @@ import androidx.recyclerview.widget.RecyclerView
 import ru.hse.termpaper.R
 import ru.hse.termpaper.model.entity.ClothCategory
 import ru.hse.termpaper.model.entity.Season
-import ru.hse.termpaper.model.repository.ClothCategoryRepository
-import ru.hse.termpaper.model.repository.ClothSeasonRepository
-import ru.hse.termpaper.model.repository.ClothesRepository
-import ru.hse.termpaper.view.NotificationHelper
-import ru.hse.termpaper.view.adapters.CategoryButtonAdapter
+import ru.hse.termpaper.model.repository.clothes.ClothCategoryRepository
+import ru.hse.termpaper.model.repository.clothes.ClothSeasonRepository
+import ru.hse.termpaper.view.main.NotificationHelper
+import ru.hse.termpaper.view.adapters.ClothCategoryButtonAdapter
 import ru.hse.termpaper.view.adapters.SeasonButtonAdapter
-import ru.hse.termpaper.view.clothes.ChooseCategorySeasonDialogFragment
 import ru.hse.termpaper.view.clothes.ClothesFragment
+import ru.hse.termpaper.view.outfits.ChooseClothCategoryDialogFragment
 
-class ChooseCategorySeasonService (
+class ChooseClothCategoryService (
     private val clothesCategoryRepository: ClothCategoryRepository = ClothCategoryRepository(),
     private val clothSeasonRepository: ClothSeasonRepository = ClothSeasonRepository()
 ) {
 
-    fun setupCategoryRecyclerView(view: View, context: Context, parentFragment: Fragment?, curFragment: ChooseCategorySeasonDialogFragment?) {
+    fun setupCategoryRecyclerView(view: View, context: Context, parentFragment: Fragment?, curFragment: ChooseClothCategoryDialogFragment?) {
         clothesCategoryRepository.getClothCategories { categories ->
             val categoryRecyclerView: RecyclerView = view.findViewById(R.id.categoryButtonRecyclerView)
             categoryRecyclerView.layoutManager = LinearLayoutManager(context)
-            val categoryAdapter = CategoryButtonAdapter(categories, object : CategoryButtonAdapter.OnItemClickListener {
+            val categoryAdapter = ClothCategoryButtonAdapter(categories, object : ClothCategoryButtonAdapter.OnItemClickListener {
                 override fun onItemClick(category: ClothCategory) {
                     clothesCategoryRepository.getClothesFromCategory(category) { _, clothes ->
                         val parent = parentFragment as? ClothesFragment
@@ -47,7 +46,7 @@ class ChooseCategorySeasonService (
         }
     }
 
-    fun setupSeasonRecyclerView(view: View, context: Context, parentFragment: Fragment?, curFragment: ChooseCategorySeasonDialogFragment?) {
+    fun setupSeasonRecyclerView(view: View, context: Context, parentFragment: Fragment?, curFragment: ChooseClothCategoryDialogFragment?) {
         val seasons = clothSeasonRepository.getSeasons()
         val seasonRecyclerView: RecyclerView = view.findViewById(R.id.seasonButtonRecyclerView)
         seasonRecyclerView.layoutManager = LinearLayoutManager(context)
