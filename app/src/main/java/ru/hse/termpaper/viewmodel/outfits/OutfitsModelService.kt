@@ -39,16 +39,16 @@ class OutfitsModelService(
         }
     }
 
-    fun setupOutfitRecyclerView(outfitsInCategory: MutableList<Outfit>, view: View?, context: Context) {
+    fun setupOutfitRecyclerView(chosenOutfits: MutableList<Outfit>, view: View?, context: Context) {
         getOutfitsForCurrentUser { outfits ->
             val adapter = OutfitsCheckboxAdapter(
-                outfits,
+                outfits.distinct(),
                 object : OutfitsCheckboxAdapter.OnCheckboxClickListener {
                     override fun onCheckboxClicked(position: Int, isChecked: Boolean) {
                         if (isChecked) {
-                            outfitsInCategory.add(outfits[position])
+                            chosenOutfits.add(outfits[position])
                         } else {
-                            outfitsInCategory.remove(outfits[position])
+                            chosenOutfits.remove(outfits[position])
                         }
                     }
                 })

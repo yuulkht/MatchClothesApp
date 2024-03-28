@@ -1,5 +1,6 @@
 package ru.hse.termpaper.viewmodel.outfits
 
+import android.app.Activity
 import android.content.Context
 import android.net.Uri
 import android.view.View
@@ -11,6 +12,7 @@ import com.canhub.cropper.CropImageContractOptions
 import com.canhub.cropper.CropImageOptions
 import com.canhub.cropper.CropImageView
 import ru.hse.termpaper.R
+import ru.hse.termpaper.model.entity.Cloth
 import ru.hse.termpaper.model.entity.Outfit
 import ru.hse.termpaper.model.entity.OutfitCategory
 import ru.hse.termpaper.model.entity.Season
@@ -19,8 +21,11 @@ import ru.hse.termpaper.model.repository.outfits.OutfitSeasonRepository
 import ru.hse.termpaper.model.repository.outfits.OutfitsRepository
 import ru.hse.termpaper.view.main.NotificationHelper
 import ru.hse.termpaper.view.adapters.ClothCategoryCheckboxAdapter
+import ru.hse.termpaper.view.adapters.ClothesAdapter
 import ru.hse.termpaper.view.adapters.OutfitCategoryCheckboxAdapter
 import ru.hse.termpaper.view.adapters.SeasonCheckboxAdapter
+import ru.hse.termpaper.view.clothes.ClothCardFragment
+import ru.hse.termpaper.view.main.MainScreenActivity
 
 class AddOutfitService(
     private val outfitCategoryRepository: OutfitCategoryRepository = OutfitCategoryRepository(),
@@ -55,9 +60,19 @@ class AddOutfitService(
             view?.findViewById<ImageView>(R.id.outfitImage)?.setImageURI(uri)
         }
     }
+
+    fun setupClothesRecyclerView(clothes: MutableList<Cloth>, view: View, activity: Activity, ) {
+        val clothesContainer: RecyclerView = view.findViewById(R.id.clothesContainer)
+
+        val adapter = ClothesAdapter(clothes.distinct(), object : ClothesAdapter.OnItemClickListener {
+            override fun onItemClick(position: Int) {}
+        })
+        clothesContainer.adapter = adapter
+    }
+
     fun setupCategoryRecyclerView(view: View, context: Context) {
         outfitCategoryRepository.getOutfitCategories { categories ->
-            val categoryAdapter = OutfitCategoryCheckboxAdapter(categories, object : OutfitCategoryCheckboxAdapter.OnCheckboxClickListener{
+            val categoryAdapter = OutfitCategoryCheckboxAdapter(categories.distinct(), object : OutfitCategoryCheckboxAdapter.OnCheckboxClickListener{
                 override fun onCheckboxClicked(position: Int, isChecked: Boolean) {
                     val chosenCategory = categories[position]
                     if (isChecked) {
@@ -75,7 +90,7 @@ class AddOutfitService(
 
     fun setupSeasonRecyclerView(view: View, context: Context) {
         val seasons = outfitSeasonRepository.getSeasons()
-        val seasonAdapter = SeasonCheckboxAdapter(seasons, object: SeasonCheckboxAdapter.OnCheckboxClickListener{
+        val seasonAdapter = SeasonCheckboxAdapter(seasons.distinct(), object: SeasonCheckboxAdapter.OnCheckboxClickListener{
             override fun onCheckboxClicked(position: Int, isChecked: Boolean) {
                 val chosenSeason = seasons[position]
                 if (isChecked) {
@@ -90,9 +105,9 @@ class AddOutfitService(
         seasonRecyclerView.adapter = seasonAdapter
     }
 
-    fun saveOutfit(title: String, info: String, notificationHelper: NotificationHelper) {
+    fun saveOutfit(title: String, info: String, clothes: MutableList<Cloth>, notificationHelper: NotificationHelper) {
         selectedImageUri?.let{
-            outfitsRepository.saveOutfit(Outfit("", "", title,"", info), selectedImageUri) { success, message, outfit ->
+            outfitsRepository.saveOutfit(Outfit("", "", title,"", info), selectedImageUri,  clothes.distinct()) { success, message, outfit ->
                 notificationHelper.showToast(message)
                 for (category: OutfitCategory in outfitCategories.distinct()) {
                     outfitCategoryRepository.addOutfitToCategory(outfit, category) {success,message ->

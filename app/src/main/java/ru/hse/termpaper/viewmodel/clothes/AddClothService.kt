@@ -56,7 +56,7 @@ class AddClothService(
     }
     fun setupCategoryRecyclerView(view: View, context: Context) {
         clothCategoryRepository.getClothCategories { categories ->
-            val categoryAdapter = ClothCategoryCheckboxAdapter(categories, object : ClothCategoryCheckboxAdapter.OnCheckboxClickListener{
+            val categoryAdapter = ClothCategoryCheckboxAdapter(categories.distinct(), object : ClothCategoryCheckboxAdapter.OnCheckboxClickListener{
                 override fun onCheckboxClicked(position: Int, isChecked: Boolean) {
                     val chosenCategory = categories[position]
                     if (isChecked) {
@@ -74,7 +74,7 @@ class AddClothService(
 
     fun setupSeasonRecyclerView(view: View, context: Context) {
         val seasons = clothSeasonRepository.getSeasons()
-        val seasonAdapter = SeasonCheckboxAdapter(seasons, object: SeasonCheckboxAdapter.OnCheckboxClickListener{
+        val seasonAdapter = SeasonCheckboxAdapter(seasons.distinct(), object: SeasonCheckboxAdapter.OnCheckboxClickListener{
             override fun onCheckboxClicked(position: Int, isChecked: Boolean) {
                 val chosenSeason = seasons[position]
                 if (isChecked) {

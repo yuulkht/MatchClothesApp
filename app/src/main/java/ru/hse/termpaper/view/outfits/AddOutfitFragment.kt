@@ -8,14 +8,18 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.RecyclerView
 import ru.hse.termpaper.R
 import ru.hse.termpaper.view.main.NotificationHelper
 import ru.hse.termpaper.view.main.MainScreenActivity
 import ru.hse.termpaper.viewmodel.outfits.AddOutfitService
 import com.canhub.cropper.CropImageContract
+import ru.hse.termpaper.model.entity.Cloth
+import ru.hse.termpaper.viewmodel.clothes.ClothesModelService
 
 class AddOutfitFragment (
-    private val addOutfitViewModel: AddOutfitService = AddOutfitService(),
+    private val clothes: MutableList<Cloth>,
+    private val addOutfitService: AddOutfitService = AddOutfitService(),
 ): Fragment(){
 
     override fun onCreateView(
@@ -29,33 +33,36 @@ class AddOutfitFragment (
         val outfitTitle = view.findViewById<EditText>(R.id.outfitTitle)
         val outfitInfo = view.findViewById<EditText>(R.id.outfitInfo)
         val saveOutfitButton = view.findViewById<Button>(R.id.saveOutfit)
+        val clothesContainer = view.findViewById<RecyclerView>(R.id.clothesContainer)
+
+        addOutfitService.setupClothesRecyclerView(clothes, view, requireActivity())
 
         val cropImage = registerForActivityResult(CropImageContract()) { result ->
             if (result.isSuccessful) {
-                addOutfitViewModel.setImage(result.uriContent, view, NotificationHelper(requireContext()))
+                addOutfitService.setImage(result.uriContent, view, NotificationHelper(requireContext()))
             } else {
-                addOutfitViewModel.setImage(null, view, NotificationHelper(requireContext()))
+                addOutfitService.setImage(null, view, NotificationHelper(requireContext()))
             }
         }
 
         val mainScreenActivity = requireActivity() as MainScreenActivity
 
 
-        addOutfitViewModel.setupCategoryRecyclerView(view, requireContext())
-        addOutfitViewModel.setupSeasonRecyclerView(view, requireContext())
+        addOutfitService.setupCategoryRecyclerView(view, requireContext())
+        addOutfitService.setupSeasonRecyclerView(view, requireContext())
 
         backLink.setOnClickListener {
             mainScreenActivity.replaceFragment(mainScreenActivity.outfitsFragment, R.id.outfitsPage)
         }
 
         uploadImage.setOnClickListener {
-            addOutfitViewModel.startCrop(cropImage)
+            addOutfitService.startCrop(cropImage)
         }
 
         saveOutfitButton.setOnClickListener {
             val title = outfitTitle.text.toString().trim()
             val info = outfitInfo.text.toString().trim()
-            addOutfitViewModel.saveOutfit(title, info,  NotificationHelper(requireContext()))
+            addOutfitService.saveOutfit(title, info, clothes,  NotificationHelper(requireContext()))
             mainScreenActivity.replaceFragment(mainScreenActivity.outfitsFragment, R.id.outfitsPage)
         }
 

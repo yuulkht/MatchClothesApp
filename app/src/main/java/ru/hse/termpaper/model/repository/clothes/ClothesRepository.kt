@@ -13,6 +13,8 @@ import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import ru.hse.termpaper.model.entity.Cloth
 import com.google.android.gms.tasks.Task
+import ru.hse.termpaper.model.entity.Outfit
+import ru.hse.termpaper.model.repository.outfits.OutfitsRepository
 
 
 class ClothesRepository(
@@ -109,52 +111,60 @@ class ClothesRepository(
         val imageRef = dataStorage.child(clothId)
         val tasks = mutableListOf<Task<Void>>()
 
-        val categoryMappingQuery = database.child("cloth_category_mapping").orderByChild("cloth_id").equalTo(clothId)
-        val seasonMappingQuery = database.child("cloth_season_mapping").orderByChild("cloth_id").equalTo(clothId)
+        val clothesInOutfitRef = database.child("clothes_in_outfit")
+        val clothesInOutfitQuery = clothesInOutfitRef.orderByChild("cloth_id").equalTo(clothId)
 
-        // Удаляем записи из таблицы cloth_category_mapping
-        categoryMappingQuery.addListenerForSingleValueEvent(object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                for (categoryMappingSnapshot in snapshot.children) {
-                    tasks.add(categoryMappingSnapshot.ref.removeValue())
+        clothesInOutfitQuery.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                val outfitIds = mutableListOf<String>()
+                for (clothesInOutfitSnapshot in dataSnapshot.children) {
+                    val outfitId = clothesInOutfitSnapshot.child("outfit_id").getValue(String::class.java)
+                    outfitId?.let {
+                        outfitIds.add(it)
+                    }
                 }
 
-                // Удаляем записи из таблицы cloth_season_mapping
-                seasonMappingQuery.addListenerForSingleValueEvent(object : ValueEventListener {
-                    override fun onDataChange(snapshot: DataSnapshot) {
-                        for (seasonMappingSnapshot in snapshot.children) {
-                            tasks.add(seasonMappingSnapshot.ref.removeValue())
-                        }
-
-                        // Удаляем изображение одежды из хранилища
-                        tasks.add(imageRef.delete())
-
-                        // Удаляем саму одежду из базы данных
-                        tasks.add(clothRef.removeValue())
-
-                        // Дожидаемся выполнения всех задач
-                        Tasks.whenAllComplete(tasks)
-                            .addOnCompleteListener { tasks ->
-                                if (tasks.isSuccessful) {
-                                    callback(true, "Вещь успешно удалена")
-                                } else {
-                                    val errorMessage = tasks.exception?.message ?: "Не удалось удалить вещь"
-                                    callback(false, errorMessage)
+                for (outfitId in outfitIds) {
+                    val outfitRef = database.child("outfits").child(outfitId)
+                    outfitRef.addListenerForSingleValueEvent(object : ValueEventListener {
+                        override fun onDataChange(snapshot: DataSnapshot) {
+                            val outfit = snapshot.getValue(Outfit::class.java)
+                            outfit?.let {
+                                OutfitsRepository().deleteOutfit(it) { success, message ->
+                                    if (!success) {
+                                        tasks.add(Tasks.forException(Exception(message)))
+                                    }
                                 }
                             }
-                    }
+                        }
 
-                    override fun onCancelled(error: DatabaseError) {
-                        callback(false, "Ошибка при удалении записей из таблицы cloth_season_mapping: ${error.message}")
+                        override fun onCancelled(error: DatabaseError) {
+                            tasks.add(Tasks.forException(Exception("Ошибка при получении аутфита")))
+                        }
+                    })
+                }
+
+                tasks.add(imageRef.delete())
+
+                tasks.add(clothRef.removeValue())
+
+                Tasks.whenAllComplete(tasks)
+                    .addOnCompleteListener { tasks ->
+                        if (tasks.isSuccessful) {
+                            callback(true, "Вещь успешно удалена")
+                        } else {
+                            val errorMessage = tasks.exception?.message ?: "Не удалось удалить вещь"
+                            callback(false, errorMessage)
+                        }
                     }
-                })
             }
 
-            override fun onCancelled(error: DatabaseError) {
-                callback(false, "Ошибка при удалении записей из таблицы cloth_category_mapping: ${error.message}")
+            override fun onCancelled(databaseError: DatabaseError) {
+                callback(false, "Ошибка при поиске аутфитов: ${databaseError.message}")
             }
         })
     }
+
 
 
 }

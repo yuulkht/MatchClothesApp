@@ -16,6 +16,8 @@ import ru.hse.termpaper.viewmodel.clothes.ClothesModelService
 
 class ClothCardFragment (
     private val cloth: Cloth,
+    private val previousFragment: Fragment,
+    private val menuSection: Int,
     private val clothCardService: ClothCardService = ClothCardService(),
     private val clothesModelService: ClothesModelService = ClothesModelService()
 ) : Fragment() {
@@ -38,7 +40,7 @@ class ClothCardFragment (
         val mainScreenActivity = requireActivity() as MainScreenActivity
 
         backLink.setOnClickListener {
-            mainScreenActivity.replaceFragment(mainScreenActivity.clothesFragment, R.id.clothesPage)
+            mainScreenActivity.replaceFragment(previousFragment, menuSection)
         }
 
         deleteButton.setOnClickListener {

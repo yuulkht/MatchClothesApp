@@ -42,7 +42,7 @@ class ClothesModelService(
     fun setupClothRecyclerView(clothesInCategory: MutableList<Cloth>, view: View?, context: Context) {
         getClothesForCurrentUser { clothes ->
             val adapter = ClothesCheckboxAdapter(
-                clothes,
+                clothes.distinct(),
                 object : ClothesCheckboxAdapter.OnCheckboxClickListener {
                     override fun onCheckboxClicked(position: Int, isChecked: Boolean) {
                         if (isChecked) {

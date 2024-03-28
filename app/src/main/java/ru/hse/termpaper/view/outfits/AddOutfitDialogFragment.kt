@@ -18,7 +18,7 @@ class AddOutfitDialogFragment : DialogFragment() {
         val mainScreenActivity = requireActivity() as MainScreenActivity
 
         view.findViewById<LinearLayout>(R.id.addOutfit).setOnClickListener {
-            mainScreenActivity.replaceFragment(mainScreenActivity.addOutfitFragment, R.id.outfitsPage)
+            mainScreenActivity.replaceFragment(mainScreenActivity.chooseClothesForOutfit, R.id.outfitsPage)
             dismiss()
         }
 

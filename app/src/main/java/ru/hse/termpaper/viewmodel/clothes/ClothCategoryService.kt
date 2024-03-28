@@ -10,7 +10,7 @@ class ClothCategoryService(
     private val clothCategoryRepository: ClothCategoryRepository = ClothCategoryRepository()
 ) {
 
-    fun saveCategoryWithClothes(categoryTitle:EditText, clothesInCategory: MutableList<Cloth>, notificationHelper: NotificationHelper) {
+    fun saveCategoryWithClothes(categoryTitle:EditText, clothesInCategory: List<Cloth>, notificationHelper: NotificationHelper) {
         val title = categoryTitle.text.toString().trim()
 
         clothCategoryRepository.saveClothCategory(ClothCategory("", "", title)) { success, message, category ->

@@ -25,7 +25,7 @@ class ClothCardService(
         categoryRecyclerView.layoutManager = LinearLayoutManager(context)
 
         clothCategoryRepository.getCategoriesForCloth(cloth) { _, categories ->
-            val categoryAdapter = ClothCategoryAdapter(categories)
+            val categoryAdapter = ClothCategoryAdapter(categories.distinct())
             categoryRecyclerView.adapter = categoryAdapter
         }
     }
@@ -35,7 +35,7 @@ class ClothCardService(
         seasonRecyclerView.layoutManager = LinearLayoutManager(context)
 
         clothSeasonRepository.getSeasonsForCloth(cloth) { _, seasons ->
-            val seasonAdapter = SeasonAdapter(seasons)
+            val seasonAdapter = SeasonAdapter(seasons.distinct())
             seasonRecyclerView.adapter = seasonAdapter
         }
     }

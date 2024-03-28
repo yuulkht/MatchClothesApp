@@ -42,7 +42,7 @@ class AddOutfitCategoryFragment(
         outfitsViewModel.setupOutfitRecyclerView(outfitsInCategory,view, requireContext())
 
         saveCategoryButton.setOnClickListener {
-            outfitCategoryViewModel.saveCategoryWithOutfits(categoryTitle, outfitsInCategory, NotificationHelper(requireContext()))
+            outfitCategoryViewModel.saveCategoryWithOutfits(categoryTitle, outfitsInCategory.distinct(), NotificationHelper(requireContext()))
             val mainActivity = requireActivity() as MainScreenActivity
             mainActivity.replaceFragment(mainActivity.outfitsFragment, R.id.outfitsPage)
         }

@@ -26,7 +26,7 @@ class ChooseOutfitCategoryService (
         outfitsCategoryRepository.getOutfitCategories { categories ->
             val categoryRecyclerView: RecyclerView = view.findViewById(R.id.categoryButtonRecyclerView)
             categoryRecyclerView.layoutManager = LinearLayoutManager(context)
-            val categoryAdapter = OutfitCategoryButtonAdapter(categories, object : OutfitCategoryButtonAdapter.OnItemClickListener {
+            val categoryAdapter = OutfitCategoryButtonAdapter(categories.distinct(), object : OutfitCategoryButtonAdapter.OnItemClickListener {
                 override fun onItemClick(category: OutfitCategory) {
                     outfitsCategoryRepository.getOutfitsFromCategory(category) { _, outfits ->
                         val parent = parentFragment as? OutfitsFragment
@@ -51,7 +51,7 @@ class ChooseOutfitCategoryService (
         val seasons = outfitSeasonRepository.getSeasons()
         val seasonRecyclerView: RecyclerView = view.findViewById(R.id.seasonButtonRecyclerView)
         seasonRecyclerView.layoutManager = LinearLayoutManager(context)
-        val seasonAdapter = SeasonButtonAdapter(seasons, object : SeasonButtonAdapter.OnItemClickListener {
+        val seasonAdapter = SeasonButtonAdapter(seasons.distinct(), object : SeasonButtonAdapter.OnItemClickListener {
             override fun onItemClick(season: Season) {
                 outfitSeasonRepository.getOutfitsFromSeason(season) { _, outfits ->
                     val parent = parentFragment as? OutfitsFragment

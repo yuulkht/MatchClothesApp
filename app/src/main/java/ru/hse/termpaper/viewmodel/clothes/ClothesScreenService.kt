@@ -22,10 +22,10 @@ class ClothesScreenService(
 
         val mainScreenActivity = activity as MainScreenActivity
 
-        val adapter = ClothesAdapter(filteredList, object : ClothesAdapter.OnItemClickListener {
+        val adapter = ClothesAdapter(filteredList.distinct(), object : ClothesAdapter.OnItemClickListener {
             override fun onItemClick(position: Int) {
                 val chosenCloth = filteredList[position]
-                mainScreenActivity.replaceFragment(ClothCardFragment(chosenCloth), R.id.clothesPage)
+                mainScreenActivity.replaceFragment(ClothCardFragment(chosenCloth, mainScreenActivity.clothesFragment, R.id.clothesPage), R.id.clothesPage)
             }
         })
         clothesContainer.adapter = adapter

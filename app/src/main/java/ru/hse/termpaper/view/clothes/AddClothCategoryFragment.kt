@@ -42,7 +42,7 @@ class AddClothCategoryFragment(
         clothesViewModel.setupClothRecyclerView(clothesInCategory,view, requireContext())
 
         saveCategoryButton.setOnClickListener {
-            clothCategoryViewModel.saveCategoryWithClothes(categoryTitle, clothesInCategory, NotificationHelper(requireContext()))
+            clothCategoryViewModel.saveCategoryWithClothes(categoryTitle, clothesInCategory.distinct(), NotificationHelper(requireContext()))
             val mainActivity = requireActivity() as MainScreenActivity
             mainActivity.replaceFragment(mainActivity.clothesFragment, R.id.clothesPage)
         }

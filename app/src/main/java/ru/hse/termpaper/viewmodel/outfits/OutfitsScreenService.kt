@@ -6,12 +6,14 @@ import android.widget.EditText
 import androidx.recyclerview.widget.RecyclerView
 import ru.hse.termpaper.R
 import ru.hse.termpaper.model.entity.Outfit
+import ru.hse.termpaper.model.repository.outfits.OutfitsRepository
 import ru.hse.termpaper.view.adapters.OutfitsAdapter
 import ru.hse.termpaper.view.outfits.OutfitCardFragment
 import ru.hse.termpaper.view.main.MainScreenActivity
 
 class OutfitsScreenService(
     private val outfitsModelService: OutfitsModelService = OutfitsModelService(),
+    private val outfitsRepository: OutfitsRepository = OutfitsRepository(),
     private var currentSearchText: String = "",
     private var outfitsList: MutableList<Outfit> = mutableListOf(),
     private var filteredList: MutableList<Outfit> = mutableListOf(),
@@ -22,10 +24,12 @@ class OutfitsScreenService(
 
         val mainScreenActivity = activity as MainScreenActivity
 
-        val adapter = OutfitsAdapter(filteredList, object : OutfitsAdapter.OnItemClickListener {
+        val adapter = OutfitsAdapter(filteredList.distinct(), object : OutfitsAdapter.OnItemClickListener {
             override fun onItemClick(position: Int) {
                 val chosenOutfit = filteredList[position]
-                mainScreenActivity.replaceFragment(OutfitCardFragment(chosenOutfit), R.id.outfitsPage)
+                outfitsRepository.getClothesForOutfit(chosenOutfit) {clothes ->
+                    mainScreenActivity.replaceFragment(OutfitCardFragment(chosenOutfit, clothes, mainScreenActivity.outfitsFragment, R.id.outfitsPage), R.id.outfitsPage)
+                }
             }
         })
         outfitsContainer.adapter = adapter

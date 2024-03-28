@@ -10,7 +10,7 @@ class OutfitCategoryService(
     private val outfitCategoryRepository: OutfitCategoryRepository = OutfitCategoryRepository()
 ) {
 
-    fun saveCategoryWithOutfits(categoryTitle:EditText, outfitsInCategory: MutableList<Outfit>, notificationHelper: NotificationHelper) {
+    fun saveCategoryWithOutfits(categoryTitle:EditText, outfitsInCategory: List<Outfit>, notificationHelper: NotificationHelper) {
         val title = categoryTitle.text.toString().trim()
 
         outfitCategoryRepository.saveOutfitCategory(OutfitCategory("", "", title)) { success, message, category ->
