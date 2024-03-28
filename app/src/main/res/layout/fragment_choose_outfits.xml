@@ -7,11 +7,11 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/addingOutfit"
+        android:id="@+id/adding"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:text="Добавление образа"
+        android:text="Добавление"
         android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -40,7 +40,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintTop_toBottomOf="@+id/addingOutfit">
+        app:layout_constraintTop_toBottomOf="@+id/adding">
 
 
         <TextView
@@ -48,7 +48,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:padding="10dp"
-            android:text="Выберите вещи в образ"
+            android:text="Выберите образы"
             android:textSize="22sp"
             android:textStyle="bold" />
 
@@ -57,14 +57,14 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/saveClothCategory"
+        app:layout_constraintBottom_toTopOf="@+id/next"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout">
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/clothesCheckboxContainer"
+            android:id="@+id/outfitsCheckboxContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"

@@ -8,11 +8,10 @@ import androidx.fragment.app.Fragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import ru.hse.termpaper.R
 import ru.hse.termpaper.view.clothes.AddClothCategoryFragment
-import ru.hse.termpaper.view.CalendarFragment
+import ru.hse.termpaper.view.calendar.CalendarFragment
 import ru.hse.termpaper.view.clothes.ClothesFragment
 import ru.hse.termpaper.view.JourneyFragment
 import ru.hse.termpaper.view.outfits.AddOutfitCategoryFragment
-import ru.hse.termpaper.view.outfits.AddOutfitFragment
 import ru.hse.termpaper.view.outfits.ChooseClothesForOutfit
 import ru.hse.termpaper.view.outfits.OutfitsFragment
 

@@ -1,5 +1,7 @@
 package ru.hse.termpaper.model.repository.clothes
 
+import com.google.android.gms.tasks.Task
+import com.google.android.gms.tasks.Tasks
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
@@ -39,7 +41,6 @@ class ClothSeasonRepository(
                 val clothesList = mutableListOf<Cloth>()
                 val clothIds = mutableListOf<String>()
 
-                // Получаем список cloth_id, связанных с данным сезоном
                 for (snapshot in dataSnapshot.children) {
                     val clothId = snapshot.child("cloth_id").getValue(String::class.java)
                     clothId?.let { clothIds.add(it) }
@@ -50,26 +51,27 @@ class ClothSeasonRepository(
                     return
                 }
 
-                // Получаем данные о каждой одежде из таблицы clothes по их cloth_id
+                val tasks = mutableListOf<Task<DataSnapshot>>()
+
+                // Создание списка задач для запросов к базе данных для каждого clothId
                 for (clothId in clothIds) {
-                    val clothesQuery = database.child("clothes").child(clothId)
-
-                    clothesQuery.addListenerForSingleValueEvent(object : ValueEventListener {
-                        override fun onDataChange(clothSnapshot: DataSnapshot) {
-                            val cloth = clothSnapshot.getValue(Cloth::class.java)
-                            cloth?.let { clothesList.add(it) }
-
-                            // Проверяем, если получены данные по всем clothId
-                            if (clothesList.size == clothIds.size) {
-                                callback(true, clothesList)
-                            }
-                        }
-
-                        override fun onCancelled(databaseError: DatabaseError) {
-                            callback(false, mutableListOf())
-                        }
-                    })
+                    val clothesQuery = database.child("clothes").child(clothId).get()
+                    tasks.add(clothesQuery)
                 }
+
+                // Обработка результатов всех запросов после их завершения
+                Tasks.whenAllSuccess<DataSnapshot>(tasks)
+                    .addOnSuccessListener { snapshots ->
+                        for (snapshot in snapshots) {
+                            val cloth = snapshot.getValue(Cloth::class.java)
+                            cloth?.let { clothesList.add(it) }
+                        }
+                        callback(true, clothesList)
+                    }
+                    .addOnFailureListener { exception ->
+                        // Обработка ошибок, если таковые возникли при выполнении запросов
+                        callback(false, mutableListOf())
+                    }
             }
 
             override fun onCancelled(databaseError: DatabaseError) {
@@ -77,6 +79,7 @@ class ClothSeasonRepository(
             }
         })
     }
+
 
 
 
