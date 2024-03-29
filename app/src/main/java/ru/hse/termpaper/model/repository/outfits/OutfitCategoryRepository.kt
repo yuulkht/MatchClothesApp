@@ -147,6 +147,7 @@ class OutfitCategoryRepository(
         })
     }
 
+
     fun deleteCategory(category: OutfitCategory, callback: (String) -> Unit) {
         val categoryRef = database.child("outfit_categories").child(category.id)
         val mappingRef = database.child("outfit_category_mapping")

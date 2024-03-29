@@ -15,6 +15,8 @@ import ru.hse.termpaper.view.main.MainScreenActivity
 import ru.hse.termpaper.viewmodel.outfits.AddOutfitService
 import com.canhub.cropper.CropImageContract
 import ru.hse.termpaper.model.entity.Cloth
+import ru.hse.termpaper.model.entity.ClothCategory
+import ru.hse.termpaper.model.entity.Season
 import ru.hse.termpaper.viewmodel.clothes.ClothesModelService
 
 class AddOutfitFragment (

@@ -60,13 +60,11 @@ class AddOutfitService(
     }
 
     fun setupCategoryRecyclerView(view: View, context: Context) {
-        outfitCategoryRepository.getOutfitCategories {
-            outfitRecyclerViewService.setupCategoryCheckboxRecyclerView(it, view, context)
-        }
+        outfitRecyclerViewService.setupCategoryCheckboxRecyclerView(outfitCategories, view, context)
     }
 
     fun setupSeasonRecyclerView(view: View, context: Context) {
-        outfitRecyclerViewService.setupSeasonCheckboxRecyclerView(outfitSeasonRepository.getSeasons(), view, context)
+        outfitRecyclerViewService.setupSeasonCheckboxRecyclerView(outfitSeasons, view, context)
     }
 
     fun saveOutfit(title: String, info: String, clothes: MutableList<Cloth>, notificationHelper: NotificationHelper) {

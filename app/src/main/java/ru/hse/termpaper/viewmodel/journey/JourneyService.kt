@@ -11,7 +11,7 @@ import ru.hse.termpaper.R
 import ru.hse.termpaper.model.entity.Cloth
 import ru.hse.termpaper.model.entity.Journey
 import ru.hse.termpaper.model.entity.Outfit
-import ru.hse.termpaper.model.repository.JourneyRepository
+import ru.hse.termpaper.model.repository.journey.JourneyRepository
 import ru.hse.termpaper.model.repository.outfits.OutfitsRepository
 import ru.hse.termpaper.view.journeys.ChooseClothesForJourneyFragment
 import ru.hse.termpaper.view.journeys.ChooseOutfitsForJourneyFragment

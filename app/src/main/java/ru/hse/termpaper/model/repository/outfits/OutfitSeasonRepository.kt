@@ -14,7 +14,6 @@ class OutfitSeasonRepository(
     fun addOutfitToSeason(outfit: Outfit, season: Season, callback: (Boolean, String) -> Unit) {
         val outfitId = outfit.id
         val relationRef: DatabaseReference = database.child("outfit_season_mapping").push()
-        val relationId = relationRef.key
         val relationData = hashMapOf(
             "outfit_id" to outfitId,
             "season" to season.name,
@@ -39,7 +38,6 @@ class OutfitSeasonRepository(
                 val outfitsList = mutableListOf<Outfit>()
                 val outfitIds = mutableListOf<String>()
 
-                // Получаем список outfit_id, связанных с данным сезоном
                 for (snapshot in dataSnapshot.children) {
                     val outfitId = snapshot.child("outfit_id").getValue(String::class.java)
                     outfitId?.let { outfitIds.add(it) }
@@ -50,7 +48,6 @@ class OutfitSeasonRepository(
                     return
                 }
 
-                // Получаем данные о каждой одежде из таблицы outfits по их outfit_id
                 for (outfitId in outfitIds) {
                     val outfitsQuery = database.child("outfits").child(outfitId)
 
@@ -59,7 +56,6 @@ class OutfitSeasonRepository(
                             val outfit = outfitSnapshot.getValue(Outfit::class.java)
                             outfit?.let { outfitsList.add(it) }
 
-                            // Проверяем, если получены данные по всем outfitId
                             if (outfitsList.size == outfitIds.size) {
                                 callback(true, outfitsList)
                             }
@@ -102,6 +98,8 @@ class OutfitSeasonRepository(
             }
         })
     }
+
+
 
 
     fun getSeasons(): MutableList<Season> {

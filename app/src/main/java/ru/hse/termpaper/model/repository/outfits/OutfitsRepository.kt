@@ -52,7 +52,6 @@ class OutfitsRepository(
                                 }
 
                             }
-                            callback(true, "Новый образ и фотография успешно добавлены", outfit)
                         } else {
                             callback(false, "Ошибка при добавлении фотографии", outfit)
                         }
