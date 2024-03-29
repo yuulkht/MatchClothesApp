@@ -1,6 +1,5 @@
-package ru.hse.termpaper.model.repository
+package ru.hse.termpaper.model.repository.authentication
 
-import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import ru.hse.termpaper.model.entity.User
 

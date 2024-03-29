@@ -2,7 +2,7 @@ package ru.hse.termpaper.viewmodel.authentication
 
 import androidx.lifecycle.ViewModel
 import ru.hse.termpaper.model.entity.User
-import ru.hse.termpaper.model.repository.UserRepository
+import ru.hse.termpaper.model.repository.authentication.UserRepository
 
 class AuthService(
     private val userRepository: UserRepository = UserRepository()
