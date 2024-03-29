@@ -42,7 +42,9 @@ class JourneyCardFragment(
         }
 
         backButton.setOnClickListener {
-            mainScreenActivity.replaceFragment(mainScreenActivity.journeyFragment, R.id.homePage)
+            if (journeyService.isSuitcaseLoaded) {
+                mainScreenActivity.replaceFragment(mainScreenActivity.journeyFragment, R.id.homePage)
+            }
         }
 
         chooseClothesButton.setOnClickListener {

@@ -31,7 +31,9 @@ class JourneyFragment(
         journeyService.setupJourneyRecyclerView(view, requireContext(), mainScreenActivity)
 
         addButton.setOnClickListener {
-            mainScreenActivity.replaceFragment(AddJourneyFragment(),R.id.homePage)
+            if (journeyService.isJourneysLoaded) {
+                mainScreenActivity.replaceFragment(AddJourneyFragment(),R.id.homePage)
+            }
         }
     }
 }

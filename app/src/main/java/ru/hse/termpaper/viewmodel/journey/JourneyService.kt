@@ -24,7 +24,9 @@ class JourneyService (
     private val journeyRepository: JourneyRepository = JourneyRepository(),
     private val outfitsRepository: OutfitsRepository = OutfitsRepository(),
     private val clothRecyclerViewService: ClothRecyclerViewService = ClothRecyclerViewService(),
-    private val journeyRecyclerViewService: JourneyRecyclerViewService = JourneyRecyclerViewService()
+    private val journeyRecyclerViewService: JourneyRecyclerViewService = JourneyRecyclerViewService(),
+    var isSuitcaseLoaded: Boolean = false,
+    var isJourneysLoaded: Boolean = false
 ) {
 
     fun saveJourney(journeyTitle: String, mainScreenActivity: MainScreenActivity) {
@@ -82,6 +84,7 @@ class JourneyService (
 
     fun setupClothesRecyclerView(clothes: List<Cloth>, view: View, activity: Activity, fragment: Fragment) {
         clothRecyclerViewService.setupJourneyClothesRecyclerView(clothes, view, activity, fragment)
+        isSuitcaseLoaded = true
     }
 
     fun deleteClothesFromJourney(journey: Journey, context: Context, mainScreenActivity: MainScreenActivity, nextFragment: Fragment) {
@@ -114,6 +117,7 @@ class JourneyService (
 
     fun setupJourneyRecyclerView(view: View, context: Context, activity: MainScreenActivity) {
         journeyRecyclerViewService.setupJourneyRecyclerView(view, context, activity)
+        isJourneysLoaded = true
     }
 
 }

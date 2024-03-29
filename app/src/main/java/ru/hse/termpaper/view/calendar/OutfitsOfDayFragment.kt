@@ -44,12 +44,11 @@ class OutfitsOfDayFragment(
 
         val mainScreenActivity = requireActivity() as MainScreenActivity
 
+        calendarService.putOutfitToDay(calendarEvent, view, requireActivity())
+
         backButton.setOnClickListener{
             mainScreenActivity.replaceFragment(mainScreenActivity.calendarFragment, R.id.homePage)
         }
-
-        calendarService.putOutfitToDay(calendarEvent, view, requireActivity())
-
 
         addOutfitButton.setOnClickListener {
             mainScreenActivity.replaceFragment(AddOutfitsToDayFragment(calendarEvent), R.id.homePage)

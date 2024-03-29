@@ -9,6 +9,7 @@ import ru.hse.termpaper.viewmodel.recyclerview.OutfitRecyclerViewService
 
 class OutfitsModelService(
     private val outfitsRepository: OutfitsRepository = OutfitsRepository(),
+    var isOutfitsLoaded: Boolean = false
 ) : ViewModel() {
 
     fun getOutfitsForCurrentUser(callback: (MutableList<Outfit>) -> Unit) {
@@ -40,6 +41,7 @@ class OutfitsModelService(
     fun setupOutfitRecyclerView(chosenOutfits: MutableList<Outfit>, view: View?, context: Context) {
         val outfitRecyclerViewService: OutfitRecyclerViewService = OutfitRecyclerViewService()
         outfitRecyclerViewService.setupOutfitCheckboxRecyclerView(chosenOutfits, view, context)
+        isOutfitsLoaded = true
     }
 
 }

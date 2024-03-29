@@ -46,14 +46,16 @@ class ChooseOutfitsForJourneyFragment(
         chooseOutfitsForService.setupOutfitRecyclerView(outfitsForJourney, view, requireContext())
 
         backButton.setOnClickListener {
-            mainScreenActivity.replaceFragment(mainScreenActivity.journeyFragment, R.id.homePage)
+            if (chooseOutfitsForService.isOutfitsLoaded) {
+                mainScreenActivity.replaceFragment(mainScreenActivity.journeyFragment, R.id.homePage)
+            }
         }
 
         nextButton.setOnClickListener {
-
-            journeyService.saveOutfitsToJourney(outfitsForJourney, journey)
-
-            mainScreenActivity.replaceFragment(nextFragment, R.id.homePage)
+            if (chooseOutfitsForService.isOutfitsLoaded) {
+                journeyService.saveOutfitsToJourney(outfitsForJourney, journey)
+                mainScreenActivity.replaceFragment(nextFragment, R.id.homePage)
+            }
         }
     }
 }

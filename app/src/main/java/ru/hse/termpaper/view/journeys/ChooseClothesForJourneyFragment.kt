@@ -44,14 +44,16 @@ class ChooseClothesForJourneyFragment(
         chooseClothesForService.setupClothRecyclerView(clothesForJourney, view, requireContext())
 
         backButton.setOnClickListener {
-            mainScreenActivity.replaceFragment(mainScreenActivity.journeyFragment, R.id.homePage)
+            if (chooseClothesForService.isClothesLoaded){
+                mainScreenActivity.replaceFragment(mainScreenActivity.journeyFragment, R.id.homePage)
+            }
         }
 
         nextButton.setOnClickListener {
-
-            journeyService.saveClothesToJourney(clothesForJourney, journey)
-
-            mainScreenActivity.replaceFragment(nextFragment, R.id.homePage)
+            if (chooseClothesForService.isClothesLoaded){
+                journeyService.saveClothesToJourney(clothesForJourney, journey)
+                mainScreenActivity.replaceFragment(nextFragment, R.id.homePage)
+            }
         }
     }
 }

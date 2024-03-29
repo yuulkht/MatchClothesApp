@@ -9,6 +9,7 @@ import ru.hse.termpaper.viewmodel.recyclerview.ClothRecyclerViewService
 
 class ClothesModelService(
     private val clothesRepository: ClothesRepository = ClothesRepository(),
+    var isClothesLoaded: Boolean = false
 ) : ViewModel(){
 
     fun getImage(cloth: Cloth, callback: (String?) -> Unit) {
@@ -40,6 +41,7 @@ class ClothesModelService(
     fun setupClothRecyclerView(clothes: MutableList<Cloth>, view: View?, context: Context) {
         val clothRecyclerViewService = ClothRecyclerViewService()
         clothRecyclerViewService.setupClothesCheckboxRecyclerView(clothes, view, context)
+        isClothesLoaded = true
     }
 
 }
