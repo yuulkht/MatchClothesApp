@@ -8,5 +8,4 @@ data class Cloth (
     val title: String = "",
     var photo: String = "",
     val information: String = "",
-) : Serializable {
-}
+) : Serializable

@@ -16,12 +16,10 @@ import ru.hse.termpaper.viewmodel.clothes.ClothCategoryService
 import ru.hse.termpaper.viewmodel.clothes.ClothesModelService
 
 class AddClothCategoryFragment(
-    private val clothesViewModel: ClothesModelService = ClothesModelService(),
-    private val clothCategoryViewModel: ClothCategoryService = ClothCategoryService()
-) : Fragment() {
-
-    private lateinit var categoryTitle: EditText
+    private val clothesService: ClothesModelService = ClothesModelService(),
+    private val clothCategoryService: ClothCategoryService = ClothCategoryService(),
     private val clothesInCategory: MutableList<Cloth> = mutableListOf()
+) : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -29,20 +27,21 @@ class AddClothCategoryFragment(
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_add_cloth_category, container, false)
+
         val saveCategoryButton = view.findViewById<Button>(R.id.saveClothCategory)
         val backLink = view.findViewById<ImageView>(R.id.backButton)
-        categoryTitle = view.findViewById(R.id.clothCategoryTitle)
+        val categoryTitle = view.findViewById<EditText>(R.id.clothCategoryTitle)
 
         val mainScreenActivity = requireActivity() as MainScreenActivity
+
+        clothesService.setupClothRecyclerView(clothesInCategory,view, requireContext())
 
         backLink.setOnClickListener {
             mainScreenActivity.replaceFragment(mainScreenActivity.clothesFragment, R.id.clothesPage)
         }
 
-        clothesViewModel.setupClothRecyclerView(clothesInCategory,view, requireContext())
-
         saveCategoryButton.setOnClickListener {
-            clothCategoryViewModel.saveCategoryWithClothes(categoryTitle, clothesInCategory.distinct(), NotificationHelper(requireContext()))
+            clothCategoryService.saveCategoryWithClothes(categoryTitle, clothesInCategory.distinct(), NotificationHelper(requireContext()))
             val mainActivity = requireActivity() as MainScreenActivity
             mainActivity.replaceFragment(mainActivity.clothesFragment, R.id.clothesPage)
         }

@@ -56,7 +56,7 @@ class AuthService(
     }
 
     fun checkEmail(callback: (Boolean, String) -> Unit) {
-        userRepository.checkEmailVerification() { isSuccess, message ->
+        userRepository.checkEmailVerification { isSuccess, message ->
             callback(isSuccess, message)
         }
     }

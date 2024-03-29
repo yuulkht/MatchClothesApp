@@ -2,8 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/journeyBackground"
     android:layout_width="wrap_content"
-    android:layout_marginStart="10dp"
-    android:layout_marginTop="10dp"
+    android:layout_marginStart="20dp"
+    android:layout_marginTop="20dp"
     android:layout_height="wrap_content"
     android:background="@drawable/journey_background"
     android:orientation="horizontal">
@@ -12,8 +12,8 @@
         android:id="@+id/journeyName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="18sp"
-        android:padding="15dp"/>
+        android:textSize="20sp"
+        android:padding="30dp"/>
 
     <ImageView
         android:id="@+id/deleteJourney"

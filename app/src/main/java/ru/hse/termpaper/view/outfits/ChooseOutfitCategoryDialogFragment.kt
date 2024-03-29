@@ -17,11 +17,7 @@ class ChooseOutfitCategoryDialogFragment (
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.dialog_choose_outfit_category, container, false)
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+        val view = inflater.inflate(R.layout.dialog_choose_outfit_category, container, false)
 
         val resetButton = view.findViewById<Button>(R.id.resetButton)
 
@@ -33,6 +29,8 @@ class ChooseOutfitCategoryDialogFragment (
             parent?.outfitsScreenService?.updateOutfits(parent.searchEditText, mutableListOf(), true)
             dismiss()
         }
+
+        return view
     }
 
     override fun onStart() {

@@ -14,13 +14,14 @@ import ru.hse.termpaper.model.entity.Cloth
 import ru.hse.termpaper.model.repository.calendar.CalendarRepository
 import ru.hse.termpaper.view.main.MainScreenActivity
 import ru.hse.termpaper.view.main.NotificationHelper
+import ru.hse.termpaper.viewmodel.calendar.CalendarService
 import ru.hse.termpaper.viewmodel.clothes.ClothesModelService
 
 class AddClothesToDayFragment(
     private val calendarEvent: CalendarEvent,
-    private val calendarRepository: CalendarRepository = CalendarRepository(),
     private val chooseClothesForService: ClothesModelService = ClothesModelService(),
     private val clothesInDay: MutableList<Cloth> = mutableListOf(),
+    private val calendarService: CalendarService = CalendarService()
 ): Fragment() {
 
     override fun onCreateView(
@@ -32,39 +33,24 @@ class AddClothesToDayFragment(
         val nextButton = view.findViewById<Button>(R.id.next)
         val backLink = view.findViewById<ImageView>(R.id.backButton)
         val addingText = view.findViewById<TextView>(R.id.adding)
+
         addingText.text = "Добавление вещей"
 
-        deleteAllClothes(calendarEvent)
+        calendarService.deleteAllClothes(calendarEvent)
 
         val mainScreenActivity = requireActivity() as MainScreenActivity
+
+        chooseClothesForService.setupClothRecyclerView(clothesInDay,view, requireContext())
 
         backLink.setOnClickListener {
             mainScreenActivity.replaceFragment(mainScreenActivity.calendarFragment, R.id.homePage)
         }
 
-        chooseClothesForService.setupClothRecyclerView(clothesInDay,view, requireContext())
-
         nextButton.setOnClickListener {
             val mainActivity = requireActivity() as MainScreenActivity
-            if (clothesInDay.isEmpty()) {
-                NotificationHelper( requireContext()).showToast( "Вы не выбрали вещи")
-            } else {
-                for (cloth in clothesInDay) {
-                    calendarRepository.addClothToCalendarEvent(cloth, calendarEvent){_,_->}
-                }
-            }
-            mainActivity.replaceFragment(CalendarFragment(calendarEvent), R.id.homePage)
+            calendarService.saveClothesToDay(clothesInDay, calendarEvent, mainActivity, requireContext())
         }
 
         return view
-    }
-
-    fun deleteAllClothes(calendarEvent: CalendarEvent) {
-        calendarRepository.getClothesFromCalendarEvent(calendarEvent) {_,clothes ->
-            for (cloth in clothes) {
-                calendarRepository.deleteClothFromDay(cloth, calendarEvent){_,_->}
-            }
-
-        }
     }
 }

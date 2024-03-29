@@ -28,20 +28,11 @@ class OutfitsFragment(
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_outfits, container, false)
+
         val addButton = view.findViewById<LinearLayout>(R.id.addButton)
         val chooseCategoryImageView = view.findViewById<ImageView>(R.id.chooseOutfitCategory)
 
-        addButton.setOnClickListener {
-            dialogFragment.show(requireActivity().supportFragmentManager, "AddOutfitDialog")
-        }
-
-        chooseCategoryImageView.setOnClickListener {
-            val dialogFragment = ChooseOutfitCategoryDialogFragment()
-            dialogFragment.show(getChildFragmentManager(), "ChooseOutfitCategoryDialog")
-        }
-
-        val adapter = outfitsScreenService.setupOutfitsRecyclerView(view, requireActivity())
-
+        outfitsScreenService.setupOutfitsRecyclerView(view, requireActivity())
         outfitsScreenService.loadOutfits("")
 
         searchEditText = view.findViewById(R.id.searchEditText)
@@ -57,6 +48,16 @@ class OutfitsFragment(
                 outfitsScreenService.updateFilteredList(searchText)
             }
         })
+
+        addButton.setOnClickListener {
+            dialogFragment.show(requireActivity().supportFragmentManager, "AddOutfitDialog")
+        }
+
+        chooseCategoryImageView.setOnClickListener {
+            val dialogFragment = ChooseOutfitCategoryDialogFragment()
+            dialogFragment.show(getChildFragmentManager(), "ChooseOutfitCategoryDialog")
+        }
+
 
         return view
     }

@@ -3,14 +3,12 @@ package ru.hse.termpaper.viewmodel.clothes
 import android.content.Context
 import android.view.View
 import androidx.lifecycle.ViewModel
-import androidx.recyclerview.widget.RecyclerView
-import ru.hse.termpaper.R
 import ru.hse.termpaper.model.entity.Cloth
 import ru.hse.termpaper.model.repository.clothes.ClothesRepository
-import ru.hse.termpaper.view.adapters.ClothesCheckboxAdapter
+import ru.hse.termpaper.viewmodel.recyclerview.ClothRecyclerViewService
 
 class ClothesModelService(
-    private val clothesRepository: ClothesRepository = ClothesRepository()
+    private val clothesRepository: ClothesRepository = ClothesRepository(),
 ) : ViewModel(){
 
     fun getImage(cloth: Cloth, callback: (String?) -> Unit) {
@@ -39,23 +37,9 @@ class ClothesModelService(
         }
     }
 
-    fun setupClothRecyclerView(clothesInCategory: MutableList<Cloth>, view: View?, context: Context) {
-        getClothesForCurrentUser { clothes ->
-            val adapter = ClothesCheckboxAdapter(
-                clothes.distinct(),
-                object : ClothesCheckboxAdapter.OnCheckboxClickListener {
-                    override fun onCheckboxClicked(position: Int, isChecked: Boolean) {
-                        if (isChecked) {
-                            clothesInCategory.add(clothes[position])
-                        } else {
-                            clothesInCategory.remove(clothes[position])
-                        }
-                    }
-                })
-
-            val recyclerView = view?.findViewById<RecyclerView>(R.id.clothesCheckboxContainer)
-            recyclerView?.adapter = adapter
-        }
+    fun setupClothRecyclerView(clothes: MutableList<Cloth>, view: View?, context: Context) {
+        val clothRecyclerViewService = ClothRecyclerViewService()
+        clothRecyclerViewService.setupClothesCheckboxRecyclerView(clothes, view, context)
     }
 
 }

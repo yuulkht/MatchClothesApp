@@ -12,7 +12,7 @@ import ru.hse.termpaper.view.main.MainScreenActivity
 import ru.hse.termpaper.viewmodel.authentication.AuthService
 
 class LoginActivity(
-    private var authViewModel: AuthService = AuthService(),
+    private var authService: AuthService = AuthService(),
     private var notificationHelper: NotificationHelper? = null
 ) : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -28,7 +28,7 @@ class LoginActivity(
             val inputUserEmail = userEmail.text.toString().trim()
             val inputUserPassword = userPassword.text.toString().trim()
 
-            authViewModel.login(authViewModel.getUser(inputUserEmail, inputUserPassword)) { isSuccess, message ->
+            authService.login(authService.getUser(inputUserEmail, inputUserPassword)) { isSuccess, message ->
                 notificationHelper!!.showToast(message)
                 if (isSuccess) {
                     val intent = Intent(this, MainScreenActivity::class.java)

@@ -1,28 +1,25 @@
-package ru.hse.termpaper.view
+package ru.hse.termpaper.view.journeys
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
-import androidx.fragment.app.findFragment
+import androidx.fragment.app.Fragment
 import ru.hse.termpaper.R
-import ru.hse.termpaper.model.entity.Journey
-import ru.hse.termpaper.model.repository.JourneyRepository
 import ru.hse.termpaper.view.main.MainScreenActivity
+import ru.hse.termpaper.viewmodel.journey.JourneyService
 
 class AddJourneyFragment(
-    private val journeyRepository: JourneyRepository = JourneyRepository()
+    private val journeyService: JourneyService = JourneyService()
 ) : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_add_journey, container, false)
     }
 
@@ -42,11 +39,7 @@ class AddJourneyFragment(
         nextButton.setOnClickListener {
             val journeyTitle = title.text.toString().trim()
 
-            journeyRepository.saveJourney(Journey("","", journeyTitle)){success, journey ->
-                if (success) {
-                    mainScreenActivity.replaceFragment(ChooseClothesForJourneyFragment(journey, ChooseOutfitsForJourneyFragment(journey)), R.id.homePage)
-                }
-            }
+            journeyService.saveJourney(journeyTitle, mainScreenActivity)
         }
     }
 }

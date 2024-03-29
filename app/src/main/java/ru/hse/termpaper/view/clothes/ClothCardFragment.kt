@@ -29,15 +29,19 @@ class ClothCardFragment (
     ): View? {
         val view = inflater.inflate(R.layout.fragment_cloth_card, container, false)
 
-        val clothTitle: TextView = view.findViewById(R.id.clothTitle)
-        val clothImage: ImageView = view.findViewById(R.id.clothImage)
-        val additionalInfo: TextView = view.findViewById(R.id.additionalInfoText)
-        val backLink: ImageView = view.findViewById(R.id.backButton)
-        val deleteButton: ImageView = view.findViewById(R.id.deleteButton)
+        val clothTitle = view.findViewById<TextView>(R.id.clothTitle)
+        val clothImage = view.findViewById<ImageView>(R.id.clothImage)
+        val additionalInfo = view.findViewById<TextView>(R.id.additionalInfoText)
+        val backLink = view.findViewById<ImageView>(R.id.backButton)
+        val deleteButton = view.findViewById<ImageView>(R.id.deleteButton)
 
         val notificationHelper = NotificationHelper(requireContext())
 
         val mainScreenActivity = requireActivity() as MainScreenActivity
+
+        clothCardService.setupCategoryRecyclerView(cloth, view, requireContext())
+        clothCardService.setupSeasonRecyclerView(cloth, view, requireContext())
+        clothCardService.fillClothInfo(cloth, clothTitle, additionalInfo, clothImage)
 
         backLink.setOnClickListener {
             mainScreenActivity.replaceFragment(previousFragment, menuSection)
@@ -49,10 +53,6 @@ class ClothCardFragment (
                 mainScreenActivity.replaceFragment(mainScreenActivity.clothesFragment, R.id.clothesPage)
             }
         }
-
-        clothCardService.setupCategoryRecyclerView(cloth, view, requireContext())
-        clothCardService.setupSeasonRecyclerView(cloth, view, requireContext())
-        clothCardService.fillClothInfo(cloth, clothTitle, additionalInfo, clothImage)
 
         return view
     }

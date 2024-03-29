@@ -3,21 +3,20 @@ package ru.hse.termpaper.model.repository.authentication
 import com.google.firebase.auth.FirebaseAuth
 import ru.hse.termpaper.model.entity.User
 
-class UserRepository (
+class UserRepository(
     private val auth: FirebaseAuth = FirebaseAuth.getInstance()
 ) {
+
     fun register(user: User, callback: (Boolean, String) -> Unit) {
         auth.createUserWithEmailAndPassword(user.email, user.password)
-            .addOnCompleteListener {task ->
+            .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
-                    sendVerificationEmail(){isSuccess, message ->
-                        callback(isSuccess,message)
-                    }
+                    sendVerificationEmail(callback)
                 } else {
                     callback(false, "Неуспешная попытка регистрации")
                 }
             }
-            .addOnFailureListener{
+            .addOnFailureListener {
                 callback(false, "Неуспешная попытка регистрации")
             }
     }
@@ -26,12 +25,7 @@ class UserRepository (
         auth.signInWithEmailAndPassword(user.email, user.password)
             .addOnCompleteListener { signInTask ->
                 if (signInTask.isSuccessful) {
-                    val currentUser = auth.currentUser
-                    if (currentUser != null && currentUser.isEmailVerified) {
-                        callback(true, "Успешный вход")
-                    } else {
-                        callback(false, "Email не подтверждён")
-                    }
+                    checkEmailVerification(callback)
                 } else {
                     callback(false, "Не удалось выполнить вход")
                 }
@@ -61,15 +55,14 @@ class UserRepository (
             }
     }
 
-
-    private fun sendVerificationEmail(callback: (Boolean, String) -> Unit) {
+    fun sendVerificationEmail(callback: (Boolean, String) -> Unit) {
         val user = auth.currentUser
         user?.sendEmailVerification()
             ?.addOnCompleteListener { task ->
-                if (task.isSuccessful){
+                if (task.isSuccessful) {
                     callback(true, "Письмо для подтверждения email отправлено")
                 } else {
-                    callback(true, "Не удалось отправить письмо для подтверждения email")
+                    callback(false, "Не удалось отправить письмо для подтверждения email")
                 }
             }
     }
@@ -80,7 +73,7 @@ class UserRepository (
             if (reloadTask.isSuccessful) {
                 val isEmailVerified = auth.currentUser?.isEmailVerified ?: false
                 if (isEmailVerified) {
-                    callback(true, "Ваш email подтвержден")
+                    callback(true, "Успешно")
                 } else {
                     callback(false, "Ваш email не подтвержден")
                 }
@@ -91,7 +84,6 @@ class UserRepository (
     }
 
     fun getCurrentUserName(): String {
-        return auth.currentUser?.email?.substringBefore("@")?.replaceFirstChar { char -> char - 32 }
-            ?: ""
+        return auth.currentUser?.email?.substringBefore("@")?.replaceFirstChar { it.uppercaseChar() } ?: ""
     }
 }

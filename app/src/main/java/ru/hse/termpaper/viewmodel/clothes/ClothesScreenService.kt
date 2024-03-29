@@ -9,29 +9,15 @@ import ru.hse.termpaper.model.entity.Cloth
 import ru.hse.termpaper.view.adapters.ClothesAdapter
 import ru.hse.termpaper.view.clothes.ClothCardFragment
 import ru.hse.termpaper.view.main.MainScreenActivity
+import ru.hse.termpaper.viewmodel.recyclerview.ClothRecyclerViewService
 
 class ClothesScreenService(
     private val clothesModelService: ClothesModelService = ClothesModelService(),
     private var currentSearchText: String = "",
     private var clothesList: MutableList<Cloth> = mutableListOf(),
     private var filteredList: MutableList<Cloth> = mutableListOf(),
-    private var adapter: ClothesAdapter? = null
+    private var adapter: ClothesAdapter? = null,
 ) {
-    fun setupClothesRecyclerView(view: View, activity: Activity, ) {
-        val clothesContainer: RecyclerView = view.findViewById(R.id.clothesContainer)
-
-        val mainScreenActivity = activity as MainScreenActivity
-
-        val adapter = ClothesAdapter(filteredList.distinct(), object : ClothesAdapter.OnItemClickListener {
-            override fun onItemClick(position: Int) {
-                val chosenCloth = filteredList[position]
-                mainScreenActivity.replaceFragment(ClothCardFragment(chosenCloth, mainScreenActivity.clothesFragment, R.id.clothesPage), R.id.clothesPage)
-            }
-        })
-        clothesContainer.adapter = adapter
-        this.adapter = adapter
-    }
-
     fun loadClothes(curSearchText: String) {
         currentSearchText = curSearchText
         clothesModelService.getClothesForCurrentUser { clothes ->
@@ -51,13 +37,26 @@ class ClothesScreenService(
         searchEditText?.text?.clear()
         if (clothes.isEmpty() && reset) {
             filteredList = clothesList
-            adapter?.updateItems(filteredList)
         } else if (clothes.isEmpty()){
             filteredList.clear()
-            adapter?.updateItems(filteredList)
         } else {
             filteredList = clothes
-            adapter?.updateItems(filteredList)
         }
+        adapter?.updateItems(filteredList)
+    }
+
+    fun setupClothesRecyclerView(view: View, activity: Activity, ) {
+        val clothesContainer: RecyclerView = view.findViewById(R.id.clothesContainer)
+
+        val mainScreenActivity = activity as MainScreenActivity
+
+        val adapter = ClothesAdapter(filteredList.distinct(), object : ClothesAdapter.OnItemClickListener {
+            override fun onItemClick(position: Int) {
+                val chosenCloth = filteredList[position]
+                mainScreenActivity.replaceFragment(ClothCardFragment(chosenCloth, mainScreenActivity.clothesFragment, R.id.clothesPage), R.id.clothesPage)
+            }
+        })
+        clothesContainer.adapter = adapter
+        this.adapter = adapter
     }
 }

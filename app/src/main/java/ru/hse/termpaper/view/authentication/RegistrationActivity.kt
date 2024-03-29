@@ -11,7 +11,7 @@ import ru.hse.termpaper.view.main.NotificationHelper
 import ru.hse.termpaper.viewmodel.authentication.AuthService
 
 class RegistrationActivity (
-    private var authViewModel: AuthService = AuthService(),
+    private var authService: AuthService = AuthService(),
     private var notificationHelper: NotificationHelper? = null
 ) : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -27,7 +27,7 @@ class RegistrationActivity (
             val inputUserEmail = userEmail.text.toString().trim()
             val inputUserPassword = userPassword.text.toString().trim()
 
-            authViewModel.register(authViewModel.getUser(inputUserEmail, inputUserPassword)) { isSuccess, message ->
+            authService.register(authService.getUser(inputUserEmail, inputUserPassword)) { isSuccess, message ->
                 notificationHelper!!.showToast(message)
                 if (isSuccess) {
                     val intent = Intent(this, ValidationEmailActivity::class.java)

@@ -14,7 +14,7 @@ import ru.hse.termpaper.model.entity.Journey
 
 class JourneyAdapter(
     private val journeys: List<Journey>,
-    private val listener: JourneyAdapter.OnItemClickListener? = null
+    private val listener: OnItemClickListener? = null
 ) : RecyclerView.Adapter<JourneyAdapter.JourneyViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): JourneyViewHolder {

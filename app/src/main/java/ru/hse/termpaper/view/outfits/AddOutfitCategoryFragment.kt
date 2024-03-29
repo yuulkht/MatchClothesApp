@@ -16,12 +16,10 @@ import ru.hse.termpaper.viewmodel.outfits.OutfitCategoryService
 import ru.hse.termpaper.viewmodel.outfits.OutfitsModelService
 
 class AddOutfitCategoryFragment(
-    private val outfitsViewModel: OutfitsModelService = OutfitsModelService(),
-    private val outfitCategoryViewModel: OutfitCategoryService = OutfitCategoryService()
-) : Fragment() {
-
-    private lateinit var categoryTitle: EditText
+    private val outfitsService: OutfitsModelService = OutfitsModelService(),
+    private val outfitCategoryService: OutfitCategoryService = OutfitCategoryService(),
     private val outfitsInCategory: MutableList<Outfit> = mutableListOf()
+) : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -29,20 +27,21 @@ class AddOutfitCategoryFragment(
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_add_outfit_category, container, false)
+
         val saveCategoryButton = view.findViewById<Button>(R.id.saveOutfitCategory)
         val backLink = view.findViewById<ImageView>(R.id.backButton)
-        categoryTitle = view.findViewById(R.id.outfitCategoryTitle)
+        val categoryTitle = view.findViewById<EditText>(R.id.outfitCategoryTitle)
 
         val mainScreenActivity = requireActivity() as MainScreenActivity
+
+        outfitsService.setupOutfitRecyclerView(outfitsInCategory,view, requireContext())
 
         backLink.setOnClickListener {
             mainScreenActivity.replaceFragment(mainScreenActivity.outfitsFragment, R.id.outfitsPage)
         }
 
-        outfitsViewModel.setupOutfitRecyclerView(outfitsInCategory,view, requireContext())
-
         saveCategoryButton.setOnClickListener {
-            outfitCategoryViewModel.saveCategoryWithOutfits(categoryTitle, outfitsInCategory.distinct(), NotificationHelper(requireContext()))
+            outfitCategoryService.saveCategoryWithOutfits(categoryTitle, outfitsInCategory.distinct(), NotificationHelper(requireContext()))
             val mainActivity = requireActivity() as MainScreenActivity
             mainActivity.replaceFragment(mainActivity.outfitsFragment, R.id.outfitsPage)
         }

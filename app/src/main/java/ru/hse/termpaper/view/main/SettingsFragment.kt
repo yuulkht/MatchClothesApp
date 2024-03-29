@@ -15,7 +15,7 @@ import ru.hse.termpaper.view.authentication.LoginActivity
 import ru.hse.termpaper.viewmodel.authentication.AuthService
 
 class SettingsFragment(
-    private var authViewModel: AuthService = AuthService()
+    private var authService: AuthService = AuthService()
 ) : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -36,16 +36,15 @@ class SettingsFragment(
         }
 
         logoutButton.setOnClickListener {
-            authViewModel.logout()
+            authService.logout()
             val intent = Intent(requireActivity(), LoginActivity::class.java)
             startActivity(intent)
         }
 
         changeEmailButton.setOnClickListener {
             val inputUserEmail = newEmail.text.toString().trim()
-            Toast.makeText(requireContext(), "Проверьте вашу новую почту и подтвердите ее", Toast.LENGTH_LONG).show()
-
-            authViewModel.changeEmail(inputUserEmail) {message ->
+            NotificationHelper(requireContext()).showToast("Проверьте вашу новую почту и подтвердите ее")
+            authService.changeEmail(inputUserEmail) {message ->
                 Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show()
             }
         }

@@ -11,7 +11,7 @@ import ru.hse.termpaper.view.main.MainScreenActivity
 import ru.hse.termpaper.viewmodel.authentication.AuthService
 
 class ValidationEmailActivity(
-    private var authViewModel: AuthService = AuthService(),
+    private var authService: AuthService = AuthService(),
     private var notificationHelper: NotificationHelper? = null
 ) : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -23,7 +23,7 @@ class ValidationEmailActivity(
         val validateEmailButton: Button = findViewById(R.id.validateEmailButton)
 
         validateEmailButton.setOnClickListener {
-            authViewModel.checkEmail() {isSuccess, message ->
+            authService.checkEmail { isSuccess, message ->
                 notificationHelper!!.showToast(message)
                 if (isSuccess) {
                     val intent = Intent(this, MainScreenActivity::class.java)

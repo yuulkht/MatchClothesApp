@@ -28,12 +28,12 @@ class AddOutfitFragment (
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_add_outfit, container, false)
+
         val uploadImage = view.findViewById<Button>(R.id.uploadImage)
         val backLink = view.findViewById<ImageView>(R.id.backButton)
         val outfitTitle = view.findViewById<EditText>(R.id.outfitTitle)
         val outfitInfo = view.findViewById<EditText>(R.id.outfitInfo)
         val saveOutfitButton = view.findViewById<Button>(R.id.saveOutfit)
-        val clothesContainer = view.findViewById<RecyclerView>(R.id.clothesContainer)
 
         addOutfitService.setupClothesRecyclerView(clothes, view, requireActivity())
 

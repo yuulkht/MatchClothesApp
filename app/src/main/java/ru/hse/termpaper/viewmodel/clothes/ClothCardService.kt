@@ -4,40 +4,25 @@ import android.content.Context
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
-import ru.hse.termpaper.R
 import ru.hse.termpaper.model.entity.Cloth
 import ru.hse.termpaper.model.repository.clothes.ClothCategoryRepository
 import ru.hse.termpaper.model.repository.clothes.ClothSeasonRepository
-import ru.hse.termpaper.view.adapters.ClothCategoryAdapter
-import ru.hse.termpaper.view.adapters.SeasonAdapter
+import ru.hse.termpaper.viewmodel.recyclerview.ClothRecyclerViewService
 
 class ClothCardService(
     private val clothCategoryRepository: ClothCategoryRepository = ClothCategoryRepository(),
     private val clothSeasonRepository: ClothSeasonRepository = ClothSeasonRepository(),
-    private val clothesService: ClothesModelService = ClothesModelService()
+    private val clothesService: ClothesModelService = ClothesModelService(),
+    private val clothRecyclerViewService: ClothRecyclerViewService = ClothRecyclerViewService()
 ) {
 
     fun setupCategoryRecyclerView(cloth: Cloth, view: View, context: Context) {
-        val categoryRecyclerView = view.findViewById<RecyclerView>(R.id.categoryRecyclerView)
-        categoryRecyclerView.layoutManager = LinearLayoutManager(context)
-
-        clothCategoryRepository.getCategoriesForCloth(cloth) { _, categories ->
-            val categoryAdapter = ClothCategoryAdapter(categories.distinct())
-            categoryRecyclerView.adapter = categoryAdapter
-        }
+        clothRecyclerViewService.setupCategoryRecyclerView(cloth,view,context)
     }
 
     fun setupSeasonRecyclerView(cloth: Cloth, view: View, context: Context) {
-        val seasonRecyclerView = view.findViewById<RecyclerView>(R.id.seasonRecyclerView)
-        seasonRecyclerView.layoutManager = LinearLayoutManager(context)
-
-        clothSeasonRepository.getSeasonsForCloth(cloth) { _, seasons ->
-            val seasonAdapter = SeasonAdapter(seasons.distinct())
-            seasonRecyclerView.adapter = seasonAdapter
-        }
+        clothRecyclerViewService.setupSeasonRecyclerView(cloth, view, context)
     }
 
     fun fillClothInfo(cloth: Cloth, clothTitle: TextView, additionalInfo: TextView, clothImage: ImageView) {

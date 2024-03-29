@@ -25,16 +25,14 @@ class ChooseClothesForOutfit(
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_choose_clothes, container, false)
+
         val nextButton = view.findViewById<Button>(R.id.next)
         val backLink = view.findViewById<ImageView>(R.id.backButton)
         val addingText = view.findViewById<TextView>(R.id.adding)
+
         addingText.text = "Добавление образа"
 
         val mainScreenActivity = requireActivity() as MainScreenActivity
-
-        backLink.setOnClickListener {
-            mainScreenActivity.replaceFragment(mainScreenActivity.outfitsFragment, R.id.outfitsPage)
-        }
 
         chooseClothesForService.setupClothRecyclerView(clothesInOutfit,view, requireContext())
 
@@ -46,6 +44,10 @@ class ChooseClothesForOutfit(
             } else {
                 mainActivity.replaceFragment(AddOutfitFragment(clothesInOutfit), R.id.outfitsPage)
             }
+        }
+
+        backLink.setOnClickListener {
+            mainScreenActivity.replaceFragment(mainScreenActivity.outfitsFragment, R.id.outfitsPage)
         }
 
         return view

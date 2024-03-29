@@ -18,12 +18,11 @@ import ru.hse.termpaper.model.repository.outfits.OutfitsRepository
 import ru.hse.termpaper.view.adapters.OutfitsAdapter
 import ru.hse.termpaper.view.main.MainScreenActivity
 import ru.hse.termpaper.view.outfits.OutfitCardFragment
+import ru.hse.termpaper.viewmodel.calendar.CalendarService
 
 class OutfitsOfDayFragment(
     private var calendarEvent: CalendarEvent,
-    private val calendarRepository: CalendarRepository = CalendarRepository(),
-    private var outfitsAdapter: OutfitsAdapter? = null,
-    private val outfitsRepository: OutfitsRepository = OutfitsRepository()
+    private val calendarService: CalendarService = CalendarService()
 
     ) : Fragment() {
 
@@ -37,7 +36,6 @@ class OutfitsOfDayFragment(
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val outfitsContainer = view.findViewById<RecyclerView>(R.id.outfitsContainer)
         val addOutfitButton = view.findViewById<LinearLayout>(R.id.addOutfitButton)
         val backButton = view.findViewById<ImageView>(R.id.backButton)
         val date = view.findViewById<TextView>(R.id.date)
@@ -50,34 +48,11 @@ class OutfitsOfDayFragment(
             mainScreenActivity.replaceFragment(mainScreenActivity.calendarFragment, R.id.homePage)
         }
 
-        putOutfitToDay(view, requireActivity())
+        calendarService.putOutfitToDay(calendarEvent, view, requireActivity())
 
 
         addOutfitButton.setOnClickListener {
             mainScreenActivity.replaceFragment(AddOutfitsToDayFragment(calendarEvent), R.id.homePage)
-        }
-    }
-
-    fun setupOutfitsRecyclerView(outfits: MutableList<Outfit>, view: View, activity: Activity, ) {
-        val outfitsContainer: RecyclerView = view.findViewById(R.id.outfitsContainer)
-        val mainScreenActivity = activity as MainScreenActivity
-
-        val adapter = OutfitsAdapter(outfits.distinct(), object : OutfitsAdapter.OnItemClickListener {
-            override fun onItemClick(position: Int) {
-                val chosenOutfit = outfits[position]
-                outfitsRepository.getClothesForOutfit(chosenOutfit) {clothes ->
-                    mainScreenActivity.replaceFragment(OutfitCardFragment(chosenOutfit, clothes, mainScreenActivity.calendarFragment, R.id.homePage), R.id.homePage)
-                }
-
-            }
-        })
-        outfitsContainer.adapter = adapter
-        this.outfitsAdapter = adapter
-    }
-
-    fun putOutfitToDay(view: View, activity: Activity) {
-        calendarRepository.getOutfitsFromCalendarEvent(calendarEvent) { _, outfits ->
-            setupOutfitsRecyclerView(outfits, view, activity)
         }
     }
 

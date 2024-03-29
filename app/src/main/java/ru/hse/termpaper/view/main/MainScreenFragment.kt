@@ -12,7 +12,7 @@ import ru.hse.termpaper.R
 import ru.hse.termpaper.viewmodel.authentication.AuthService
 
 class MainScreenFragment(
-    private var authViewModel: AuthService = AuthService()
+    private var authService: AuthService = AuthService()
 ) : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -28,7 +28,7 @@ class MainScreenFragment(
         val settingsLink = view.findViewById<ImageView>(R.id.settings)
         val usernameText = view.findViewById<TextView>(R.id.username)
 
-        usernameText.text = authViewModel.getUsername()
+        usernameText.text = authService.getUsername()
 
         val mainScreenActivity = requireActivity() as MainScreenActivity
 

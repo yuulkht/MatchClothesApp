@@ -6,8 +6,6 @@ import android.net.Uri
 import android.view.View
 import android.widget.ImageView
 import androidx.activity.result.ActivityResultLauncher
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.canhub.cropper.CropImageContractOptions
 import com.canhub.cropper.CropImageOptions
 import com.canhub.cropper.CropImageView
@@ -20,12 +18,7 @@ import ru.hse.termpaper.model.repository.outfits.OutfitCategoryRepository
 import ru.hse.termpaper.model.repository.outfits.OutfitSeasonRepository
 import ru.hse.termpaper.model.repository.outfits.OutfitsRepository
 import ru.hse.termpaper.view.main.NotificationHelper
-import ru.hse.termpaper.view.adapters.ClothCategoryCheckboxAdapter
-import ru.hse.termpaper.view.adapters.ClothesAdapter
-import ru.hse.termpaper.view.adapters.OutfitCategoryCheckboxAdapter
-import ru.hse.termpaper.view.adapters.SeasonCheckboxAdapter
-import ru.hse.termpaper.view.clothes.ClothCardFragment
-import ru.hse.termpaper.view.main.MainScreenActivity
+import ru.hse.termpaper.viewmodel.recyclerview.OutfitRecyclerViewService
 
 class AddOutfitService(
     private val outfitCategoryRepository: OutfitCategoryRepository = OutfitCategoryRepository(),
@@ -33,7 +26,8 @@ class AddOutfitService(
     private val outfitsRepository: OutfitsRepository = OutfitsRepository(),
     private val outfitCategories: MutableList<OutfitCategory> = mutableListOf(),
     private val outfitSeasons: MutableList<Season> = mutableListOf(),
-    private var selectedImageUri: Uri? = null
+    private var selectedImageUri: Uri? = null,
+    private val outfitRecyclerViewService: OutfitRecyclerViewService = OutfitRecyclerViewService()
 ) {
     fun startCrop(cropImage: ActivityResultLauncher<CropImageContractOptions>) {
         cropImage.launch(
@@ -62,47 +56,17 @@ class AddOutfitService(
     }
 
     fun setupClothesRecyclerView(clothes: MutableList<Cloth>, view: View, activity: Activity, ) {
-        val clothesContainer: RecyclerView = view.findViewById(R.id.clothesContainer)
-
-        val adapter = ClothesAdapter(clothes.distinct(), object : ClothesAdapter.OnItemClickListener {
-            override fun onItemClick(position: Int) {}
-        })
-        clothesContainer.adapter = adapter
+        outfitRecyclerViewService.setupClothesRecyclerView(clothes,view, activity)
     }
 
     fun setupCategoryRecyclerView(view: View, context: Context) {
-        outfitCategoryRepository.getOutfitCategories { categories ->
-            val categoryAdapter = OutfitCategoryCheckboxAdapter(categories.distinct(), object : OutfitCategoryCheckboxAdapter.OnCheckboxClickListener{
-                override fun onCheckboxClicked(position: Int, isChecked: Boolean) {
-                    val chosenCategory = categories[position]
-                    if (isChecked) {
-                        outfitCategories.add(chosenCategory)
-                    } else {
-                        outfitCategories.remove(chosenCategory)
-                    }
-                }
-            })
-            val categoryRecyclerView = view.findViewById<RecyclerView>(R.id.categoryCheckboxRecyclerView)
-            categoryRecyclerView.layoutManager = LinearLayoutManager(context)
-            categoryRecyclerView.adapter = categoryAdapter
+        outfitCategoryRepository.getOutfitCategories {
+            outfitRecyclerViewService.setupCategoryCheckboxRecyclerView(it, view, context)
         }
     }
 
     fun setupSeasonRecyclerView(view: View, context: Context) {
-        val seasons = outfitSeasonRepository.getSeasons()
-        val seasonAdapter = SeasonCheckboxAdapter(seasons.distinct(), object: SeasonCheckboxAdapter.OnCheckboxClickListener{
-            override fun onCheckboxClicked(position: Int, isChecked: Boolean) {
-                val chosenSeason = seasons[position]
-                if (isChecked) {
-                    outfitSeasons.add(chosenSeason)
-                } else {
-                    outfitSeasons.remove(chosenSeason)
-                }
-            }
-        })
-        val seasonRecyclerView = view.findViewById<RecyclerView>(R.id.seasonCheckboxRecyclerView)
-        seasonRecyclerView.layoutManager = LinearLayoutManager(context)
-        seasonRecyclerView.adapter = seasonAdapter
+        outfitRecyclerViewService.setupSeasonCheckboxRecyclerView(outfitSeasonRepository.getSeasons(), view, context)
     }
 
     fun saveOutfit(title: String, info: String, clothes: MutableList<Cloth>, notificationHelper: NotificationHelper) {

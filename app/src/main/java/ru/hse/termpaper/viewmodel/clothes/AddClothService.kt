@@ -5,8 +5,6 @@ import android.net.Uri
 import android.view.View
 import android.widget.ImageView
 import androidx.activity.result.ActivityResultLauncher
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.canhub.cropper.CropImageContractOptions
 import com.canhub.cropper.CropImageOptions
 import com.canhub.cropper.CropImageView
@@ -18,8 +16,7 @@ import ru.hse.termpaper.model.repository.clothes.ClothCategoryRepository
 import ru.hse.termpaper.model.repository.clothes.ClothSeasonRepository
 import ru.hse.termpaper.model.repository.clothes.ClothesRepository
 import ru.hse.termpaper.view.main.NotificationHelper
-import ru.hse.termpaper.view.adapters.ClothCategoryCheckboxAdapter
-import ru.hse.termpaper.view.adapters.SeasonCheckboxAdapter
+import ru.hse.termpaper.viewmodel.recyclerview.ClothRecyclerViewService
 
 class AddClothService(
     private val clothCategoryRepository: ClothCategoryRepository = ClothCategoryRepository(),
@@ -27,7 +24,8 @@ class AddClothService(
     private val clothesRepository: ClothesRepository = ClothesRepository(),
     private val clothCategories: MutableList<ClothCategory> = mutableListOf(),
     private val clothSeasons: MutableList<Season> = mutableListOf(),
-    private var selectedImageUri: Uri? = null
+    private var selectedImageUri: Uri? = null,
+    private val clothRecyclerViewService: ClothRecyclerViewService = ClothRecyclerViewService()
 ) {
     fun startCrop(cropImage: ActivityResultLauncher<CropImageContractOptions>) {
         cropImage.launch(
@@ -46,6 +44,8 @@ class AddClothService(
             ),
         )
     }
+
+    // Как будто общая штука
     fun setImage(uri: Uri?, view: View?, notificationHelper: NotificationHelper) {
         if (uri == null) {
             notificationHelper.showToast("Не удалось загрузить фотографию")
@@ -55,38 +55,11 @@ class AddClothService(
         }
     }
     fun setupCategoryRecyclerView(view: View, context: Context) {
-        clothCategoryRepository.getClothCategories { categories ->
-            val categoryAdapter = ClothCategoryCheckboxAdapter(categories.distinct(), object : ClothCategoryCheckboxAdapter.OnCheckboxClickListener{
-                override fun onCheckboxClicked(position: Int, isChecked: Boolean) {
-                    val chosenCategory = categories[position]
-                    if (isChecked) {
-                        clothCategories.add(chosenCategory)
-                    } else {
-                        clothCategories.remove(chosenCategory)
-                    }
-                }
-            })
-            val categoryRecyclerView = view.findViewById<RecyclerView>(R.id.categoryCheckboxRecyclerView)
-            categoryRecyclerView.layoutManager = LinearLayoutManager(context)
-            categoryRecyclerView.adapter = categoryAdapter
-        }
+        clothRecyclerViewService.setupCategoryCheckboxRecyclerView(clothCategories, view, context)
     }
 
     fun setupSeasonRecyclerView(view: View, context: Context) {
-        val seasons = clothSeasonRepository.getSeasons()
-        val seasonAdapter = SeasonCheckboxAdapter(seasons.distinct(), object: SeasonCheckboxAdapter.OnCheckboxClickListener{
-            override fun onCheckboxClicked(position: Int, isChecked: Boolean) {
-                val chosenSeason = seasons[position]
-                if (isChecked) {
-                    clothSeasons.add(chosenSeason)
-                } else {
-                    clothSeasons.remove(chosenSeason)
-                }
-            }
-        })
-        val seasonRecyclerView = view.findViewById<RecyclerView>(R.id.seasonCheckboxRecyclerView)
-        seasonRecyclerView.layoutManager = LinearLayoutManager(context)
-        seasonRecyclerView.adapter = seasonAdapter
+        clothRecyclerViewService.setupSeasonCheckboxRecyclerView(clothSeasons, view, context)
     }
 
     fun saveCloth(title: String, info: String, notificationHelper: NotificationHelper) {

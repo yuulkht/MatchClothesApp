@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import android.widget.Button
 import androidx.fragment.app.DialogFragment
 import ru.hse.termpaper.R
-import ru.hse.termpaper.view.clothes.ClothesFragment
 import ru.hse.termpaper.viewmodel.clothes.ChooseClothCategoryService
 import ru.hse.termpaper.viewmodel.outfits.ChooseOutfitCategoryService
 
@@ -19,11 +18,7 @@ class ChooseClothCategoryDialogFragment (
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.dialog_choose_cloth_category, container, false)
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+        val view = inflater.inflate(R.layout.dialog_choose_cloth_category, container, false)
 
         val resetButton = view.findViewById<Button>(R.id.resetButton)
 
@@ -31,10 +26,12 @@ class ChooseClothCategoryDialogFragment (
         chooseCategorySeasonService.setupSeasonRecyclerView(view, requireContext(), parentFragment, this)
 
         resetButton.setOnClickListener {
-            val parent = parentFragment as? ClothesFragment
-            parent?.clothesScreenService?.updateClothes(parent.searchEditText, mutableListOf(), true)
+            val parent = parentFragment as? OutfitsFragment
+            parent?.outfitsScreenService?.updateOutfits(parent.searchEditText, mutableListOf(), true)
             dismiss()
         }
+
+        return view
     }
 
     override fun onStart() {

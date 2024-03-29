@@ -3,14 +3,12 @@ package ru.hse.termpaper.viewmodel.outfits
 import android.content.Context
 import android.view.View
 import androidx.lifecycle.ViewModel
-import androidx.recyclerview.widget.RecyclerView
-import ru.hse.termpaper.R
 import ru.hse.termpaper.model.entity.Outfit
 import ru.hse.termpaper.model.repository.outfits.OutfitsRepository
-import ru.hse.termpaper.view.adapters.OutfitsCheckboxAdapter
+import ru.hse.termpaper.viewmodel.recyclerview.OutfitRecyclerViewService
 
 class OutfitsModelService(
-    private val outfitsRepository: OutfitsRepository = OutfitsRepository()
+    private val outfitsRepository: OutfitsRepository = OutfitsRepository(),
 ) : ViewModel() {
 
     fun getOutfitsForCurrentUser(callback: (MutableList<Outfit>) -> Unit) {
@@ -40,22 +38,8 @@ class OutfitsModelService(
     }
 
     fun setupOutfitRecyclerView(chosenOutfits: MutableList<Outfit>, view: View?, context: Context) {
-        getOutfitsForCurrentUser { outfits ->
-            val adapter = OutfitsCheckboxAdapter(
-                outfits.distinct(),
-                object : OutfitsCheckboxAdapter.OnCheckboxClickListener {
-                    override fun onCheckboxClicked(position: Int, isChecked: Boolean) {
-                        if (isChecked) {
-                            chosenOutfits.add(outfits[position])
-                        } else {
-                            chosenOutfits.remove(outfits[position])
-                        }
-                    }
-                })
-
-            val recyclerView = view?.findViewById<RecyclerView>(R.id.outfitsCheckboxContainer)
-            recyclerView?.adapter = adapter
-        }
+        val outfitRecyclerViewService: OutfitRecyclerViewService = OutfitRecyclerViewService()
+        outfitRecyclerViewService.setupOutfitCheckboxRecyclerView(chosenOutfits, view, context)
     }
 
 }

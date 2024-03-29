@@ -8,8 +8,9 @@ import ru.hse.termpaper.R
 import ru.hse.termpaper.model.entity.Outfit
 import ru.hse.termpaper.model.repository.outfits.OutfitsRepository
 import ru.hse.termpaper.view.adapters.OutfitsAdapter
-import ru.hse.termpaper.view.outfits.OutfitCardFragment
 import ru.hse.termpaper.view.main.MainScreenActivity
+import ru.hse.termpaper.view.outfits.OutfitCardFragment
+import ru.hse.termpaper.viewmodel.recyclerview.OutfitRecyclerViewService
 
 class OutfitsScreenService(
     private val outfitsModelService: OutfitsModelService = OutfitsModelService(),
@@ -17,24 +18,8 @@ class OutfitsScreenService(
     private var currentSearchText: String = "",
     private var outfitsList: MutableList<Outfit> = mutableListOf(),
     private var filteredList: MutableList<Outfit> = mutableListOf(),
-    private var adapter: OutfitsAdapter? = null
+    private var adapter: OutfitsAdapter? = null,
 ) {
-    fun setupOutfitsRecyclerView(view: View, activity: Activity, ) {
-        val outfitsContainer: RecyclerView = view.findViewById(R.id.outfitsContainer)
-
-        val mainScreenActivity = activity as MainScreenActivity
-
-        val adapter = OutfitsAdapter(filteredList.distinct(), object : OutfitsAdapter.OnItemClickListener {
-            override fun onItemClick(position: Int) {
-                val chosenOutfit = filteredList[position]
-                outfitsRepository.getClothesForOutfit(chosenOutfit) {clothes ->
-                    mainScreenActivity.replaceFragment(OutfitCardFragment(chosenOutfit, clothes, mainScreenActivity.outfitsFragment, R.id.outfitsPage), R.id.outfitsPage)
-                }
-            }
-        })
-        outfitsContainer.adapter = adapter
-        this.adapter = adapter
-    }
 
     fun loadOutfits(curSearchText: String) {
         currentSearchText = curSearchText
@@ -55,13 +40,28 @@ class OutfitsScreenService(
         searchEditText?.text?.clear()
         if (outfits.isEmpty() && reset) {
             filteredList = outfitsList
-            adapter?.updateItems(filteredList)
         } else if (outfits.isEmpty()){
             filteredList.clear()
-            adapter?.updateItems(filteredList)
         } else {
             filteredList = outfits
-            adapter?.updateItems(filteredList)
         }
+        adapter?.updateItems(filteredList)
+    }
+
+    fun setupOutfitsRecyclerView(view: View, activity: Activity, ) {
+        val outfitsContainer: RecyclerView = view.findViewById(R.id.outfitsContainer)
+
+        val mainScreenActivity = activity as MainScreenActivity
+
+        val adapter = OutfitsAdapter(filteredList.distinct(), object : OutfitsAdapter.OnItemClickListener {
+            override fun onItemClick(position: Int) {
+                val chosenOutfit = filteredList[position]
+                outfitsRepository.getClothesForOutfit(chosenOutfit) {clothes ->
+                    mainScreenActivity.replaceFragment(OutfitCardFragment(chosenOutfit, clothes, mainScreenActivity.outfitsFragment, R.id.outfitsPage), R.id.outfitsPage)
+                }
+            }
+        })
+        outfitsContainer.adapter = adapter
+        this.adapter = adapter
     }
 }

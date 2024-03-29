@@ -16,11 +16,10 @@ import ru.hse.termpaper.viewmodel.clothes.ClothesScreenService
 
 class ClothesFragment(
     val clothesScreenService: ClothesScreenService = ClothesScreenService(),
-    var searchEditText: EditText? = null
-) : Fragment() {
-
-    private var currentSearchText: String = ""
+    var searchEditText: EditText? = null,
+    private var currentSearchText: String = "",
     private val dialogFragment: AddClothDialogFragment = AddClothDialogFragment()
+) : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -28,20 +27,12 @@ class ClothesFragment(
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_clothes, container, false)
+
         val addButton = view.findViewById<LinearLayout>(R.id.addButton)
         val chooseCategoryImageView = view.findViewById<ImageView>(R.id.chooseClothCategory)
 
-        addButton.setOnClickListener {
-            dialogFragment.show(requireActivity().supportFragmentManager, "AddItemDialog")
-        }
-
-        chooseCategoryImageView.setOnClickListener {
-            val dialogFragment = ChooseClothCategoryDialogFragment()
-            dialogFragment.show(getChildFragmentManager(), "ChooseClothCategoryDialog")
-        }
 
         clothesScreenService.setupClothesRecyclerView(view, requireActivity())
-
         clothesScreenService.loadClothes("")
 
         searchEditText = view.findViewById(R.id.searchEditText)
@@ -57,6 +48,15 @@ class ClothesFragment(
                 clothesScreenService.updateFilteredList(searchText)
             }
         })
+
+        addButton.setOnClickListener {
+            dialogFragment.show(requireActivity().supportFragmentManager, "AddItemDialog")
+        }
+
+        chooseCategoryImageView.setOnClickListener {
+            val dialogFragment = ChooseClothCategoryDialogFragment()
+            dialogFragment.show(getChildFragmentManager(), "ChooseClothCategoryDialog")
+        }
 
         return view
     }

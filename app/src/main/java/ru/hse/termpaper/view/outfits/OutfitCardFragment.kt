@@ -32,18 +32,20 @@ class OutfitCardFragment (
     ): View? {
         val view = inflater.inflate(R.layout.fragment_outfit_card, container, false)
 
-        val outfitTitle: TextView = view.findViewById(R.id.outfitTitle)
-        val outfitImage: ImageView = view.findViewById(R.id.outfitImage)
-        val additionalInfo: TextView = view.findViewById(R.id.additionalInfoText)
-        val backLink: ImageView = view.findViewById(R.id.backButton)
-        val deleteButton: ImageView = view.findViewById(R.id.deleteButton)
-        val clothesContainer: RecyclerView = view.findViewById(R.id.clothesContainer)
+        val outfitTitle = view.findViewById<TextView>(R.id.outfitTitle)
+        val outfitImage = view.findViewById<ImageView>(R.id.outfitImage)
+        val additionalInfo = view.findViewById<TextView>(R.id.additionalInfoText)
+        val backLink = view.findViewById<ImageView>(R.id.backButton)
+        val deleteButton = view.findViewById<ImageView>(R.id.deleteButton)
 
         val notificationHelper = NotificationHelper(requireContext())
 
         val mainScreenActivity = requireActivity() as MainScreenActivity
 
         outfitCardService.setupClothesRecyclerView(clothes, view, requireActivity(), this)
+        outfitCardService.setupCategoryRecyclerView(outfit, view, requireContext())
+        outfitCardService.setupSeasonRecyclerView(outfit, view, requireContext())
+        outfitCardService.fillOutfitInfo(outfit, outfitTitle, additionalInfo, outfitImage)
 
         backLink.setOnClickListener {
             mainScreenActivity.replaceFragment(previousFragment, menuSection)
@@ -55,10 +57,6 @@ class OutfitCardFragment (
                 mainScreenActivity.replaceFragment(mainScreenActivity.outfitsFragment, R.id.outfitsPage)
             }
         }
-
-        outfitCardService.setupCategoryRecyclerView(outfit, view, requireContext())
-        outfitCardService.setupSeasonRecyclerView(outfit, view, requireContext())
-        outfitCardService.fillOutfitInfo(outfit, outfitTitle, additionalInfo, outfitImage)
 
         return view
     }

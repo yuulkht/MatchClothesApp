@@ -14,13 +14,14 @@ import ru.hse.termpaper.model.entity.Outfit
 import ru.hse.termpaper.model.repository.calendar.CalendarRepository
 import ru.hse.termpaper.view.main.MainScreenActivity
 import ru.hse.termpaper.view.main.NotificationHelper
+import ru.hse.termpaper.viewmodel.calendar.CalendarService
 import ru.hse.termpaper.viewmodel.outfits.OutfitsModelService
 
 class AddOutfitsToDayFragment(
     private val calendarEvent: CalendarEvent,
-    private val calendarRepository: CalendarRepository = CalendarRepository(),
     private val chooseOutfitsForService: OutfitsModelService = OutfitsModelService(),
     private val outfitsInDay: MutableList<Outfit> = mutableListOf(),
+    private val calendarService: CalendarService = CalendarService()
 ) : Fragment() {
 
 
@@ -33,39 +34,24 @@ class AddOutfitsToDayFragment(
         val nextButton = view.findViewById<Button>(R.id.next)
         val backLink = view.findViewById<ImageView>(R.id.backButton)
         val addingText = view.findViewById<TextView>(R.id.adding)
+
         addingText.text = "Добавление образов"
 
-        deleteAllOutfits(calendarEvent)
+        calendarService.deleteAllOutfits(calendarEvent)
 
         val mainScreenActivity = requireActivity() as MainScreenActivity
+
+        chooseOutfitsForService.setupOutfitRecyclerView(outfitsInDay,view, requireContext())
 
         backLink.setOnClickListener {
             mainScreenActivity.replaceFragment(mainScreenActivity.calendarFragment, R.id.homePage)
         }
 
-        chooseOutfitsForService.setupOutfitRecyclerView(outfitsInDay,view, requireContext())
-
         nextButton.setOnClickListener {
             val mainActivity = requireActivity() as MainScreenActivity
-            if (outfitsInDay.isEmpty()) {
-                NotificationHelper(requireContext()).showToast("Вы не выбрали образы")
-            }
-            else {
-                for (outfit in outfitsInDay) {
-                    calendarRepository.addOutfitToCalendarEvent(outfit, calendarEvent) {_,_-> }
-                }
-            }
-            mainActivity.replaceFragment(CalendarFragment(calendarEvent), R.id.homePage)
+            calendarService.saveOutfitsToDay(outfitsInDay, calendarEvent, mainActivity, requireContext())
         }
 
         return view
-    }
-
-    fun deleteAllOutfits(calendarEvent: CalendarEvent) {
-        calendarRepository.getOutfitsFromCalendarEvent(calendarEvent) {_,outfits ->
-            for (outfit in outfits) {
-                calendarRepository.deleteOutfitFromDay(outfit, calendarEvent){_,_->}
-            }
-        }
     }
 }

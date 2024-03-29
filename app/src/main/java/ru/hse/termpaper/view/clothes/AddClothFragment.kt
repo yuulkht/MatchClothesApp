@@ -15,7 +15,7 @@ import ru.hse.termpaper.viewmodel.clothes.AddClothService
 import com.canhub.cropper.CropImageContract
 
 class AddClothFragment (
-    private val addClothViewModel: AddClothService = AddClothService(),
+    private val addClothService: AddClothService = AddClothService(),
 ): Fragment(){
 
     override fun onCreateView(
@@ -24,6 +24,7 @@ class AddClothFragment (
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_add_cloth, container, false)
+
         val uploadImage = view.findViewById<Button>(R.id.uploadImage)
         val backLink = view.findViewById<ImageView>(R.id.backButton)
         val clothTitle = view.findViewById<EditText>(R.id.clothTitle)
@@ -32,30 +33,30 @@ class AddClothFragment (
 
         val cropImage = registerForActivityResult(CropImageContract()) { result ->
             if (result.isSuccessful) {
-                addClothViewModel.setImage(result.uriContent, view, NotificationHelper(requireContext()))
+                addClothService.setImage(result.uriContent, view, NotificationHelper(requireContext()))
             } else {
-                addClothViewModel.setImage(null, view, NotificationHelper(requireContext()))
+                addClothService.setImage(null, view, NotificationHelper(requireContext()))
             }
         }
 
         val mainScreenActivity = requireActivity() as MainScreenActivity
 
 
-        addClothViewModel.setupCategoryRecyclerView(view, requireContext())
-        addClothViewModel.setupSeasonRecyclerView(view, requireContext())
+        addClothService.setupCategoryRecyclerView(view, requireContext())
+        addClothService.setupSeasonRecyclerView(view, requireContext())
 
         backLink.setOnClickListener {
             mainScreenActivity.replaceFragment(mainScreenActivity.clothesFragment, R.id.clothesPage)
         }
 
         uploadImage.setOnClickListener {
-            addClothViewModel.startCrop(cropImage)
+            addClothService.startCrop(cropImage)
         }
 
         saveClothButton.setOnClickListener {
             val title = clothTitle.text.toString().trim()
             val info = clothInfo.text.toString().trim()
-            addClothViewModel.saveCloth(title, info,  NotificationHelper(requireContext()))
+            addClothService.saveCloth(title, info,  NotificationHelper(requireContext()))
             mainScreenActivity.replaceFragment(mainScreenActivity.clothesFragment, R.id.clothesPage)
         }
 
