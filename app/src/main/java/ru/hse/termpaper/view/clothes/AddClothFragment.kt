@@ -8,11 +8,11 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import androidx.fragment.app.Fragment
-import ru.hse.termpaper.R
-import ru.hse.termpaper.view.main.NotificationHelper
-import ru.hse.termpaper.view.main.MainScreenActivity
-import ru.hse.termpaper.viewmodel.clothes.AddClothService
 import com.canhub.cropper.CropImageContract
+import ru.hse.termpaper.R
+import ru.hse.termpaper.view.main.MainScreenActivity
+import ru.hse.termpaper.view.main.NotificationHelper
+import ru.hse.termpaper.viewmodel.clothes.AddClothService
 
 class AddClothFragment (
     private val addClothService: AddClothService = AddClothService(),

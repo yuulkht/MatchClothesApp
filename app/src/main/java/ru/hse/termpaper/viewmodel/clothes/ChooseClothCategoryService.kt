@@ -5,7 +5,7 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import ru.hse.termpaper.model.repository.clothes.ClothCategoryRepository
 import ru.hse.termpaper.model.repository.clothes.ClothSeasonRepository
-import ru.hse.termpaper.view.outfits.ChooseClothCategoryDialogFragment
+import ru.hse.termpaper.view.clothes.ChooseClothCategoryDialogFragment
 import ru.hse.termpaper.viewmodel.recyclerview.ClothRecyclerViewService
 
 class ChooseClothCategoryService (

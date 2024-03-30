@@ -11,7 +11,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:text="Добавление образа"
+        android:text="@string/addingOutfit"
         android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -27,6 +27,7 @@
         android:layout_height="30dp"
         android:layout_alignParentStart="true"
         android:src="@drawable/back"
+        android:maxWidth="250dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.102"
@@ -52,8 +53,7 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/photoInput"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Фотография">
+                android:layout_height="wrap_content">
 
                 <ImageView
                     android:id="@+id/outfitImage"
@@ -71,14 +71,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:backgroundTint="#C1D8E7"
-                android:text="Загрузить фотографию"
+                android:text="@string/uploadPhoto"
                 android:textColor="#000000"
                 android:layout_marginTop="20dp"
                 android:layout_gravity="center_horizontal"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Название"
+                android:text="@string/title"
                 android:textStyle="bold"
                 android:textSize="22sp"
                 android:layout_marginTop="20dp"
@@ -91,14 +91,14 @@
                 android:inputType="text"
                 android:textColorHint="#6a6a6a"
                 android:layout_marginStart="10dp"
-                android:hint="Введите название образа" />
+                android:hint="@string/inputOutfitTitle" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:padding="10dp"
-                android:text="Вещи в образе"
+                android:text="@string/clothesInOutfit"
                 android:textSize="22sp"
                 android:textStyle="bold" />
 
@@ -117,7 +117,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Категории"
+                android:text="@string/categories"
                 android:textStyle="bold"
                 android:textSize="22sp"
                 android:layout_marginTop="20dp"
@@ -133,7 +133,7 @@
                 android:layout_width="wrap_content"
                 android:layout_marginTop="20dp"
                 android:layout_height="wrap_content"
-                android:text="Сезон"
+                android:text="@string/season"
                 android:textStyle="bold"
                 android:textSize="22sp"
                 android:padding="10dp"/>
@@ -147,7 +147,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Дополнительная информация"
+                android:text="@string/additionalInfo"
                 android:textStyle="bold"
                 android:textSize="22sp"
                 android:layout_marginTop="20dp"
@@ -160,14 +160,14 @@
                 android:inputType="text"
                 android:textColorHint="#6a6a6a"
                 android:layout_marginStart="10dp"
-                android:hint="Особенности образа" />
+                android:hint="@string/additionalInfoOutfitDescription" />
 
             <Button
                 android:id="@+id/saveOutfit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:backgroundTint="#C1D8E7"
-                android:text="Сохранить образ"
+                android:text="@string/saveOutfit"
                 android:textColor="#000000"
                 android:layout_marginTop="20dp"
                 android:layout_marginEnd="40dp"

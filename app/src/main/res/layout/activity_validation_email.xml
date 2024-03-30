@@ -24,7 +24,7 @@
         android:id="@+id/textView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="На вашу почту отправлено письмо \n с подтверждением регистрации"
+        android:text="@string/validationInfo"
         android:gravity="center"
         android:layout_marginTop="20dp"
         android:textSize="20sp"/>
@@ -33,7 +33,7 @@
         android:id="@+id/validateEmailButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Я подтвердил(а) email"
+        android:text="@string/validationStatus"
         android:backgroundTint="#C1D8E7"
         android:textColor="#000000"
         android:layout_marginTop="40dp"/>

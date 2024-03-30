@@ -22,7 +22,7 @@ class OutfitCategoryRepository(
             if (outfitCategoryId != null) {
                 outfitCategory.id = outfitCategoryId
             }
-            outfitCategory.user_id = userId
+            outfitCategory.userId = userId
             val outfitCategoryData = hashMapOf(
                 "id" to outfitCategoryId,
                 "user_id" to userId,

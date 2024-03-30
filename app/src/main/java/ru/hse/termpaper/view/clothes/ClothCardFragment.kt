@@ -9,8 +9,8 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import ru.hse.termpaper.R
 import ru.hse.termpaper.model.entity.Cloth
-import ru.hse.termpaper.view.main.NotificationHelper
 import ru.hse.termpaper.view.main.MainScreenActivity
+import ru.hse.termpaper.view.main.NotificationHelper
 import ru.hse.termpaper.viewmodel.clothes.ClothCardService
 import ru.hse.termpaper.viewmodel.clothes.ClothesModelService
 

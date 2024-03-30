@@ -11,7 +11,6 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import androidx.fragment.app.Fragment
 import ru.hse.termpaper.R
-import ru.hse.termpaper.view.clothes.AddClothDialogFragment
 import ru.hse.termpaper.viewmodel.outfits.OutfitsScreenService
 
 class OutfitsFragment(

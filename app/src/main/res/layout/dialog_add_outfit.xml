@@ -23,7 +23,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Добавить образ"
+            android:text="@string/addOutfit"
             android:textSize="20sp" />
     </LinearLayout>
 
@@ -44,7 +44,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Добавить категорию"
+            android:text="@string/addCategory"
             android:textSize="20sp" />
     </LinearLayout>
 

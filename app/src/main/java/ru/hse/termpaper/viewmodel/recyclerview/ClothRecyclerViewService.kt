@@ -20,11 +20,11 @@ import ru.hse.termpaper.view.adapters.ClothesCheckboxAdapter
 import ru.hse.termpaper.view.adapters.SeasonAdapter
 import ru.hse.termpaper.view.adapters.SeasonButtonAdapter
 import ru.hse.termpaper.view.adapters.SeasonCheckboxAdapter
+import ru.hse.termpaper.view.clothes.ChooseClothCategoryDialogFragment
 import ru.hse.termpaper.view.clothes.ClothCardFragment
 import ru.hse.termpaper.view.clothes.ClothesFragment
 import ru.hse.termpaper.view.main.MainScreenActivity
 import ru.hse.termpaper.view.main.NotificationHelper
-import ru.hse.termpaper.view.outfits.ChooseClothCategoryDialogFragment
 import ru.hse.termpaper.viewmodel.clothes.ClothesModelService
 
 class ClothRecyclerViewService(
@@ -34,6 +34,7 @@ class ClothRecyclerViewService(
 
 ) {
     fun setupCategoryCheckboxRecyclerView(clothCategories: MutableList<ClothCategory>, view: View, context: Context) {
+        clothCategories.clear()
         clothCategoryRepository.getClothCategories { categories ->
             val categoryAdapter = ClothCategoryCheckboxAdapter(categories.distinct(), object : ClothCategoryCheckboxAdapter.OnCheckboxClickListener{
                 override fun onCheckboxClicked(position: Int, isChecked: Boolean) {
@@ -51,8 +52,8 @@ class ClothRecyclerViewService(
         }
     }
 
-    // Сезоны вещи с чекбоксом
     fun setupSeasonCheckboxRecyclerView(curSeasons: MutableList<Season>, view: View, context: Context) {
+        curSeasons.clear()
         val seasons = clothSeasonRepository.getSeasons()
         val seasonAdapter = SeasonCheckboxAdapter(seasons.distinct(), object: SeasonCheckboxAdapter.OnCheckboxClickListener{
             override fun onCheckboxClicked(position: Int, isChecked: Boolean) {
@@ -69,7 +70,6 @@ class ClothRecyclerViewService(
         seasonRecyclerView.adapter = seasonAdapter
     }
 
-    // Кликабельные категории вещей с удалением
     fun setupCategoryClickRecyclerView(view: View, context: Context, parentFragment: Fragment?, curFragment: ChooseClothCategoryDialogFragment?) {
         clothCategoryRepository.getClothCategories { categories ->
             val categoryRecyclerView: RecyclerView = view.findViewById(R.id.categoryButtonRecyclerView)
@@ -95,7 +95,6 @@ class ClothRecyclerViewService(
         }
     }
 
-    // Кликабельные сезоны вещей с удалением
     fun setupSeasonClickRecyclerView(view: View, context: Context, parentFragment: Fragment?, curFragment: ChooseClothCategoryDialogFragment?) {
         val seasons = clothSeasonRepository.getSeasons()
         val seasonRecyclerView: RecyclerView = view.findViewById(R.id.seasonButtonRecyclerView)
@@ -112,7 +111,6 @@ class ClothRecyclerViewService(
         seasonRecyclerView.adapter = seasonAdapter
     }
 
-    // Просто категории вещи
     fun setupCategoryRecyclerView(cloth: Cloth, view: View, context: Context) {
         val categoryRecyclerView = view.findViewById<RecyclerView>(R.id.categoryRecyclerView)
         categoryRecyclerView.layoutManager = LinearLayoutManager(context)
@@ -123,7 +121,6 @@ class ClothRecyclerViewService(
         }
     }
 
-    // Просто сезоны вещи
     fun setupSeasonRecyclerView(cloth: Cloth, view: View, context: Context) {
         val seasonRecyclerView = view.findViewById<RecyclerView>(R.id.seasonRecyclerView)
         seasonRecyclerView.layoutManager = LinearLayoutManager(context)
@@ -134,9 +131,8 @@ class ClothRecyclerViewService(
         }
     }
 
-
-    // Вещи с чекбоксом
     fun setupClothesCheckboxRecyclerView(clothesInCategory: MutableList<Cloth>, view: View?, context: Context) {
+        clothesInCategory.clear()
         clothesModelService.getClothesForCurrentUser { clothes ->
             val adapter = ClothesCheckboxAdapter(
                 clothes.distinct(),

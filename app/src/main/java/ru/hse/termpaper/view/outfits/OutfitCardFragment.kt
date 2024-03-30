@@ -7,12 +7,11 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.RecyclerView
 import ru.hse.termpaper.R
 import ru.hse.termpaper.model.entity.Cloth
 import ru.hse.termpaper.model.entity.Outfit
-import ru.hse.termpaper.view.main.NotificationHelper
 import ru.hse.termpaper.view.main.MainScreenActivity
+import ru.hse.termpaper.view.main.NotificationHelper
 import ru.hse.termpaper.viewmodel.outfits.OutfitCardService
 import ru.hse.termpaper.viewmodel.outfits.OutfitsModelService
 

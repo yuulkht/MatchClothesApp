@@ -6,8 +6,8 @@ import android.widget.Button
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import ru.hse.termpaper.R
-import ru.hse.termpaper.view.main.NotificationHelper
 import ru.hse.termpaper.view.main.MainScreenActivity
+import ru.hse.termpaper.view.main.NotificationHelper
 import ru.hse.termpaper.viewmodel.authentication.AuthService
 
 class ValidationEmailActivity(

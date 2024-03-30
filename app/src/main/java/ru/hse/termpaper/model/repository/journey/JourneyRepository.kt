@@ -7,8 +7,8 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
-import ru.hse.termpaper.model.entity.Journey
 import ru.hse.termpaper.model.entity.Cloth
+import ru.hse.termpaper.model.entity.Journey
 import ru.hse.termpaper.model.entity.Outfit
 
 class JourneyRepository (
@@ -23,7 +23,7 @@ class JourneyRepository (
             if (journeyId != null) {
                 journey.id = journeyId
             }
-            journey.user_id = userId
+            journey.userId = userId
             val journeyData = hashMapOf(
                 "id" to journeyId,
                 "user_id" to userId,

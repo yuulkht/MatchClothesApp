@@ -11,7 +11,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:text="Добавление категории"
+        android:text="@string/addingCategory"
         android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -48,7 +48,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:padding="10dp"
-            android:text="Название"
+            android:text="@string/title"
             android:textSize="22sp"
             android:textStyle="bold" />
 
@@ -58,7 +58,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:ems="15"
-            android:hint="Введите название категории"
+            android:hint="@string/inputCategoryTitle"
             android:inputType="text"
             android:textColorHint="#6a6a6a" />
 
@@ -67,7 +67,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:padding="10dp"
-            android:text="Выберите образы"
+            android:text="@string/chooseOutfits"
             android:textSize="22sp"
             android:textStyle="bold" />
 
@@ -100,7 +100,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="end"
         android:backgroundTint="#C1D8E7"
-        android:text="Сохранить категорию"
+        android:text="@string/saveCategory"
         android:textColor="#000000"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

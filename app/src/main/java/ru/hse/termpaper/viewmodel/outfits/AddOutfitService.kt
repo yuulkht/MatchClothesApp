@@ -38,6 +38,8 @@ class AddOutfitService(
                     imageSourceIncludeGallery = true,
                     guidelines = CropImageView.Guidelines.ON,
                     cropShape = CropImageView.CropShape.RECTANGLE,
+                    aspectRatioX = 3,
+                    aspectRatioY = 4,
                     fixAspectRatio = true,
                     showCropLabel = true,
                     showCropOverlay = true,

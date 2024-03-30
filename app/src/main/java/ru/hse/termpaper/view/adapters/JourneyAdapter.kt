@@ -1,19 +1,16 @@
 package ru.hse.termpaper.view.adapters
 
-import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import ru.hse.termpaper.R
-import ru.hse.termpaper.model.entity.ClothCategory
 import ru.hse.termpaper.model.entity.Journey
 
 class JourneyAdapter(
-    private val journeys: List<Journey>,
+    private var journeys: List<Journey>,
     private val listener: OnItemClickListener? = null
 ) : RecyclerView.Adapter<JourneyAdapter.JourneyViewHolder>() {
 

@@ -20,7 +20,7 @@ class ClothesModelService(
 
     fun getClothesForCurrentUser(callback: (MutableList<Cloth>) -> Unit) {
         clothesRepository.getClothes { clothesList ->
-            callback(clothesList)
+            callback(clothesList.toMutableList())
         }
     }
 

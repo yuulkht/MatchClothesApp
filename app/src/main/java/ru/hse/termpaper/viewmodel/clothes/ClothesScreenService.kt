@@ -9,7 +9,6 @@ import ru.hse.termpaper.model.entity.Cloth
 import ru.hse.termpaper.view.adapters.ClothesAdapter
 import ru.hse.termpaper.view.clothes.ClothCardFragment
 import ru.hse.termpaper.view.main.MainScreenActivity
-import ru.hse.termpaper.viewmodel.recyclerview.ClothRecyclerViewService
 
 class ClothesScreenService(
     private val clothesModelService: ClothesModelService = ClothesModelService(),

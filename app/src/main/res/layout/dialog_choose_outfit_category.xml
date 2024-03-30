@@ -7,7 +7,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Выберите категорию или сезон"
+        android:text="@string/chooseCategoryOrSeason"
         android:textAppearance="?android:textAppearanceMedium"
         android:padding="16dp"
         android:gravity="center"
@@ -17,7 +17,7 @@
         android:layout_width="wrap_content"
         android:layout_marginTop="20dp"
         android:layout_height="wrap_content"
-        android:text="Категории"
+        android:text="@string/categories"
         android:textStyle="bold"
         android:textSize="22sp"
         android:padding="10dp"/>
@@ -33,7 +33,7 @@
         android:layout_width="wrap_content"
         android:layout_marginTop="20dp"
         android:layout_height="wrap_content"
-        android:text="Сезоны"
+        android:text="@string/seasons"
         android:textStyle="bold"
         android:textSize="22sp"
         android:padding="10dp"/>
@@ -56,7 +56,7 @@
             android:id="@+id/resetButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Сбросить"
+            android:text="@string/reset"
             android:layout_margin="8dp"
             android:backgroundTint="#C1D8E7"
             android:textColor="#000000"/>

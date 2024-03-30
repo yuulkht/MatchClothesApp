@@ -36,9 +36,8 @@
             android:id="@+id/username"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_marginLeft="40dp"
-            android:text="Username"
+            android:layout_marginStart="40dp"
+            android:text="@string/username"
 
             android:textSize="25sp"
             android:textStyle="bold" />
@@ -74,8 +73,7 @@
                     android:id="@+id/clothesText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentStart="true"
-                    android:text="Одежда"
+                    android:text="@string/wardrobe"
                     android:textSize="20sp"
                     android:textStyle="bold" />
             </LinearLayout>
@@ -102,7 +100,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentStart="true"
-                    android:text="Образы"
+                    android:text="@string/outfits"
                     android:textSize="20sp"
                     android:textStyle="bold" />
 
@@ -141,7 +139,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentStart="true"
-                    android:text="Календарь"
+                    android:text="@string/calendar"
                     android:textSize="20sp"
                     android:textStyle="bold" />
             </LinearLayout>
@@ -168,7 +166,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentStart="true"
-                    android:text="Путешествия"
+                    android:text="@string/journeys"
                     android:textSize="18sp"
                     android:textStyle="bold" />
             </LinearLayout>

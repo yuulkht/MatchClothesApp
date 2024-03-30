@@ -1,14 +1,16 @@
 package ru.hse.termpaper.view.main
 
-import ru.hse.termpaper.view.clothes.AddClothFragment
 import android.os.Bundle
+import androidx.activity.OnBackPressedCallback
+import androidx.activity.OnBackPressedDispatcher
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import ru.hse.termpaper.R
-import ru.hse.termpaper.view.clothes.AddClothCategoryFragment
 import ru.hse.termpaper.view.calendar.CalendarFragment
+import ru.hse.termpaper.view.clothes.AddClothCategoryFragment
+import ru.hse.termpaper.view.clothes.AddClothFragment
 import ru.hse.termpaper.view.clothes.ClothesFragment
 import ru.hse.termpaper.view.journeys.JourneyFragment
 import ru.hse.termpaper.view.outfits.AddOutfitCategoryFragment
@@ -54,6 +56,12 @@ class MainScreenActivity(
             }
         }
         replaceFragment(mainScreenFragment, R.id.homePage)
+
+        onBackPressedDispatcher.addCallback(this, object: OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                replaceFragment(mainScreenFragment, R.id.homePage)
+            }
+        })
     }
 
     fun replaceFragment(fragment: Fragment, menuItemId: Int) {

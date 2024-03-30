@@ -45,7 +45,7 @@ class SettingsFragment(
             val inputUserEmail = newEmail.text.toString().trim()
             NotificationHelper(requireContext()).showToast("Проверьте вашу новую почту и подтвердите ее")
             authService.changeEmail(inputUserEmail) {message ->
-                Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show()
+                NotificationHelper(requireContext()).showToast(message)
             }
         }
 

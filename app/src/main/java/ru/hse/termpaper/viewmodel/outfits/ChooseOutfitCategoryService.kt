@@ -9,8 +9,6 @@ import ru.hse.termpaper.view.outfits.ChooseOutfitCategoryDialogFragment
 import ru.hse.termpaper.viewmodel.recyclerview.OutfitRecyclerViewService
 
 class ChooseOutfitCategoryService (
-    private val outfitsCategoryRepository: OutfitCategoryRepository = OutfitCategoryRepository(),
-    private val outfitSeasonRepository: OutfitSeasonRepository = OutfitSeasonRepository(),
     private val outfitRecyclerViewService: OutfitRecyclerViewService = OutfitRecyclerViewService()
 ) {
 

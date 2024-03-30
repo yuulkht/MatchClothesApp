@@ -14,8 +14,6 @@ import ru.hse.termpaper.model.repository.outfits.OutfitSeasonRepository
 import ru.hse.termpaper.viewmodel.recyclerview.OutfitRecyclerViewService
 
 class OutfitCardService(
-    private val outfitCategoryRepository: OutfitCategoryRepository = OutfitCategoryRepository(),
-    private val outfitSeasonRepository: OutfitSeasonRepository = OutfitSeasonRepository(),
     private val outfitsService: OutfitsModelService = OutfitsModelService(),
     private val outfitRecyclerViewService: OutfitRecyclerViewService = OutfitRecyclerViewService()
 ) {

@@ -39,7 +39,7 @@ class OutfitsModelService(
     }
 
     fun setupOutfitRecyclerView(chosenOutfits: MutableList<Outfit>, view: View?, context: Context) {
-        val outfitRecyclerViewService: OutfitRecyclerViewService = OutfitRecyclerViewService()
+        val outfitRecyclerViewService = OutfitRecyclerViewService()
         outfitRecyclerViewService.setupOutfitCheckboxRecyclerView(chosenOutfits, view, context)
         isOutfitsLoaded = true
     }

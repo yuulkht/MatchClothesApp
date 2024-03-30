@@ -11,7 +11,6 @@
     tools:context=".view.authentication.LoginActivity">
 
     <ImageView
-        android:id="@+id/imageView4"
         android:layout_width="340dp"
         android:layout_height="308dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -27,7 +26,7 @@
         android:inputType="text"
         android:textColorHint="#6a6a6a"
         android:layout_marginTop="20dp"
-        android:hint="Введите email" />
+        android:hint="@string/enterEmail" />
 
     <EditText
         android:id="@+id/userPassword"
@@ -37,13 +36,13 @@
         android:inputType="text"
         android:textColorHint="#6a6a6a"
         android:layout_marginTop="20dp"
-        android:hint="Введите пароль" />
+        android:hint="@string/enterPassword" />
 
     <Button
         android:id="@+id/enterButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Войти"
+        android:text="@string/enter"
         android:backgroundTint="#C1D8E7"
         android:layout_marginTop="20dp"
         android:textColor="#000000" />
@@ -55,7 +54,7 @@
         android:layout_marginTop="10dp"
         android:clickable="true"
         android:focusable="true"
-        android:text="Зарегистрироваться"
+        android:text="@string/register"
         android:onClick="onRegisterLinkClicked"/>
 
 

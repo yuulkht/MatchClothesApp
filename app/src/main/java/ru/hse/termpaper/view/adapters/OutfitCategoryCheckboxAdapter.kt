@@ -3,11 +3,11 @@ package ru.hse.termpaper.view.adapters
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.CheckBox
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import ru.hse.termpaper.R
 import ru.hse.termpaper.model.entity.OutfitCategory
-import android.widget.CheckBox
 
 class OutfitCategoryCheckboxAdapter(
     private val categories: List<OutfitCategory>,

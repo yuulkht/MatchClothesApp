@@ -1,4 +1,4 @@
-package ru.hse.termpaper.view.outfits
+package ru.hse.termpaper.view.clothes
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,7 +8,6 @@ import android.widget.Button
 import androidx.fragment.app.DialogFragment
 import ru.hse.termpaper.R
 import ru.hse.termpaper.viewmodel.clothes.ChooseClothCategoryService
-import ru.hse.termpaper.viewmodel.outfits.ChooseOutfitCategoryService
 
 class ChooseClothCategoryDialogFragment (
     private val chooseCategorySeasonService: ChooseClothCategoryService = ChooseClothCategoryService(),
@@ -26,8 +25,8 @@ class ChooseClothCategoryDialogFragment (
         chooseCategorySeasonService.setupSeasonRecyclerView(view, requireContext(), parentFragment, this)
 
         resetButton.setOnClickListener {
-            val parent = parentFragment as? OutfitsFragment
-            parent?.outfitsScreenService?.updateOutfits(parent.searchEditText, mutableListOf(), true)
+            val parent = parentFragment as? ClothesFragment
+            parent?.clothesScreenService?.updateClothes(parent.searchEditText, mutableListOf(), true)
             dismiss()
         }
 

@@ -53,10 +53,6 @@ dependencies {
     implementation("com.google.firebase:firebase-analytics")
     implementation("com.google.firebase:firebase-auth")
     implementation("com.squareup.picasso:picasso:2.71828")
-
-    implementation("com.soundcloud.android:android-crop:1.0.1@aar")
-    implementation("com.github.bumptech.glide:glide:4.12.0")
-
     implementation("com.vanniktech:android-image-cropper:4.5.0")
 
 

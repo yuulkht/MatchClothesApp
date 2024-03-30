@@ -25,7 +25,7 @@
         android:layout_gravity="center_horizontal"
         android:adjustViewBounds="true"
         android:layout_marginTop="20dp"
-        android:text="title"
+        android:text="@string/title"
         android:textSize="15sp" />
 
     <CheckBox

@@ -16,7 +16,6 @@ class ClothSeasonRepository(
     fun addClothToSeason(cloth: Cloth, season: Season, callback: (Boolean, String) -> Unit) {
         val clothId = cloth.id
         val relationRef: DatabaseReference = database.child("cloth_season_mapping").push()
-        val relationId = relationRef.key
         val relationData = hashMapOf(
             "cloth_id" to clothId,
             "season" to season.name,
@@ -53,13 +52,11 @@ class ClothSeasonRepository(
 
                 val tasks = mutableListOf<Task<DataSnapshot>>()
 
-                // Создание списка задач для запросов к базе данных для каждого clothId
                 for (clothId in clothIds) {
                     val clothesQuery = database.child("clothes").child(clothId).get()
                     tasks.add(clothesQuery)
                 }
 
-                // Обработка результатов всех запросов после их завершения
                 Tasks.whenAllSuccess<DataSnapshot>(tasks)
                     .addOnSuccessListener { snapshots ->
                         for (snapshot in snapshots) {
@@ -68,8 +65,7 @@ class ClothSeasonRepository(
                         }
                         callback(true, clothesList)
                     }
-                    .addOnFailureListener { exception ->
-                        // Обработка ошибок, если таковые возникли при выполнении запросов
+                    .addOnFailureListener {
                         callback(false, mutableListOf())
                     }
             }
@@ -112,4 +108,3 @@ class ClothSeasonRepository(
     }
 
 }
-

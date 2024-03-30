@@ -10,7 +10,6 @@ import ru.hse.termpaper.model.repository.outfits.OutfitsRepository
 import ru.hse.termpaper.view.adapters.OutfitsAdapter
 import ru.hse.termpaper.view.main.MainScreenActivity
 import ru.hse.termpaper.view.outfits.OutfitCardFragment
-import ru.hse.termpaper.viewmodel.recyclerview.OutfitRecyclerViewService
 
 class OutfitsScreenService(
     private val outfitsModelService: OutfitsModelService = OutfitsModelService(),

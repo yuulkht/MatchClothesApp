@@ -4,7 +4,7 @@ import java.io.Serializable
 
 data class Cloth (
     var id: String = "",
-    var user_id: String = "",
+    var userId: String = "",
     val title: String = "",
     var photo: String = "",
     val information: String = "",

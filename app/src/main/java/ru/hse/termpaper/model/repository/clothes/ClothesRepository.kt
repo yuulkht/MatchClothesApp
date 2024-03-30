@@ -1,6 +1,7 @@
 package ru.hse.termpaper.model.repository.clothes
 
 import android.net.Uri
+import com.google.android.gms.tasks.Task
 import com.google.android.gms.tasks.Tasks
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
@@ -12,9 +13,6 @@ import com.google.firebase.database.ValueEventListener
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import ru.hse.termpaper.model.entity.Cloth
-import com.google.android.gms.tasks.Task
-import ru.hse.termpaper.model.entity.Outfit
-import ru.hse.termpaper.model.repository.outfits.OutfitsRepository
 
 
 class ClothesRepository(
@@ -31,11 +29,11 @@ class ClothesRepository(
             if (clothId != null) {
                 cloth.id = clothId
             }
-            cloth.user_id = userId
+            cloth.userId = userId
 
             val clothData = hashMapOf(
                 "id" to cloth.id,
-                "user_id" to cloth.user_id,
+                "user_id" to cloth.userId,
                 "title" to cloth.title,
                 "photo" to cloth.id,
                 "information" to cloth.information,
@@ -109,62 +107,97 @@ class ClothesRepository(
         val clothId = cloth.id
         val clothRef = database.child("clothes").child(clothId)
         val imageRef = dataStorage.child(clothId)
+        val clothesInOutfitRef = database.child("clothes_in_outfit").orderByChild("cloth_id").equalTo(clothId)
+        val clothesInCategoryRef = database.child("cloth_category_mapping").orderByChild("cloth_id").equalTo(clothId)
+        val clothesInSeasonRef = database.child("cloth_season_mapping").orderByChild("cloth_id").equalTo(clothId)
+        val clothesInCalendarEventRef = database.child("clothes_in_calendar_event").orderByChild("cloth_id").equalTo(clothId)
+        val clothesInJourneyRef = database.child("clothes_in_journey").orderByChild("cloth_id").equalTo(clothId)
+
         val tasks = mutableListOf<Task<Void>>()
 
-        val clothesInOutfitRef = database.child("clothes_in_outfit")
-        val clothesInOutfitQuery = clothesInOutfitRef.orderByChild("cloth_id").equalTo(clothId)
-
-        clothesInOutfitQuery.addListenerForSingleValueEvent(object : ValueEventListener {
+        clothesInCategoryRef.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
-                val outfitIds = mutableListOf<String>()
-                for (clothesInOutfitSnapshot in dataSnapshot.children) {
-                    val outfitId = clothesInOutfitSnapshot.child("outfit_id").getValue(String::class.java)
-                    outfitId?.let {
-                        outfitIds.add(it)
-                    }
+                dataSnapshot.children.forEach { clothesInCategorySnapshot ->
+                    val clothesInCategoryKey = clothesInCategorySnapshot.key ?: ""
+                    val clothesInCategoryChildRef = database.child("cloth_category_mapping").child(clothesInCategoryKey)
+                    tasks.add( clothesInCategoryChildRef.removeValue())
                 }
-
-                for (outfitId in outfitIds) {
-                    val outfitRef = database.child("outfits").child(outfitId)
-                    outfitRef.addListenerForSingleValueEvent(object : ValueEventListener {
-                        override fun onDataChange(snapshot: DataSnapshot) {
-                            val outfit = snapshot.getValue(Outfit::class.java)
-                            outfit?.let {
-                                OutfitsRepository().deleteOutfit(it) { success, message ->
-                                    if (!success) {
-                                        tasks.add(Tasks.forException(Exception(message)))
-                                    }
-                                }
-                            }
-                        }
-
-                        override fun onCancelled(error: DatabaseError) {
-                            tasks.add(Tasks.forException(Exception("Ошибка при получении аутфита")))
-                        }
-                    })
-                }
-
-                tasks.add(imageRef.delete())
-
-                tasks.add(clothRef.removeValue())
-
-                Tasks.whenAllComplete(tasks)
-                    .addOnCompleteListener { tasks ->
-                        if (tasks.isSuccessful) {
-                            callback(true, "Вещь успешно удалена")
-                        } else {
-                            val errorMessage = tasks.exception?.message ?: "Не удалось удалить вещь"
-                            callback(false, errorMessage)
-                        }
-                    }
             }
 
             override fun onCancelled(databaseError: DatabaseError) {
-                callback(false, "Ошибка при поиске аутфитов: ${databaseError.message}")
+                tasks.add(Tasks.forException(databaseError.toException()))
             }
         })
+
+        clothesInSeasonRef.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                dataSnapshot.children.forEach { clothesInSeasonSnapshot ->
+                    val clothesInSeasonKey = clothesInSeasonSnapshot.key ?: ""
+                    val clothesInSeasonChildRef = database.child("cloth_season_mapping").child(clothesInSeasonKey)
+                    tasks.add( clothesInSeasonChildRef.removeValue())
+                }
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                tasks.add(Tasks.forException(databaseError.toException()))
+            }
+        })
+
+        clothesInOutfitRef.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                dataSnapshot.children.forEach { clothesInOutfitSnapshot ->
+                    val clothesInOutfitKey = clothesInOutfitSnapshot.key ?: ""
+                    val clothesInOutfitChildRef = database.child("clothes_in_outfit").child(clothesInOutfitKey)
+                    tasks.add(clothesInOutfitChildRef.removeValue())
+                }
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                tasks.add(Tasks.forException(databaseError.toException()))
+            }
+        })
+
+        clothesInCalendarEventRef.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                dataSnapshot.children.forEach { clothesInCalendarEventSnapshot ->
+                    val clothesInCalendarEventKey = clothesInCalendarEventSnapshot.key ?: ""
+                    val clothesInCalendarEventChildRef = database.child("clothes_in_calendar_event").child(clothesInCalendarEventKey)
+                    tasks.add(clothesInCalendarEventChildRef.removeValue())
+                }
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                tasks.add(Tasks.forException(databaseError.toException()))
+            }
+        })
+
+
+        clothesInJourneyRef.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                dataSnapshot.children.forEach { clothesInTravelSnapshot ->
+                    val clothesInJourneyKey = clothesInTravelSnapshot.key ?: ""
+                    val clothesInJourneyChildRef = database.child("clothes_in_journey").child(clothesInJourneyKey)
+                    tasks.add(clothesInJourneyChildRef.removeValue())
+                }
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                tasks.add(Tasks.forException(databaseError.toException()))
+            }
+        })
+
+
+        tasks.add(imageRef.delete())
+        tasks.add(clothRef.removeValue())
+
+        Tasks.whenAllComplete(tasks).addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                callback(true, "Вещь успешно удалена")
+            } else {
+                val errorMessage = task.exception?.message ?: "Не удалось корректно удалить вещь"
+                callback(false, errorMessage)
+            }
+        }
     }
-
-
 
 }

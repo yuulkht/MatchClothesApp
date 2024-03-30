@@ -4,6 +4,6 @@ import java.io.Serializable
 
 data class Journey (
     var id: String = "",
-    var user_id: String = "",
+    var userId: String = "",
     val title: String = ""
 ) : Serializable

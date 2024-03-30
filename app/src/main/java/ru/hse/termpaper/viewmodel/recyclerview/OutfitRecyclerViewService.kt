@@ -38,7 +38,6 @@ class OutfitRecyclerViewService(
     private val outfitsModelService: OutfitsModelService = OutfitsModelService()
 
 ) {
-    // Вещи без кликабельности
     fun setupClothesRecyclerView(clothes: MutableList<Cloth>, view: View, activity: Activity, ) {
         val clothesContainer: RecyclerView = view.findViewById(R.id.clothesContainer)
 
@@ -47,9 +46,8 @@ class OutfitRecyclerViewService(
         })
         clothesContainer.adapter = adapter
     }
-
-    //Категории образов с чекбоксами
     fun setupCategoryCheckboxRecyclerView(outfitCategories: MutableList<OutfitCategory>, view: View, context: Context) {
+        outfitCategories.clear()
         outfitsCategoryRepository.getOutfitCategories { categories ->
             val categoryAdapter = OutfitCategoryCheckboxAdapter(categories.distinct(), object : OutfitCategoryCheckboxAdapter.OnCheckboxClickListener{
                 override fun onCheckboxClicked(position: Int, isChecked: Boolean) {
@@ -67,6 +65,7 @@ class OutfitRecyclerViewService(
         }
     }
     fun setupSeasonCheckboxRecyclerView(curSeasons: MutableList<Season>, view: View, context: Context) {
+        curSeasons.clear()
         val seasons = outfitSeasonRepository.getSeasons()
         val seasonAdapter = SeasonCheckboxAdapter(seasons.distinct(), object: SeasonCheckboxAdapter.OnCheckboxClickListener{
             override fun onCheckboxClicked(position: Int, isChecked: Boolean) {
@@ -83,7 +82,6 @@ class OutfitRecyclerViewService(
         seasonRecyclerView.adapter = seasonAdapter
     }
 
-    // Категории аутфитов с нажатием и удалением
     fun setupCategoryClickRecyclerView(view: View, context: Context, parentFragment: Fragment?, curFragment: ChooseOutfitCategoryDialogFragment?) {
         outfitsCategoryRepository.getOutfitCategories { categories ->
             val categoryRecyclerView: RecyclerView = view.findViewById(R.id.categoryButtonRecyclerView)
@@ -109,7 +107,6 @@ class OutfitRecyclerViewService(
         }
     }
 
-    // Сезоны кликабельне
     fun setupSeasonClickRecyclerView(view: View, context: Context, parentFragment: Fragment?, curFragment: ChooseOutfitCategoryDialogFragment?) {
         val seasons = outfitSeasonRepository.getSeasons()
         val seasonRecyclerView: RecyclerView = view.findViewById(R.id.seasonButtonRecyclerView)
@@ -126,7 +123,6 @@ class OutfitRecyclerViewService(
         seasonRecyclerView.adapter = seasonAdapter
     }
 
-    // Просто категории для образа
     fun setupCategoryRecyclerView(outfit: Outfit, view: View, context: Context) {
         val categoryRecyclerView = view.findViewById<RecyclerView>(R.id.categoryRecyclerView)
         categoryRecyclerView.layoutManager = LinearLayoutManager(context)
@@ -137,7 +133,6 @@ class OutfitRecyclerViewService(
         }
     }
 
-    // Просто сезоны для образа
     fun setupSeasonRecyclerView(outfit: Outfit, view: View, context: Context) {
         val seasonRecyclerView = view.findViewById<RecyclerView>(R.id.seasonRecyclerView)
         seasonRecyclerView.layoutManager = LinearLayoutManager(context)
@@ -148,7 +143,6 @@ class OutfitRecyclerViewService(
         }
     }
 
-    // Просто вещи с переходом на страничку
     fun setupClothesCardRecyclerView(clothes: MutableList<Cloth>, view: View, activity: Activity, fragment: Fragment) {
         val clothesContainer: RecyclerView = view.findViewById(R.id.clothesContainer)
 
@@ -163,8 +157,8 @@ class OutfitRecyclerViewService(
         clothesContainer.adapter = adapter
     }
 
-    // Образы с выбором
     fun setupOutfitCheckboxRecyclerView(chosenOutfits: MutableList<Outfit>, view: View?, context: Context) {
+        chosenOutfits.clear()
         outfitsModelService.getOutfitsForCurrentUser { outfits ->
             val adapter = OutfitsCheckboxAdapter(
                 outfits.distinct(),
