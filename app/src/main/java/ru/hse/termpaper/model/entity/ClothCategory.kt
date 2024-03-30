@@ -4,6 +4,6 @@ import java.io.Serializable
 
 data class ClothCategory(
     var id: String = "",
-    var userId: String = "",
+    var user_id: String = "",
     val title: String = ""
 ) : Serializable

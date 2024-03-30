@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import ru.hse.termpaper.R
 import ru.hse.termpaper.model.entity.Journey
 import ru.hse.termpaper.model.repository.journey.JourneyRepository
-import ru.hse.termpaper.view.adapters.JourneyAdapter
+import ru.hse.termpaper.view.adapters.button.JourneyAdapter
 import ru.hse.termpaper.view.journeys.JourneyCardFragment
 import ru.hse.termpaper.view.main.MainScreenActivity
 import ru.hse.termpaper.view.main.NotificationHelper

@@ -1,7 +1,10 @@
 package ru.hse.termpaper.model.repository.clothes
 
+import android.util.Log
 import com.google.android.gms.tasks.Task
 import com.google.android.gms.tasks.Tasks
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
@@ -12,6 +15,7 @@ import ru.hse.termpaper.model.entity.Season
 
 class ClothSeasonRepository(
     private val database: DatabaseReference = FirebaseDatabase.getInstance("https://matchclothes-d0c67-default-rtdb.europe-west1.firebasedatabase.app").reference,
+    private val currentUser: FirebaseUser? = FirebaseAuth.getInstance().currentUser
 ) {
     fun addClothToSeason(cloth: Cloth, season: Season, callback: (Boolean, String) -> Unit) {
         val clothId = cloth.id
@@ -61,7 +65,9 @@ class ClothSeasonRepository(
                     .addOnSuccessListener { snapshots ->
                         for (snapshot in snapshots) {
                             val cloth = snapshot.getValue(Cloth::class.java)
-                            cloth?.let { clothesList.add(it) }
+                            if (cloth != null && cloth.user_id == currentUser?.uid) {
+                                clothesList.add(cloth)
+                            }
                         }
                         callback(true, clothesList)
                     }
@@ -75,9 +81,6 @@ class ClothSeasonRepository(
             }
         })
     }
-
-
-
 
     fun getSeasonsForCloth(cloth: Cloth, callback: (Boolean, MutableList<Season>) -> Unit) {
         val clothId = cloth.id

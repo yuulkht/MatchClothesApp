@@ -66,4 +66,14 @@ class AddOutfitFragment (
 
         return view
     }
+
+    override fun onResume() {
+        super.onResume()
+
+        val outfitTitle = view?.findViewById<EditText>(R.id.outfitTitle)
+        val outfitInfo = view?.findViewById<EditText>(R.id.outfitInfo)
+
+        outfitTitle?.text?.clear()
+        outfitInfo?.text?.clear()
+    }
 }

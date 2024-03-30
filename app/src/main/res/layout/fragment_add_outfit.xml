@@ -61,6 +61,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:adjustViewBounds="true"
+                    android:maxWidth="250dp"
                     android:src="@drawable/placeholder_cloth"
                     tools:ignore="ContentDescription" />
 

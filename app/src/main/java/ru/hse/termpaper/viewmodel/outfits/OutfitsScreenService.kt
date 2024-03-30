@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import ru.hse.termpaper.R
 import ru.hse.termpaper.model.entity.Outfit
 import ru.hse.termpaper.model.repository.outfits.OutfitsRepository
-import ru.hse.termpaper.view.adapters.OutfitsAdapter
+import ru.hse.termpaper.view.adapters.basic.OutfitsAdapter
 import ru.hse.termpaper.view.main.MainScreenActivity
 import ru.hse.termpaper.view.outfits.OutfitCardFragment
 

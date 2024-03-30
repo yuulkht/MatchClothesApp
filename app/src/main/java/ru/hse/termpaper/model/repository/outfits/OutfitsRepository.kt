@@ -30,11 +30,11 @@ class OutfitsRepository(
             if (outfitId != null) {
                 outfit.id = outfitId
             }
-            outfit.userId = userId
+            outfit.user_id = userId
 
             val outfitData = hashMapOf(
                 "id" to outfit.id,
-                "user_id" to outfit.userId,
+                "user_id" to outfit.user_id,
                 "title" to outfit.title,
                 "photo" to outfit.id,
                 "information" to outfit.information,

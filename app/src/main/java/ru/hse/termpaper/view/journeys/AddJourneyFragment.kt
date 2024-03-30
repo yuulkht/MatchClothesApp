@@ -42,4 +42,12 @@ class AddJourneyFragment(
             journeyService.saveJourney(journeyTitle, mainScreenActivity)
         }
     }
+
+    override fun onResume() {
+        super.onResume()
+
+        val title = view?.findViewById<EditText>(R.id.journeyTitle)
+
+        title?.text?.clear()
+    }
 }

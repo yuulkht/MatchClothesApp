@@ -49,4 +49,12 @@ class AddClothCategoryFragment(
         return view
     }
 
+    override fun onResume() {
+        super.onResume()
+
+        val categoryTitle = view?.findViewById<EditText>(R.id.clothCategoryTitle)
+
+        categoryTitle?.text?.clear()
+    }
+
 }

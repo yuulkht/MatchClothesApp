@@ -23,7 +23,7 @@ class JourneyRepository (
             if (journeyId != null) {
                 journey.id = journeyId
             }
-            journey.userId = userId
+            journey.user_id = userId
             val journeyData = hashMapOf(
                 "id" to journeyId,
                 "user_id" to userId,

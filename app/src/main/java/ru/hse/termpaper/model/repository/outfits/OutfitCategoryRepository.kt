@@ -22,7 +22,7 @@ class OutfitCategoryRepository(
             if (outfitCategoryId != null) {
                 outfitCategory.id = outfitCategoryId
             }
-            outfitCategory.userId = userId
+            outfitCategory.user_id = userId
             val outfitCategoryData = hashMapOf(
                 "id" to outfitCategoryId,
                 "user_id" to userId,
@@ -60,7 +60,6 @@ class OutfitCategoryRepository(
 
     fun addOutfitToCategory(outfit: Outfit, outfitCategory: OutfitCategory, callback: (Boolean, String) -> Unit) {
         val relationRef: DatabaseReference = database.child("outfit_category_mapping").push()
-        val relationId = relationRef.key
         val relationData = hashMapOf(
             "outfit_id" to outfit.id,
             "outfit_category_id" to outfitCategory.id,

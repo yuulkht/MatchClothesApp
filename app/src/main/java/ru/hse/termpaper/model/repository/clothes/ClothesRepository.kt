@@ -29,11 +29,11 @@ class ClothesRepository(
             if (clothId != null) {
                 cloth.id = clothId
             }
-            cloth.userId = userId
+            cloth.user_id = userId
 
             val clothData = hashMapOf(
                 "id" to cloth.id,
-                "user_id" to cloth.userId,
+                "user_id" to cloth.user_id,
                 "title" to cloth.title,
                 "photo" to cloth.id,
                 "information" to cloth.information,

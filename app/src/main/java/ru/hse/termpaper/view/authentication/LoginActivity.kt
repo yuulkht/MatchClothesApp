@@ -33,9 +33,6 @@ class LoginActivity(
                 if (isSuccess) {
                     val intent = Intent(this, MainScreenActivity::class.java)
                     startActivity(intent)
-                } else {
-                    val intent = Intent(this, LoginActivity::class.java)
-                    startActivity(intent)
                 }
             }
         }

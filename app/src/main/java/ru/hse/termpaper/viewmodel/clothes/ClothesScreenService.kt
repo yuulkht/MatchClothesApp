@@ -6,7 +6,7 @@ import android.widget.EditText
 import androidx.recyclerview.widget.RecyclerView
 import ru.hse.termpaper.R
 import ru.hse.termpaper.model.entity.Cloth
-import ru.hse.termpaper.view.adapters.ClothesAdapter
+import ru.hse.termpaper.view.adapters.basic.ClothesAdapter
 import ru.hse.termpaper.view.clothes.ClothCardFragment
 import ru.hse.termpaper.view.main.MainScreenActivity
 

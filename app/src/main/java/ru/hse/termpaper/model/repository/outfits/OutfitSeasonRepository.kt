@@ -1,15 +1,21 @@
 package ru.hse.termpaper.model.repository.outfits
 
+import com.google.android.gms.tasks.Task
+import com.google.android.gms.tasks.Tasks
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import ru.hse.termpaper.model.entity.Cloth
 import ru.hse.termpaper.model.entity.Outfit
 import ru.hse.termpaper.model.entity.Season
 
 class OutfitSeasonRepository(
     private val database: DatabaseReference = FirebaseDatabase.getInstance("https://matchclothes-d0c67-default-rtdb.europe-west1.firebasedatabase.app").reference,
+    private val currentUser: FirebaseUser? = FirebaseAuth.getInstance().currentUser
 ) {
     fun addOutfitToSeason(outfit: Outfit, season: Season, callback: (Boolean, String) -> Unit) {
         val outfitId = outfit.id
@@ -48,24 +54,26 @@ class OutfitSeasonRepository(
                     return
                 }
 
+                val tasks = mutableListOf<Task<DataSnapshot>>()
+
                 for (outfitId in outfitIds) {
-                    val outfitsQuery = database.child("outfits").child(outfitId)
+                    val clothesQuery = database.child("outfits").child(outfitId).get()
+                    tasks.add(clothesQuery)
+                }
 
-                    outfitsQuery.addListenerForSingleValueEvent(object : ValueEventListener {
-                        override fun onDataChange(outfitSnapshot: DataSnapshot) {
-                            val outfit = outfitSnapshot.getValue(Outfit::class.java)
-                            outfit?.let { outfitsList.add(it) }
-
-                            if (outfitsList.size == outfitIds.size) {
-                                callback(true, outfitsList)
+                Tasks.whenAllSuccess<DataSnapshot>(tasks)
+                    .addOnSuccessListener { snapshots ->
+                        for (snapshot in snapshots) {
+                            val outfit = snapshot.getValue(Outfit::class.java)
+                            if (outfit != null && outfit.user_id == currentUser?.uid) {
+                                outfitsList.add(outfit)
                             }
                         }
-
-                        override fun onCancelled(databaseError: DatabaseError) {
-                            callback(false, mutableListOf())
-                        }
-                    })
-                }
+                        callback(true, outfitsList)
+                    }
+                    .addOnFailureListener {
+                        callback(false, mutableListOf())
+                    }
             }
 
             override fun onCancelled(databaseError: DatabaseError) {
@@ -73,6 +81,7 @@ class OutfitSeasonRepository(
             }
         })
     }
+
 
 
 

@@ -1,4 +1,4 @@
-package ru.hse.termpaper.view.adapters
+package ru.hse.termpaper.view.adapters.button
 
 import android.graphics.Color
 import android.view.LayoutInflater
@@ -9,12 +9,12 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import ru.hse.termpaper.R
-import ru.hse.termpaper.model.entity.ClothCategory
+import ru.hse.termpaper.model.entity.OutfitCategory
 
-class ClothCategoryButtonAdapter(
-    private val categories: List<ClothCategory>,
+class OutfitCategoryButtonAdapter(
+    private val categories: List<OutfitCategory>,
     private val listener: OnItemClickListener? = null
-) : RecyclerView.Adapter<ClothCategoryButtonAdapter.CategoryButtonViewHolder>() {
+) : RecyclerView.Adapter<OutfitCategoryButtonAdapter.CategoryButtonViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CategoryButtonViewHolder {
         val view = LayoutInflater.from(parent.context)
@@ -39,8 +39,8 @@ class ClothCategoryButtonAdapter(
     }
 
     interface OnItemClickListener {
-        fun onItemClick(category: ClothCategory)
-        fun onDeleteClick(category: ClothCategory)
+        fun onItemClick(category: OutfitCategory)
+        fun onDeleteClick(category: OutfitCategory)
     }
 
     class CategoryButtonViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -48,7 +48,7 @@ class ClothCategoryButtonAdapter(
         val categoryBackground: LinearLayout = itemView.findViewById(R.id.categoryBackground)
         val deleteButton: ImageView = itemView.findViewById(R.id.deleteCategory)
 
-        fun bind(category: ClothCategory) {
+        fun bind(category: OutfitCategory) {
             categoryName.text = category.title
         }
 

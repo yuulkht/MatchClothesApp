@@ -25,7 +25,7 @@ class CalendarRepository (
             createCalendarEventNode(userId, calendarEvent) { success, calendarEventId ->
                 if (success) {
                     calendarEvent.id = calendarEventId
-                    calendarEvent.userId = userId
+                    calendarEvent.user_id = userId
                     saveCalendarEventData(userId, calendarEvent) { success ->
                         if (success) {
                             callback(true, calendarEvent)
