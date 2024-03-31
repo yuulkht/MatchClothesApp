@@ -1,0 +1,65 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <!-- Заголовок диалогового окна -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/chooseCategoryOrSeason"
+        android:textAppearance="?android:textAppearanceMedium"
+        android:padding="16dp"
+        android:gravity="center"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_height="wrap_content"
+        android:text="@string/categories"
+        android:textStyle="bold"
+        android:textSize="22sp"
+        android:padding="10dp"/>
+
+    <!-- RecyclerView для отображения списка категорий -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/categoryButtonRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="220dp"
+        android:padding="16dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_height="wrap_content"
+        android:text="@string/seasons"
+        android:textStyle="bold"
+        android:textSize="22sp"
+        android:padding="10dp"/>
+
+    <!-- RecyclerView для отображения списка сезонов -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/seasonButtonRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="220dp"
+        android:padding="16dp"/>
+
+    <!-- Кнопки для применения и сброса фильтров -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center">
+
+        <Button
+            android:id="@+id/resetButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/reset"
+            android:layout_margin="8dp"
+            android:backgroundTint="#C1D8E7"
+            android:textColor="#000000"/>
+
+    </LinearLayout>
+</LinearLayout>

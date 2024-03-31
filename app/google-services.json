@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "577609618864",
+    "project_id": "matchclothes-d0c67",
+    "storage_bucket": "matchclothes-d0c67.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:577609618864:android:378bc8ebbfdf0c749f3275",
+        "android_client_info": {
+          "package_name": "ru.hse.termpaper"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCKajfg8KhzHB-8VwIgjbDwJ_2WUC_dVBs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
